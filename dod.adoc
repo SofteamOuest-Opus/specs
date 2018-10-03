@@ -1,0 +1,11 @@
+=  Definition of Done
+
+:toc:
+
+== TODO
+
+* Dev TU OK
+* BDD OK
+* Build Jenkins OK 
+* Sonar OK
+* Revue de code OK

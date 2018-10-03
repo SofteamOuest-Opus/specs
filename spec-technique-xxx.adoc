@@ -1,0 +1,21 @@
+= Spec Technique - Application XXX
+
+:toc:
+
+== API REST 
+
+Documentation Swagger : mettre lien vers dépôt GIT
+
+== Evenements 
+
+=== Evenements consommés
+
+Nom du Topic Kafka
+
+Mettre lien vers schéma Avro
+
+=== Evenements publiés
+
+Nom du Topic Kafka
+
+Mettre lien vers schéma Avro

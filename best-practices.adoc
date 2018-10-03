@@ -1,0 +1,23 @@
+=  Best Practices
+
+:toc:
+
+== BDD
+
+Rédigées en Anglais
+
+== TDD
+
+1 RG = 1 ou plusieurs TU
+
+Annoter les TU avec les RG.
+
+== Couches Logicielles
+
+=== Entity 
+
+=== Repository 
+
+=== Service
+
+=== Resource

@@ -1,0 +1,9 @@
+=  Definition of Ready
+
+:toc:
+
+== TODO
+
+* Spéc Rédigée
+* Revue terminée par Binôme
+* Lien Spec Envoyée à tout le groupe (via Slack)

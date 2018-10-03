@@ -1,0 +1,25 @@
+=  Spec Fonctionnelle - Application XXX
+
+:toc:
+
+== Liste des scénarios
+
+=== Scénario XXX_1
+
+....
+En tant que collaborateur RH 
+Quand je crée un collaborateur
+Alors son parcours d'intégratio démarre
+....
+
+==== Liste des RG
+
+<<RG XXX_1>>, ...
+
+== Liste des RG
+
+=== RG XXX_1
+
+....
+Un collaborateur a un nom et un prénom.
+....
