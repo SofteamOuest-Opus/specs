@@ -1,0 +1,48 @@
+= Usine Logicielle
+
+L'Usine Logicielle comporte l'outillage nécessaire à
+
+* L'exécution des Tests Unitaires
+* La construction des Applications (Jenkins)
+* L'archivage des Applications (Nexus)
+* L'analyse qualité des sources (SonarQube)
+
+Nous utilisons le packaging [Helm](https://www.helm.sh/) pour déployer nos applications dans notre cluster [Kubernetes](https://kubernetes.io/).
+
+== Organisation des Sources
+
+L'architecture applicative que nous construisons est une architecture orientée micro services.
+
+Les sources sont hébergées dans une Organoisation Guthub dédiée.
+
+Les sources d'un service sont gérées dans un dépôt GIT.
+
+=== Dépôt Charts
+
+Le dépôt Charts centralise les packages Helm (appelés Charts) de toutes les applications.
+
+Ce dépôt centralise aussi les RELEASES des charts : une RELEASE d'un chart est une archive TGZ.
+
+== Jenkins
+
+=== Jobs de BUILD
+
+Un Job de BUILD permet de
+
+* Construire l'image Docker d'une Application (en version SNAPSHOT)
+* Déployer sur un Environnement de Test
+
+En fin de BUILD, sur la branche develop, l'application est déployée sur le cluster.
+
+=== Jobs de RELEASE
+
+Un Job de BUILD permet de
+
+* Construire l'image Docker d'une Application (en version SNAPSHOT)
+
+
+== Nexus
+
+== SonarQube
+
+= Environnements

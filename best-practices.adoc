@@ -4,13 +4,13 @@
 
 == BDD
 
-Rédigées en Anglais
+Les scénarios BDD sont rédigés en anglais.
 
 == TDD
 
-1 RG = 1 ou plusieurs TU
+Chaque règle de gestion est testé par des Tests Unitaires passants et non passants.
 
-Annoter les TU avec les RG.
+Les Tests Unitaires associés à une RG doivent être annotés avec le numéro de la RG.
 
 == Couches Logicielles
 
@@ -18,6 +18,10 @@ Annoter les TU avec les RG.
 
 === Repository 
 
+=== Value Object
+
 === Service
 
 === Resource
+
+== Nommage des Classes
