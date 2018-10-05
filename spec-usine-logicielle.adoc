@@ -1,7 +1,6 @@
 = Usine Logicielle
 
-
-L'objectif de l'Usine Logicielle est de nous permettre de réaliser nos développements en mode Continuous Delivery : tout commit sur un dépôt GIT d'une application déclenche La construction des binaires de l'application suivi du déploiement de l'application.
+Nous mettons en place l'Usine Logicielle pour industrialiser nos développements et notamment accélérer les temps de mises en prod en suivant une démarche de Continuous Delivery : tout commit sur un dépôt GIT d'une application déclenche la construction des binaires de l'application suivi du déploiement de l'application.
 
 Pour ce faire, l'Usine Logicielle fournit des outils pour automatiser la construction des binaires ainsi que des environnements de déploiement.
 
@@ -9,7 +8,7 @@ Pour ce faire, l'Usine Logicielle fournit des outils pour automatiser la constru
 
 L'Outillage mis en place permet :
 
-* La gestion des sources des applications.
+* La gestion des sources des applications
 * La construction des binaires de l'application et l'exécution des tests unitaires (via Jenkins)
 * L'archivage des binaires (dans Nexus)
 * L'analyse qualité des sources (via SonarQube)
@@ -124,6 +123,8 @@ L'environnement de RE7 permet de tester une version RELEASE avant Mise en Prod.
 
 L'environnement de PROD correspond à l'environnement utilisé.
 
+=== Accès aux Applications
+
 === Persistance des Données
 
 La persistance des données est obtenue par mise en place de volumes persistants (PV) NFS. Chaque PV est associé à un disque NFS.
@@ -134,12 +135,23 @@ La centralisation des Logs est réalisée via ELK.
 
 === Monitoring
 
+Le monitoring nous permet de monitorer l'état du cluster Kubernetes ainsi que l'état des PODs.
+
 === Tolérance aux Pannes
 
-==== Panne des applications
+La tolérance aux pannes se situ à deux niveaux, les pannes
+* Des Applications
+* Du cluster
 
-Mise en Place du HealthCheck
+==== Pannes des applications
 
-==== Panne du Cluster
+La gestion des pannes des applications est gérée par Kubernetes.
 
-Mise en Place du multi master
+Pour y arriver, Kubernetes appelle https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/[les lignes de vie des applications].
+
+==== Pannes du Cluster
+
+La gestion des pannes du cluster est gérée par une installation multi-maîtres :
+
+* Pour être tolérant à une panne, il faut 3 maîtres
+* Pour être tolérant à deux pannes, il faut 5 maîtres
