@@ -21,7 +21,7 @@ Les sources d'une application sont gérées dans un dépôt GIT.
 
 === Jenkins
 
-Nous utilisons Jenkins pour orchestrer les BUILDS.
+Nous utilisons https://jenkins.k8.wildwidewest.xyz[Jenkins] pour orchestrer les BUILDS.
 
 ==== Configuration Jenkins
 
@@ -52,7 +52,7 @@ Le Job de BUILD d'une application permet de :
 * Construire l'image Docker de l'application (en version SNAPSHOT)
 * Déclencher un Job de Déploiement
 
-En fin de BUILD, sur la branche develop, l'application est déployée sur le cluster, dans un environnement de DEV.
+En fin de BUILD, sur la branche develop, l'application est déployée sur le cluster, dans l'environnement de DEV.
 
 ==== Job de RELEASE
 
