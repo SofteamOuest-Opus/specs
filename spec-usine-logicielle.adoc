@@ -10,20 +10,26 @@ Pour ce faire, l'Usine Logicielle fournit des outils pour automatiser la constru
 
 L'Outillage mis en place permet :
 
-* La gestion des sources des Applications.
+* La gestion des sources des applications.
 * La construction des binaires de l'application et l'exécution des tests unitaires (via Jenkins)
 * L'archivage des binaires (dans Nexus)
 * L'analyse qualité des sources (via SonarQube)
 
 === Gestion des Sources
 
-L'architecture applicative que nous construisons est une architecture orientée micro services.
-
 Les sources sont hébergées dans une Organisation Github https://github.com/SofteamOuest-Opus[dédiée].
 
-Les sources d'un service sont gérées dans un dépôt GIT.
+Les sources d'une application sont gérées dans un dépôt GIT.
 
 === Jenkins
+
+De manière à uniformiser nos jobs Jenkins, nous les implémentons via des Jenkinsfile.
+
+Nous implémentons différents types de Jobs, notamment
+
+* Des Jobs de BUILD pour construire les binaires des applications
+* Des Jobs de RELEASE pour figer des versions des applications
+* Des Jobs de RUN pour déployer les applications
 
 ==== Job de BUILD
 
@@ -71,7 +77,7 @@ C'est un Job paramétrable qui prend en paramètre :
 
 ==== Job de FULL-RUN
 
-Le Job de FULL-RUN permet de déployer toutes les Applications.
+Le Job de FULL-RUN permet de déployer toutes les applications.
 
 Il prend les même paramètres que le Job de RUN (pour chaque application à déployer).
 
@@ -95,7 +101,7 @@ Les accès au serveur SonarQube sont authentifiés par token.
 
 === DEV, RE7, PROD
 
-L'environnement de DEV permet de tester la dernière version SNAPSHOT des Applications.
+L'environnement de DEV permet de tester la dernière version SNAPSHOT des applications.
 
 L'environnement de RE7 permet de tester une version RELEASE avant Mise en Prod.
 
@@ -117,7 +123,7 @@ Nous utilisons le packaging [Helm](https://www.helm.sh/) pour déployer nos appl
 
 === Tolérance aux Pannes
 
-==== Panne des Applications
+==== Panne des applications
 
 Mise en Place du HealthCheck
 
