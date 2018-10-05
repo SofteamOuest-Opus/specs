@@ -1,6 +1,5 @@
 = Usine Logicielle
 
-:toc:
 
 L'objectif de l'Usine Logicielle est de nous permettre de réaliser nos développements en mode Continuous Delivery : tout commit sur un dépôt GIT d'une application déclenche La construction des binaires de l'application suivi du déploiement de l'application.
 
@@ -23,12 +22,28 @@ Les sources d'une application sont gérées dans un dépôt GIT.
 
 === Jenkins
 
+==== Configuration Jenkins
+
+Le package Helm d'installation de Jenkins installe les plugins nécessaires à la mise en place de slaves Jenkins dans Kubernetes.
+
+Le serveur Jenkins doit être configuré automatiquement.
+
+La configuration concerne notamment :
+
+* Les comptes utilisateurs
+* Les secrets (mot de passe nexus, token sonarqube)
+* Les fichiers de configuration (Gradle, SSH)
+* L'import d'organisations GitHub
+* L'import de plugins (exemple : JIRA)
+
+==== Jobs Jenkins
+
 De manière à uniformiser nos jobs Jenkins, nous les implémentons via des Jenkinsfile.
 
-Nous implémentons différents types de Jobs, notamment
+Nous implémentons différents types de Jobs, notamment :
 
 * Des Jobs de BUILD pour construire les binaires des applications
-* Des Jobs de RELEASE pour figer des versions des applications
+* Des Jobs de RELEASE pour figer les versions des applications
 * Des Jobs de RUN pour déployer les applications
 
 ==== Job de BUILD
@@ -38,7 +53,7 @@ Le Job de BUILD d'une application permet de :
 * Construire l'image Docker de l'application (en version SNAPSHOT)
 * Déclencher un Job de Déploiement
 
-En fin de BUILD, sur la branche develop, l'application est déployée sur le cluster, dans un environnement DEV.
+En fin de BUILD, sur la branche develop, l'application est déployée sur le cluster, dans un environnement de DEV.
 
 ==== Job de RELEASE
 
@@ -79,23 +94,25 @@ C'est un Job paramétrable qui prend en paramètre :
 
 Le Job de FULL-RUN permet de déployer toutes les applications.
 
-Il prend les même paramètres que le Job de RUN (pour chaque application à déployer).
+Le Job prend les même paramètres que le Job de RUN (pour chaque application à déployer).
 
 Si le tag de l'image Docker d'une application n'est pas défini, l'application n'est pas déployée.
 
 === Nexus
 
-Nous utilisons [Nexus](https://nexus.k8.wildwidewest.xyz/) pour archiver les images Docker.
+Nous utilisons https://nexus.k8.wildwidewest.xyz/[Nexus] pour archiver les images Docker.
 
 Les accès au serveur Nexus sont authentifiés par login, password.
 
 === SonarQube
 
-Nous utilisons [SonarQube](https://sonarqube.k8.wildwidewest.xyz/) pour analyser la qualité du code développé.
+Nous utilisons https://sonarqube.k8.wildwidewest.xyz/[SonarQube] pour analyser la qualité du code développé.
 
 Les accès au serveur SonarQube sont authentifiés par token.
 
 === JIRA
+
+Nous utilisons https://wildwidewest.atlassian.net[JIRA] pour suivre le développement du Projet.
 
 == Environnements
 
@@ -107,17 +124,13 @@ L'environnement de RE7 permet de tester une version RELEASE avant Mise en Prod.
 
 L'environnement de PROD correspond à l'environnement utilisé.
 
-=== Kubernetes
-
-=== Applications
-
-Nous utilisons le packaging [Helm](https://www.helm.sh/) pour déployer nos applications dans notre cluster [Kubernetes](https://kubernetes.io/).
-
-=== Dépôt Charts
-
 === Persistance des Données
 
+La persistance des données est obtenue par mise en place de volumes persistants (PV) NFS. Chaque PV est associé à un disque NFS.
+
 === Centralisation des Logs
+
+La centralisation des Logs est réalisée via ELK.
 
 === Monitoring
 
@@ -129,4 +142,4 @@ Mise en Place du HealthCheck
 
 ==== Panne du Cluster
 
-Mise en Place du HealthCheck
+Mise en Place du multi master
