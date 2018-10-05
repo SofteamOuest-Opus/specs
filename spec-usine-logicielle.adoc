@@ -1,21 +1,76 @@
 = Usine Logicielle
 
+:toc:
+
+== Outillage
+
 L'Usine Logicielle comporte l'outillage nécessaire à
 
 * L'exécution des Tests Unitaires
-* La construction des Applications (Jenkins)
-* L'archivage des Applications (Nexus)
+* La construction des binaires (Jenkins)
+* L'archivage des binaires (Nexus)
 * L'analyse qualité des sources (SonarQube)
 
-Nous utilisons le packaging [Helm](https://www.helm.sh/) pour déployer nos applications dans notre cluster [Kubernetes](https://kubernetes.io/).
-
-== Organisation des Sources
+=== Gestion des Sources
 
 L'architecture applicative que nous construisons est une architecture orientée micro services.
 
-Les sources sont hébergées dans une Organoisation Guthub dédiée.
+Les sources sont hébergées dans une Organoisation Github [dédiée](https://github.com/SofteamOuest-Opus).
 
 Les sources d'un service sont gérées dans un dépôt GIT.
+
+=== Jenkins
+
+==== Jobs de BUILD
+
+Le Job de BUILD d'une Application permet de :
+
+* Construire l'image Docker de l'Application (en version SNAPSHOT)
+* Déclencher un Job de Déploiement
+
+En fin de BUILD, sur la branche develop, l'Application est déployée sur le cluster, dans un environnement DEV.
+
+==== Jobs de RELEASE
+
+Le Job de RELEASE d'une Application permet de :
+
+* Construire l'image Docker de l'Application en version RELEASE
+* Déployer les jars de l'Application sur le nexus
+
+==== Jobs de RELEASE d'un Chart
+
+Un Chart Helm est un package de déploiement
+
+
+==== Job de RUN
+
+Le Job de RUN permet de déployer une Application sur le cluster.
+
+C'est un Job paramétrable qui prend en paramètre :
+
+* Le nom de l'Application à déployer
+* La version de l'image Docker à déployer
+* La version du package Helm à utiliser pour le déploiement
+
+==== Job de FULL-RUN
+
+Le Job de FULL-RUN permet de déployer toutes les Applications.
+
+=== Nexus
+
+Nous utilisons [Nexus](https://nexus.k8.wildwidewest.xyz/) pour archiver les images Docker.
+
+=== SonarQube
+
+Nous utilisons [SonarQube](https://sonarqube.k8.wildwidewest.xyz/) pour analyser la qualité du code développé.
+
+== Environnements
+
+=== DEV, REC, PROD
+
+=== Applications
+
+Nous utilisons le packaging [Helm](https://www.helm.sh/) pour déployer nos applications dans notre cluster [Kubernetes](https://kubernetes.io/).
 
 === Dépôt Charts
 
@@ -23,26 +78,18 @@ Le dépôt Charts centralise les packages Helm (appelés Charts) de toutes les a
 
 Ce dépôt centralise aussi les RELEASES des charts : une RELEASE d'un chart est une archive TGZ.
 
-== Jenkins
+=== Persistance des Données
 
-=== Jobs de BUILD
+=== Centralisation des Logs
 
-Un Job de BUILD permet de
+=== Monitoring
 
-* Construire l'image Docker d'une Application (en version SNAPSHOT)
-* Déployer sur un Environnement de Test
+=== Tolérance aux Pannes
 
-En fin de BUILD, sur la branche develop, l'application est déployée sur le cluster.
+==== Panne des Applications
 
-=== Jobs de RELEASE
+Mise en Place du HealthCheck
 
-Un Job de BUILD permet de
+==== Panne du Cluster
 
-* Construire l'image Docker d'une Application (en version SNAPSHOT)
-
-
-== Nexus
-
-== SonarQube
-
-= Environnements
+Mise en Place du HealthCheck
