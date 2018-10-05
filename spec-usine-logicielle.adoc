@@ -23,9 +23,7 @@ Les sources d'une application sont gérées dans un dépôt GIT.
 
 ==== Configuration Jenkins
 
-Le package Helm d'installation de Jenkins installe les plugins nécessaires à la mise en place de slaves Jenkins dans Kubernetes.
-
-Le serveur Jenkins doit être configuré automatiquement.
+De manière à simplifier au maximum la mise en place d'une usine logicielle, le serveur Jenkins est configuré automatiquement.
 
 La configuration concerne notamment :
 
