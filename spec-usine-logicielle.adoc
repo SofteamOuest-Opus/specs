@@ -21,6 +21,8 @@ Les sources d'une application sont gérées dans un dépôt GIT.
 
 === Jenkins
 
+Nous utilisons Jenkins pour orchestrer les BUILDS.
+
 ==== Configuration Jenkins
 
 De manière à simplifier au maximum la mise en place de l'Usine Logicielle, le serveur Jenkins est configuré automatiquement.
@@ -131,12 +133,6 @@ Si le nom de l'application est mon application,
 
 * Si le nom de l''environnement est PROD, l'URL d'accès est https://monapplication.k8.wildwidewest.xyz
 * Sinon (le nom de l'environnement est XXX), l'URL d'accès est https://monapplication-XXX.k8.wildwidewest.xyz (=> le nom de l'environnement se retrouve dans l'URL de l'application)
-
-=== Persistance des Données
-
-La persistance des données est obtenue par mise en place de volumes persistants (PV) NFS. Chaque PV est associé à une partition NFS.
-
-Pour information, la création des partitions NFS se fait via la console d'administration OVH. Quand on configure une partition NFS, il faut "ouvrir" son accès à toutes les VMs composant le cluster Kubernetes.
 
 === Centralisation des Logs
 
