@@ -28,7 +28,7 @@ De manière à simplifier au maximum la mise en place de l'Usine Logicielle, le 
 La configuration concerne notamment :
 
 * Les comptes utilisateurs
-* Les secrets (mot de passe nexus, token sonarqube)
+* Les secrets (mot de passe Nexus, token sonarqube)
 * Les fichiers de configuration (Gradle, SSH)
 * L'import d'organisations GitHub
 * L'import de plugins (exemple : JIRA)
@@ -58,7 +58,7 @@ Le Job de RELEASE d'une application permet de :
 
 * Construire l'image Docker de l'application en version RELEASE
 * Construire les jars de l'application en version RELEASE
-* Déployer les jars de l'application sur le nexus
+* Déployer les jars de l'application sur le Nexus
 
 Le job de RELEASE d'un Chart prend en paramètre :
 
@@ -97,7 +97,7 @@ Si le tag de l'image Docker d'une application n'est pas défini, l'application n
 
 === Nexus
 
-Nous utilisons https://nexus.k8.wildwidewest.xyz/[Nexus] pour archiver les images Docker.
+Nous utilisons https://Nexus.k8.wildwidewest.xyz/[Nexus] pour archiver les images Docker.
 
 Les accès au serveur Nexus sont authentifiés par login, password.
 
@@ -113,13 +113,13 @@ Nous utilisons https://wildwidewest.atlassian.net[JIRA] pour suivre le développ
 
 == Environnements
 
-=== DEV, RE7, PROD
+Nous déployons nos applications dans différents environnements.
 
-L'environnement de DEV permet de tester la dernière version SNAPSHOT des applications.
+L'environnement de DEV permet de tester la dernière version SNAPSHOT des applications (=> version en cours de développement).
 
-L'environnement de RE7 permet de tester une version RELEASE avant Mise en Prod.
+L'environnement de RE7 permet de tester une version RELEASE avant Mise en Prod (=> version à qualifier).
 
-L'environnement de PROD correspond à l'environnement utilisé.
+L'environnement de PROD correspond à l'environnement utilisé (=> version qualifiée).
 
 De manière à isoler les applications des différents environnements, chaque environnement est matérialisé par un namespace dans le cluster Kubernetes.
 
@@ -130,7 +130,7 @@ Le nom de l'environnement apparaît dans l'URL de l'application.
 Si le nom de l'application est mon application,
 
 * Si le nom de l''environnement est PROD, l'URL d'accès est https://monapplication.k8.wildwidewest.xyz
-* Sinon (le nom de l'environnement est XXX), l'URL d'accès est https://monapplication-XXX.k8.wildwidewest.xyz
+* Sinon (le nom de l'environnement est XXX), l'URL d'accès est https://monapplication-XXX.k8.wildwidewest.xyz (=> le nom de l'environnement se retrouve dans l'URL de l'application)
 
 === Persistance des Données
 
@@ -144,13 +144,29 @@ La centralisation des Logs permet d'analyser via une IHM unique les logs de tout
 
 Pour simplifier la mise en place, les applications partagent un même format de Logs.
 
+Le format du Log est :
+
+* Niveau de Log : DEBUG, INFO, ERROR
+* Message du Log
+* Nom de l'application
+* Nom de l'environnement
+* Id de Correlation du Message
+* StackTrace si le message est une exception
+
 === Monitoring
 
-Le monitoring permet de monitorer l'état du cluster Kubernetes ainsi que l'état des PODs.
+Le monitoring permet de monitorer l'état du cluster Kubernetes.
+
+Nous monitorons :
+
+* Le CPU (critère à définir)
+* Le disque (utilisation > 90 %)
+
+Les alertes de monitoring sont envoyées par email aux membres du projet.
 
 === Tolérance aux Pannes
 
-Nous gérons deux types de pannes : Les pannes des Applications et les pannes du cluster.
+Nous gérons deux types de pannes : Les pannes des applications et les pannes du cluster.
 
 ==== Pannes des applications
 
