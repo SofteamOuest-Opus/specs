@@ -148,17 +148,17 @@ Le monitoring permet de monitorer l'état du cluster Kubernetes ainsi que l'éta
 
 === Tolérance aux Pannes
 
-La tolérance aux pannes se situ à deux niveaux, les pannes
-* Des Applications
-* Du cluster
+Nous gérons deux types de pannes : Les pannes Des Applications et les pannes du cluster.
 
 ==== Pannes des applications
 
 La gestion des pannes des applications est gérée par Kubernetes.
 
-Pour y arriver, Kubernetes appelle https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/[les lignes de vie des applications].
+Pour y arriver, Kubernetes se base sur https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/[les lignes de vie des applications].
 
-* Chaque application déployée doit donc définir ses lignes de vie.
+Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de redémarrer l'application.
+
+Chaque application déployée doit donc définir ses lignes de vie.
 
 ==== Pannes du Cluster
 
