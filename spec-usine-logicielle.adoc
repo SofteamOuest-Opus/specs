@@ -117,11 +117,9 @@ Nous utilisons https://wildwidewest.atlassian.net[JIRA] pour suivre le développ
 
 Nous déployons nos applications dans différents environnements.
 
-L'environnement de DEV permet de tester la dernière version SNAPSHOT des applications (=> version en cours de développement).
-
-L'environnement de RE7 permet de tester une version RELEASE avant Mise en Prod (=> version à qualifier).
-
-L'environnement de PROD correspond à l'environnement utilisé (=> version qualifiée).
+* L'environnement de DEV permet de tester la dernière version SNAPSHOT des applications (=> version en cours de développement).
+* L'environnement de RE7 permet de tester une version RELEASE avant Mise en Prod (=> version à qualifier).
+* L'environnement de PROD correspond à l'environnement utilisé (=> version qualifiée).
 
 De manière à isoler les applications des différents environnements, chaque environnement est matérialisé par un namespace dans le cluster Kubernetes.
 
