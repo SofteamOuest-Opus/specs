@@ -134,7 +134,9 @@ Si le nom de l'application est mon application,
 
 === Persistance des Données
 
-La persistance des données est obtenue par mise en place de volumes persistants (PV) NFS. Chaque PV est associé à un disque NFS.
+La persistance des données est obtenue par mise en place de volumes persistants (PV) NFS. Chaque PV est associé à une partition NFS.
+
+Pour information, la création des partitions NFS se fait via la console d'administration OVH. Quand on configure une partition NFS, il faut "ouvrir" son accès à toutes les VMs composant le cluster Kubernetes.
 
 === Centralisation des Logs
 
@@ -148,7 +150,7 @@ Le monitoring permet de monitorer l'état du cluster Kubernetes ainsi que l'éta
 
 === Tolérance aux Pannes
 
-Nous gérons deux types de pannes : Les pannes Des Applications et les pannes du cluster.
+Nous gérons deux types de pannes : Les pannes des Applications et les pannes du cluster.
 
 ==== Pannes des applications
 
