@@ -2,24 +2,24 @@
 
 :toc:
 
-L'Usine Logicielle fournit
+L'objectif de l'Usine Logicielle est de nous permettre de réaliser nos développements en mode Continuous Delivery : tout commit sur un dépôt GIT d'une application déclenche La construction des binaires de l'application suivi du déploiement de l'application.
 
-* L'outillage nécessaie à la construction des binaires des Applications
-* Des environnements de Test
+Pour ce faire, l'Usine Logicielle fournit des outils pour automatiser la construction des binaires ainsi que des environnements de déploiement.
 
 == Outillage
 
-L'Outillage mis en place permet
+L'Outillage mis en place permet :
 
-* La construction des binaires et l'exécution des tests unitaires (Jenkins)
-* L'archivage des binaires (Nexus)
-* L'analyse qualité des sources (SonarQube)
+* La gestion des sources des Applications.
+* La construction des binaires de l'application et l'exécution des tests unitaires (via Jenkins)
+* L'archivage des binaires (dans Nexus)
+* L'analyse qualité des sources (via SonarQube)
 
 === Gestion des Sources
 
 L'architecture applicative que nous construisons est une architecture orientée micro services.
 
-Les sources sont hébergées dans une Organoisation Github [dédiée](https://github.com/SofteamOuest-Opus).
+Les sources sont hébergées dans une Organisation Github https://github.com/SofteamOuest-Opus[dédiée].
 
 Les sources d'un service sont gérées dans un dépôt GIT.
 
@@ -27,29 +27,29 @@ Les sources d'un service sont gérées dans un dépôt GIT.
 
 ==== Job de BUILD
 
-Le Job de BUILD d'une Application permet de :
+Le Job de BUILD d'une application permet de :
 
-* Construire l'image Docker de l'Application (en version SNAPSHOT)
+* Construire l'image Docker de l'application (en version SNAPSHOT)
 * Déclencher un Job de Déploiement
 
-En fin de BUILD, sur la branche develop, l'Application est déployée sur le cluster, dans un environnement DEV.
+En fin de BUILD, sur la branche develop, l'application est déployée sur le cluster, dans un environnement DEV.
 
 ==== Job de RELEASE
 
-Le Job de RELEASE d'une Application permet de :
+Le Job de RELEASE d'une application permet de :
 
-* Construire l'image Docker de l'Application en version RELEASE
-* Construire les jars de l'Application en version RELEASE
-* Déployer les jars de l'Application sur le nexus
+* Construire l'image Docker de l'application en version RELEASE
+* Construire les jars de l'application en version RELEASE
+* Déployer les jars de l'application sur le nexus
 
-Le job de RELEASE d'un Chart prend en paramètre
+Le job de RELEASE d'un Chart prend en paramètre :
 
-* la version de la RELEASE
-* la prochaine version de développement
+* La version de la RELEASE
+* La prochaine version de développement
 
 ==== Job de RELEASE d'un Chart
 
-Un Chart Helm est un package de déploiement d'une Application dans Kubernetes.
+Un Chart Helm est un package de déploiement d'une application dans Kubernetes.
 
 Le dépôt Charts centralise :
 
@@ -60,11 +60,11 @@ Le job de RELEASE d'un Chart prend en paramètre la version de la RELEASE et gé
 
 ==== Job de RUN
 
-Le Job de RUN permet de déployer une Application sur le cluster.
+Le Job de RUN permet de déployer une application sur le cluster.
 
 C'est un Job paramétrable qui prend en paramètre :
 
-* Le nom de l'Application à déployer
+* Le nom de l'application à déployer
 * Le tag de l'image Docker à déployer
 * La version du package Helm à utiliser pour le déploiement
 * L'environnement de déploiement (dev, prod)
@@ -73,9 +73,9 @@ C'est un Job paramétrable qui prend en paramètre :
 
 Le Job de FULL-RUN permet de déployer toutes les Applications.
 
-Il prend les même paramètres que le Job de RUN (pour chaque Application à déployer).
+Il prend les même paramètres que le Job de RUN (pour chaque application à déployer).
 
-Si le tag de l'image Docker d'une Application n'est pas défini, l'Application n'est pas déployée.
+Si le tag de l'image Docker d'une application n'est pas défini, l'application n'est pas déployée.
 
 === Nexus
 
@@ -89,6 +89,8 @@ Nous utilisons [SonarQube](https://sonarqube.k8.wildwidewest.xyz/) pour analyser
 
 Les accès au serveur SonarQube sont authentifiés par token.
 
+=== JIRA
+
 == Environnements
 
 === DEV, RE7, PROD
@@ -98,6 +100,8 @@ L'environnement de DEV permet de tester la dernière version SNAPSHOT des Applic
 L'environnement de RE7 permet de tester une version RELEASE avant Mise en Prod.
 
 L'environnement de PROD correspond à l'environnement utilisé.
+
+=== Kubernetes
 
 === Applications
 
