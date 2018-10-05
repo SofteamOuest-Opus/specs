@@ -2,12 +2,16 @@
 
 :toc:
 
+L'Usine Logicielle fournit
+
+* L'outillage nécessaie à la construction des binaires des Applications
+* Des environnements de Test
+
 == Outillage
 
-L'Usine Logicielle comporte l'outillage nécessaire à
+L'Outillage mis en place permet
 
-* L'exécution des Tests Unitaires (mvn, gradle, ...)
-* La construction des binaires (Jenkins)
+* La construction des binaires et l'exécution des tests unitaires (Jenkins)
 * L'archivage des binaires (Nexus)
 * L'analyse qualité des sources (SonarQube)
 
@@ -21,7 +25,7 @@ Les sources d'un service sont gérées dans un dépôt GIT.
 
 === Jenkins
 
-==== Jobs de BUILD
+==== Job de BUILD
 
 Le Job de BUILD d'une Application permet de :
 
@@ -30,14 +34,20 @@ Le Job de BUILD d'une Application permet de :
 
 En fin de BUILD, sur la branche develop, l'Application est déployée sur le cluster, dans un environnement DEV.
 
-==== Jobs de RELEASE
+==== Job de RELEASE
 
 Le Job de RELEASE d'une Application permet de :
 
 * Construire l'image Docker de l'Application en version RELEASE
+* Construire les jars de l'Application en version RELEASE
 * Déployer les jars de l'Application sur le nexus
 
-==== Jobs de RELEASE d'un Chart
+Le job de RELEASE d'un Chart prend en paramètre
+
+* la version de la RELEASE
+* la prochaine version de développement
+
+==== Job de RELEASE d'un Chart
 
 Un Chart Helm est un package de déploiement d'une Application dans Kubernetes.
 
@@ -57,6 +67,7 @@ C'est un Job paramétrable qui prend en paramètre :
 * Le nom de l'Application à déployer
 * Le tag de l'image Docker à déployer
 * La version du package Helm à utiliser pour le déploiement
+* L'environnement de déploiement (dev, prod)
 
 ==== Job de FULL-RUN
 
@@ -80,15 +91,19 @@ Les accès au serveur SonarQube sont authentifiés par token.
 
 == Environnements
 
-=== DEV, REC, PROD
+=== DEV, RE7, PROD
+
+L'environnement de DEV permet de tester la dernière version SNAPSHOT des Applications.
+
+L'environnement de RE7 permet de tester une version RELEASE avant Mise en Prod.
+
+L'environnement de PROD correspond à l'environnement utilisé.
 
 === Applications
 
 Nous utilisons le packaging [Helm](https://www.helm.sh/) pour déployer nos applications dans notre cluster [Kubernetes](https://kubernetes.io/).
 
 === Dépôt Charts
-
-
 
 === Persistance des Données
 
