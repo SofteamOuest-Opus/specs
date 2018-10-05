@@ -6,7 +6,7 @@
 
 L'Usine Logicielle comporte l'outillage nécessaire à
 
-* L'exécution des Tests Unitaires
+* L'exécution des Tests Unitaires (mvn, gradle, ...)
 * La construction des binaires (Jenkins)
 * L'archivage des binaires (Nexus)
 * L'analyse qualité des sources (SonarQube)
@@ -39,8 +39,14 @@ Le Job de RELEASE d'une Application permet de :
 
 ==== Jobs de RELEASE d'un Chart
 
-Un Chart Helm est un package de déploiement
+Un Chart Helm est un package de déploiement d'une Application dans Kubernetes.
 
+Le dépôt Charts centralise :
+
+* Les packages Helm (appelés Charts) de toutes les applications.
+* Les RELEASES des charts : une RELEASE d'un chart est une archive TGZ.
+
+Le job de RELEASE d'un Chart prend en paramètre la version de la RELEASE et génère l'archive TGZ.
 
 ==== Job de RUN
 
@@ -49,20 +55,28 @@ Le Job de RUN permet de déployer une Application sur le cluster.
 C'est un Job paramétrable qui prend en paramètre :
 
 * Le nom de l'Application à déployer
-* La version de l'image Docker à déployer
+* Le tag de l'image Docker à déployer
 * La version du package Helm à utiliser pour le déploiement
 
 ==== Job de FULL-RUN
 
 Le Job de FULL-RUN permet de déployer toutes les Applications.
 
+Il prend les même paramètres que le Job de RUN (pour chaque Application à déployer).
+
+Si le tag de l'image Docker d'une Application n'est pas défini, l'Application n'est pas déployée.
+
 === Nexus
 
 Nous utilisons [Nexus](https://nexus.k8.wildwidewest.xyz/) pour archiver les images Docker.
 
+Les accès au serveur Nexus sont authentifiés par login, password.
+
 === SonarQube
 
 Nous utilisons [SonarQube](https://sonarqube.k8.wildwidewest.xyz/) pour analyser la qualité du code développé.
+
+Les accès au serveur SonarQube sont authentifiés par token.
 
 == Environnements
 
@@ -74,9 +88,7 @@ Nous utilisons le packaging [Helm](https://www.helm.sh/) pour déployer nos appl
 
 === Dépôt Charts
 
-Le dépôt Charts centralise les packages Helm (appelés Charts) de toutes les applications.
 
-Ce dépôt centralise aussi les RELEASES des charts : une RELEASE d'un chart est une archive TGZ.
 
 === Persistance des Données
 
