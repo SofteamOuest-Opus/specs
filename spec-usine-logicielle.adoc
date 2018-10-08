@@ -55,12 +55,12 @@ Le Job de BUILD d'une application permet de construire les binaires (image Docke
 ....
 Scenario: JNK_JOB_BUILD
 Given I am logged in Jenkins as a Jenkins User
-When I execute the BUILD job of a given application
+When I execute the BUILD job of an application
 Then the Job builds the application's docker image and deploys it to Nexus
 And triggers the RUN Job
 ....
 
-RG : Le Job de BUILD est déclenché automatiquement après tout push sur les sources de l'application.
+RG : The BUILD is triggered after pushing an update to the GIT repository.
 
 ==== Job de RELEASE
 
@@ -70,7 +70,7 @@ Le Job de RELEASE permet de créer une RELEASE des sources et binaires d'une app
 ....
 Scenario: JNK_JOB_RELEASE
 Given I am logged in Jenkins as a Jenkins User
-When I execute the RELEASE job of a given application
+When I execute the RELEASE job of an application
 Then the Job builds the application's docker image in RELEASE version and deploys it to Nexus
 And the Job builds the application's jar in RELEASE version and deploys it to Nexus
 ....
@@ -83,7 +83,7 @@ Le Job de RUN permet de déployer une application sur le cluster.
 ....
 Scenario: JNK_JOB_RUN
 Given I am logged in Jenkins as a Jenkins User
-When I execute the RUN job of a given application and specify
+When I execute the RUN job of an application and specify
 * the application name
 * the application version
 * the application "helm package" version
@@ -100,16 +100,17 @@ Le Job prend les même paramètres que le Job de RUN (pour chaque application à
 [source]
 ....
 Scenario: JNK_JOB_FULL_RUN
-En tant qu'Utilisateur IC,
-Quand j'exécute le Job de FULL-RUN en indiquant pour chaque application
-* le nom de l'application
-* la version de l'application
-* la version du package Helm
-* l'environnement de déploiement (dev, prod)
-Alors toutes les applications sont déployées
+Given I am logged in Jenkins as a Jenkins User
+When I execute the FULL-RUN job and specify
+* for each application
+ - its name
+ - its version
+ - its "helm package" version
+* the target environment
+Then the application is deployed
 ....
 
-RG : Si le tag de l'image Docker d'une application n'est pas défini, l'application n'est pas déployée.
+RG : If any of an application information is not defined, the application is not deployed.
 
 === Nexus
 
@@ -130,9 +131,9 @@ Nous utilisons https://wildwidewest.atlassian.net[JIRA] pour suivre le développ
 [source]
 ....
 Scenario: APP_COMMIT
-En tant que développeur d'une application
-Quand je mets le numéro de ticket dans mon commentaire
-Alors mon commit apparaît dans le ticket JIRA
+Given I am a developer
+When I put a JIRA ticket number in the header of a comment
+Then my commit appears in the JIRA ticket
 ....
 
 == Environnements
@@ -146,33 +147,33 @@ Nous déployons nos applications dans différents environnements.
 [source]
 ....
 Scenario: APP_URL_HORS_PROD
-En tant qu'Utilisateur IC
-Quand je déploie l'application monapplication dans un environnement XXX Hors Prod,
-Alors l'application est accessible via l'URL https://monapplication-XXX.k8.wildwidewest.xyz
+Given I am logged in Jenkins as a Jenkins User
+When I deploy the application monapplication in a non Prod environment XXX
+Then the application URL is https://monapplication-XXX.k8.wildwidewest.xyz
 ....
 
 [source]
 ....
 Scenario: APP_URL_PROD
-En tant qu'Utilisateur IC
-Quand je déploie l'application monapplication dans l'environnement Prod,
-Alors l'application est accessible via l'URL https://monapplication.k8.wildwidewest.xyz
+Given I am logged in Jenkins as a Jenkins User
+When I deploy the application monapplication in the Prod environment
+Then the application URL is https://monapplication.k8.wildwidewest.xyz
 ....
 
 [source]
 ....
 Scenario: K8S_ENVIRONMENT_NAMESPACE
-En tant qu'Utilisateur IC
-Quand je déploie une application dans un environnement donné,
-Alors l'application est déployée dans un namespace Kubernetes de nom similaire
+Given I am logged in Jenkins as a Jenkins User
+When I deploy the application monapplication in an environment
+Then the application URL is deployed to a Kubernetes namespace with a similar name
 ....
 
 [source]
 ....
 Scenario: K8S_NAMESPACE_SECURITY_ISOLATION
-En tant que Gestion Kubernetes,
-Quand je déploie 2 namespaces,
-Alors les deux namespaces sont isolés (un POD d'un namespace ne doit pouvoir appeler les services d'un POD d'un autre namespace)
+Given I am a Kubernetes Administrator
+When I create two namespaces
+Then the two namespaces are isolated (a POD from one namespace can not call the services of a POD in another namespace).
 ....
 
 === Centralisation des Logs
@@ -193,12 +194,12 @@ Le format du Log est :
 [source]
 ....
 Scenario: APP_LOGS
-En tant que Développeur d'une application,
-Quand mon application log un message,
-Alors ce message est remonté dans le serveur de Centralisation des Logs
+Given I am a developer of an application
+When my application logs a message
+Then the log is traced in the Log Server
 ....
 
-RG : Les accès au serveur de Centralisation des logs sont authentifiés par token.
+RG : Access to the Centralisation Log is accessed by login, mot de passe.
 
 === Monitoring
 
@@ -207,10 +208,10 @@ Le monitoring permet de monitorer l'état du cluster Kubernetes.
 [source,gherkin]
 ....
 Scenario: APP_MONITORING
-En tant que Développeur d'une application,
-Quand le système de monitoring détecte une alert,
-* Utilisation Disque > 90 %
-Alors l'alerte est envoyée par email aux membres du projet
+Given I am a developer of an application
+When the monitoring system detects an alert
+* Disk Usage > 90 %
+The the alert is sent by email to a list of recipients
 ....
 
 RG : Les accès au serveur de Centralisation des logs sont authentifiés par token.
@@ -229,9 +230,9 @@ Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de red
 
 ....
 Scenario: APP_HEALTHCHECK
-En tant que Développeur d'une application,
-Quand le service ligne de vie d'un des services de mon application ne répond plus,
-Alors Kubernetes redémarre l'application
+Given I am a developer of an application
+When the application probes do not respond
+The Kubernetes restarts the application
 ....
 
 ==== Pannes du Cluster
