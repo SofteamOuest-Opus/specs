@@ -29,7 +29,7 @@ De manière à simplifier au maximum la mise en place de l'Usine Logicielle, le 
 
 [source]
 ....
-Scenario: JENKINS_CONF
+Scenario: JNK_CONF
 En tant que Gestionnaire Intégration Continue,
 Quand j'importe un fichier de configuration du serveur Jenkins
 Alors le serveur est correctement configuré
@@ -53,7 +53,7 @@ Le Job de BUILD d'une application permet de construire les binaires (image Docke
 
 [source]
 ....
-Scenario: JENKINS_JOB_BUILD
+Scenario: JNK_JOB_BUILD
 En tant qu'Utilisateur IC,
 Quand j'exécute le Job de BUILD d'une application
 Alors le job construit et déploie l'image Docker de l'application
@@ -68,7 +68,7 @@ Le Job de RELEASE permet de créer une RELEASE des sources et binaires d'une app
 
 [source]
 ....
-Scenario: JENKINS_JOB_RELEASE
+Scenario: JNK_JOB_RELEASE
 En tant que Responsable Livraison d'une application,
 Quand j'exécute le Job de RELEASE de cette application en indiquant la version de RELEASE
 Alors le Job construit l'image Docker de l'application en version RELEASE et le déploie sur Nexus
@@ -81,7 +81,7 @@ Le Job de RUN permet de déployer une application sur le cluster.
 
 [source]
 ....
-Scenario: JENKINS_JOB_RUN
+Scenario: JNK_JOB_RUN
 En tant qu'Utilisateur IC,
 Quand j'exécute le Job de RUN en indiquant
 * le nom de l'application
@@ -99,7 +99,7 @@ Le Job prend les même paramètres que le Job de RUN (pour chaque application à
 
 [source]
 ....
-Scenario: JENKINS_JOB_FULL_RUN
+Scenario: JNK_JOB_FULL_RUN
 En tant qu'Utilisateur IC,
 Quand j'exécute le Job de FULL-RUN en indiquant pour chaque application
 * le nom de l'application
@@ -127,6 +127,14 @@ RG : Les accès au serveur SonarQube par les Jobs de BUILD sont authentifiés pa
 
 Nous utilisons https://wildwidewest.atlassian.net[JIRA] pour suivre le développement du Projet.
 
+[source]
+....
+Scenario: APP_COMMIT
+En tant que développeur d'une application
+Quand je mets le numéro de ticket dans mon commentaire
+Alors mon commit apparaît dans le ticket JIRA
+....
+
 == Environnements
 
 Nous déployons nos applications dans différents environnements.
@@ -137,7 +145,23 @@ Nous déployons nos applications dans différents environnements.
 
 [source]
 ....
-Scenario: KUBERNETES_NAMESPACE
+Scenario: APP_URL_HORS_PROD
+En tant qu'Utilisateur IC
+Quand je déploie l'application monapplication dans un environnement XXX Hors Prod,
+Alors l'application est accessible via l'URL https://monapplication-XXX.k8.wildwidewest.xyz
+....
+
+[source]
+....
+Scenario: APP_URL_PROD
+En tant qu'Utilisateur IC
+Quand je déploie l'application monapplication dans l'environnement Prod,
+Alors l'application est accessible via l'URL https://monapplication.k8.wildwidewest.xyz
+....
+
+[source]
+....
+Scenario: K8S_ENVIRONMENT_NAMESPACE
 En tant qu'Utilisateur IC
 Quand je déploie une application dans un environnement donné,
 Alors l'application est déployée dans un namespace Kubernetes de nom similaire
@@ -145,20 +169,11 @@ Alors l'application est déployée dans un namespace Kubernetes de nom similaire
 
 [source]
 ....
-Scenario: KUBERNETES_NAMESPACE_ISOLATION
+Scenario: K8S_NAMESPACE_SECURITY_ISOLATION
 En tant que Gestion Kubernetes,
 Quand je déploie 2 namespaces,
 Alors les deux namespaces sont isolés (un POD d'un namespace ne doit pouvoir appeler les services d'un POD d'un autre namespace)
 ....
-
-=== Accès aux Applications
-
-Le nom de l'environnement apparaît dans l'URL de l'application.
-
-Si le nom de l'application est mon application,
-
-* Si le nom de l'environnement est PROD, l'URL d'accès est https://monapplication.k8.wildwidewest.xyz
-* Sinon (le nom de l'environnement est XXX), l'URL d'accès est https://monapplication-XXX.k8.wildwidewest.xyz (=> le nom de l'environnement se retrouve dans l'URL de l'application)
 
 === Centralisation des Logs
 
@@ -177,7 +192,7 @@ Le format du Log est :
 
 [source]
 ....
-Scenario:
+Scenario: APP_LOGS
 En tant que Développeur d'une application,
 Quand mon application log un message,
 Alors ce message est remonté dans le serveur de Centralisation des Logs
