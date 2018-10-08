@@ -30,7 +30,7 @@ De manière à simplifier au maximum la mise en place de l'Usine Logicielle, le 
 [source]
 ....
 Scenario: JENKINS_CONF
-En tant que Gestionnaire d'Intégration Continue,
+En tant que Gestionnaire Intégration Continue,
 Quand j'importe un fichier de configuration du serveur Jenkins
 Alors le serveur est correctement configuré
 ....
@@ -45,13 +45,7 @@ La configuration concerne notamment :
 
 ==== Jobs Jenkins
 
-De manière à uniformiser nos jobs Jenkins, nous les implémentons via des Jenkinsfile.
-
-Nous implémentons différents types de Jobs, notamment :
-
-* Des Jobs de BUILD pour construire les binaires des applications
-* Des Jobs de RELEASE pour figer les versions des applications
-* Des Jobs de RUN pour déployer les applications
+Nous utilisons Jenkins pour orchestrer nos BUILDS. De manière à uniformiser nos jobs Jenkins, nous les implémentons via des Jenkinsfile.
 
 ==== Job de BUILD
 
@@ -77,8 +71,8 @@ Le Job de RELEASE permet de créer une RELEASE des sources et binaires d'une app
 Scenario: JENKINS_JOB_RELEASE
 En tant que Responsable Livraison d'une application,
 Quand j'exécute le Job de RELEASE de cette application en indiquant la version de RELEASE
-Alors le Job construit et déploie l'image Docker de l'application en version RELEASE
-Et construit et déploie les jars de l'application en version RELEASE
+Alors le Job construit l'image Docker de l'application en version RELEASE et le déploie sur Nexus
+Et construit le jars de l'application en version RELEASE et le déploie sur Nexus
 ....
 
 ==== Job de RUN
@@ -119,15 +113,15 @@ RG : Si le tag de l'image Docker d'une application n'est pas défini, l'applicat
 
 === Nexus
 
-Nous utilisons https://Nexus.k8.wildwidewest.xyz/[Nexus] pour archiver les images Docker.
+Nous utilisons https://Nexus.k8.wildwidewest.xyz/[Nexus] pour archiver les jars RELEASE ainsi que les images Docker des applications.
 
-Les accès au serveur Nexus sont authentifiés par login, password.
+RG : Les accès au serveur Nexus par les Jobs de BUILD sont authentifiés par login, password.
 
 === SonarQube
 
 Nous utilisons https://sonarqube.k8.wildwidewest.xyz/[SonarQube] pour analyser la qualité du code développé.
 
-Les accès au serveur SonarQube sont authentifiés par token.
+RG : Les accès au serveur SonarQube par les Jobs de BUILD sont authentifiés par token.
 
 === JIRA
 
@@ -139,9 +133,28 @@ Nous déployons nos applications dans différents environnements.
 
 * L'environnement de DEV permet de tester la dernière version SNAPSHOT des applications (=> version en cours de développement).
 * L'environnement de RE7 permet de tester une version RELEASE avant Mise en Prod (=> version à qualifier).
-* L'environnement de PROD correspond à l'environnement utilisé (=> version qualifiée).
+* L'environnement de PROD correspond à l'environnement de PROD (=> version mise à dispo des utilisateurs).
 
-De manière à isoler les applications des différents environnements, chaque environnement est matérialisé par un namespace dans le cluster Kubernetes.
+De manière à isoler les applications des différents environnements,
+
+* Chaque environnement est matérialisé par un namespace dans le cluster Kubernetes
+* Les namespaces sont isolés
+
+[source]
+....
+Scenario: KUBERNETES_NAMESPACE
+En tant qu'Utilisateur IC
+Quand je déploie une application dans un environnement donné,
+Alors l'application est déployée dans un namespace Kubernetes de nom similaire
+....
+
+[source]
+....
+Scenario: KUBERNETES_NAMESPACE_ISOLATION
+En tant que Gestion Kubernetes,
+Quand je déploie 2 namespaces,
+Alors les deux namespaces sont isolés (un POD d'un namespace ne doit pouvoir appeler les services d'un POD d'un autre namespace)
+....
 
 === Accès aux Applications
 
@@ -167,6 +180,16 @@ Le format du Log est :
 * Id de Correlation du Message
 * StackTrace si le message est une exception
 
+[source]
+....
+Scenario:
+En tant que Développeur d'une application,
+Quand mon application log un message,
+Alors ce message est remonté dans le serveur de Centralisation des Logs
+....
+
+RG : Les accès au serveur de Centralisation des logs sont authentifiés par token.
+
 === Monitoring
 
 Le monitoring permet de monitorer l'état du cluster Kubernetes.
@@ -177,6 +200,8 @@ Nous monitorons :
 * Le disque (utilisation > 90 %)
 
 Les alertes de monitoring sont envoyées par email aux membres du projet.
+
+RG : Les accès au serveur de Centralisation des logs sont authentifiés par token.
 
 === Tolérance aux Pannes
 
@@ -191,6 +216,13 @@ Pour y arriver, Kubernetes se base sur https://kubernetes.io/docs/tasks/configur
 Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de redémarrer l'application.
 
 Chaque application déployée doit donc définir ses lignes de vie.
+
+....
+Scenario: APP_HEALTHCHECK
+En tant que Développeur d'une application,
+Quand le service ligne de vie d'un des services de mon application ne répond plus,
+Alors Kubernetes redémarre l'application
+....
 
 ==== Pannes du Cluster
 
