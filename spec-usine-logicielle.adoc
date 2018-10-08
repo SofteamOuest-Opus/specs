@@ -30,9 +30,9 @@ De manière à simplifier au maximum la mise en place de l'Usine Logicielle, le 
 [source]
 ....
 Scenario: JNK_CONF
-En tant que Gestionnaire Intégration Continue,
-Quand j'importe un fichier de configuration du serveur Jenkins
-Alors le serveur est correctement configuré
+Given I am logged in Jenkins as a Jenkins Administrator
+When I import a Jenkins Configuration File
+Then the Jenkins configuration is correctly updated
 ....
 
 La configuration concerne notamment :
@@ -54,10 +54,10 @@ Le Job de BUILD d'une application permet de construire les binaires (image Docke
 [source]
 ....
 Scenario: JNK_JOB_BUILD
-En tant qu'Utilisateur IC,
-Quand j'exécute le Job de BUILD d'une application
-Alors le job construit et déploie l'image Docker de l'application
-Et déclenche le Job du RUN sur l'application
+Given I am logged in Jenkins as a Jenkins User
+When I execute the BUILD job of a given application
+Then the Job builds the application's docker image and deploys it to Nexus
+And triggers the RUN Job
 ....
 
 RG : Le Job de BUILD est déclenché automatiquement après tout push sur les sources de l'application.
@@ -69,10 +69,10 @@ Le Job de RELEASE permet de créer une RELEASE des sources et binaires d'une app
 [source]
 ....
 Scenario: JNK_JOB_RELEASE
-En tant que Responsable Livraison d'une application,
-Quand j'exécute le Job de RELEASE de cette application en indiquant la version de RELEASE
-Alors le Job construit l'image Docker de l'application en version RELEASE et le déploie sur Nexus
-Et construit le jars de l'application en version RELEASE et le déploie sur Nexus
+Given I am logged in Jenkins as a Jenkins User
+When I execute the RELEASE job of a given application
+Then the Job builds the application's docker image in RELEASE version and deploys it to Nexus
+And the Job builds the application's jar in RELEASE version and deploys it to Nexus
 ....
 
 ==== Job de RUN
@@ -82,13 +82,13 @@ Le Job de RUN permet de déployer une application sur le cluster.
 [source]
 ....
 Scenario: JNK_JOB_RUN
-En tant qu'Utilisateur IC,
-Quand j'exécute le Job de RUN en indiquant
-* le nom de l'application
-* la version de l'application
-* la version du package Helm
-* l'environnement de déploiement (dev, prod)
-Alors l'application est déployée
+Given I am logged in Jenkins as a Jenkins User
+When I execute the RUN job of a given application and specify
+* the application name
+* the application version
+* the application "helm package" version
+* the target environment
+Then the application is deployed
 ....
 
 ==== Job de FULL-RUN
@@ -204,9 +204,9 @@ RG : Les accès au serveur de Centralisation des logs sont authentifiés par tok
 
 Le monitoring permet de monitorer l'état du cluster Kubernetes.
 
-[source]
+[source,gherkin]
 ....
-Scenario:
+Scenario: APP_MONITORING
 En tant que Développeur d'une application,
 Quand le système de monitoring détecte une alert,
 * Utilisation Disque > 90 %
