@@ -1,0 +1,243 @@
+= Usine Logicielle
+
+Nous mettons en place l'Usine Logicielle pour industrialiser nos développements et notamment accélérer les temps de mises en prod en suivant une démarche de Continuous Delivery : tout commit sur un dépôt GIT d'une application déclenche la construction des binaires de l'application suivi du déploiement de l'application.
+
+Pour ce faire, l'Usine Logicielle fournit des outils pour automatiser la construction des binaires ainsi que des environnements de déploiement.
+
+== Outillage
+
+L'Outillage mis en place permet :
+
+* La gestion des sources des applications
+* La construction des binaires de l'application et l'exécution des tests unitaires (via Jenkins)
+* L'archivage des binaires (dans Nexus)
+* L'analyse qualité des sources (via SonarQube)
+
+=== Gestion des Sources
+
+Les sources sont hébergées dans une Organisation Github https://github.com/SofteamOuest-Opus[dédiée].
+
+Les sources d'une application sont gérées dans un dépôt GIT.
+
+=== Jenkins
+
+Nous utilisons https://jenkins.k8.wildwidewest.xyz[Jenkins] pour orchestrer les BUILDS.
+
+==== Configuration Jenkins
+
+De manière à simplifier au maximum la mise en place de l'Usine Logicielle, le serveur Jenkins est configuré automatiquement, en utilisant https://jenkins.io/projects/jcasc/[Jenkins Configuration as Code].
+
+[source]
+....
+Scenario: JNK_CONF
+Given I am logged in Jenkins as a Jenkins Administrator
+When I import a Jenkins Configuration File
+Then the Jenkins configuration is correctly updated
+....
+
+La configuration concerne notamment :
+
+* Les comptes utilisateurs
+* Les secrets (mot de passe Nexus, token sonarqube)
+* Les fichiers de configuration (Gradle, SSH)
+* L'import d'organisations GitHub
+* L'import de plugins (exemple : JIRA)
+
+==== Jobs Jenkins
+
+Nous utilisons Jenkins pour orchestrer nos BUILDS. De manière à uniformiser nos jobs Jenkins, nous les implémentons via des Jenkinsfile.
+
+==== Job de BUILD
+
+Le Job de BUILD d'une application permet de construire les binaires (image Docker) de l'application (en version SNAPSHOT) et déclencher un Job de Déploiement
+
+[source]
+....
+Scenario: JNK_JOB_BUILD
+Given I am logged in Jenkins as a Jenkins User
+When I execute the BUILD job of an application
+Then the Job builds the application's docker image and deploys it to Nexus
+And triggers the RUN Job
+....
+
+RG : The BUILD is triggered after pushing an update to the GIT repository.
+
+==== Job de RELEASE
+
+Le Job de RELEASE permet de créer une RELEASE des sources et binaires d'une application.
+
+[source]
+....
+Scenario: JNK_JOB_RELEASE
+Given I am logged in Jenkins as a Jenkins User
+When I execute the RELEASE job of an application
+Then the Job builds the application's docker image in RELEASE version and deploys it to Nexus
+And the Job builds the application's jar in RELEASE version and deploys it to Nexus
+....
+
+==== Job de RUN
+
+Le Job de RUN permet de déployer une application sur le cluster.
+
+[source]
+....
+Scenario: JNK_JOB_RUN
+Given I am logged in Jenkins as a Jenkins User
+When I execute the RUN job of an application and specify
+* the application name
+* the application version
+* the application "helm package" version
+* the target environment
+Then the application is deployed
+....
+
+==== Job de FULL-RUN
+
+Le Job de FULL-RUN permet de déployer toutes les applications.
+
+Le Job prend les même paramètres que le Job de RUN (pour chaque application à déployer).
+
+[source]
+....
+Scenario: JNK_JOB_FULL_RUN
+Given I am logged in Jenkins as a Jenkins User
+When I execute the FULL-RUN job and specify
+* for each application
+ - its name
+ - its version
+ - its "helm package" version
+* the target environment
+Then the application is deployed
+....
+
+RG : If any of an application information is not defined, the application is not deployed.
+
+=== Nexus
+
+Nous utilisons https://Nexus.k8.wildwidewest.xyz/[Nexus] pour archiver les jars RELEASE ainsi que les images Docker des applications.
+
+RG : Les accès au serveur Nexus par les Jobs de BUILD sont authentifiés par login, password.
+
+=== SonarQube
+
+Nous utilisons https://sonarqube.k8.wildwidewest.xyz/[SonarQube] pour analyser la qualité du code développé.
+
+RG : Les accès au serveur SonarQube par les Jobs de BUILD sont authentifiés par token.
+
+=== JIRA
+
+Nous utilisons https://wildwidewest.atlassian.net[JIRA] pour suivre le développement du Projet.
+
+[source]
+....
+Scenario: APP_COMMIT
+Given I am a developer
+When I put a JIRA ticket number in the header of a comment
+Then my commit appears in the JIRA ticket
+....
+
+== Environnements
+
+Nous déployons nos applications dans différents environnements.
+
+* L'environnement de DEV permet de tester la dernière version SNAPSHOT des applications (=> version en cours de développement).
+* L'environnement de RE7 permet de tester une version RELEASE avant Mise en Prod (=> version à qualifier).
+* L'environnement de PROD correspond à l'environnement de PROD (=> version mise à dispo des utilisateurs).
+
+[source]
+....
+Scenario: APP_URL_HORS_PROD
+Given I am logged in Jenkins as a Jenkins User
+When I deploy the application monapplication in a non-Prod environment XXX
+Then the application URL is https://monapplication-XXX.k8.wildwidewest.xyz
+....
+
+[source]
+....
+Scenario: APP_URL_PROD
+Given I am logged in Jenkins as a Jenkins User
+When I deploy the application monapplication in the Prod environment
+Then the application URL is https://monapplication.k8.wildwidewest.xyz
+....
+
+[source]
+....
+Scenario: K8S_ENVIRONMENT_NAMESPACE
+Given I am logged in Jenkins as a Jenkins User
+When I deploy the application monapplication in an environment
+Then the application URL is deployed to a Kubernetes namespace with a similar name
+....
+
+[source]
+....
+Scenario: K8S_NAMESPACE_SECURITY_ISOLATION
+Given I am a Kubernetes Administrator
+When I create two namespaces
+Then the two namespaces are isolated (a POD from one namespace cannot call the services of a POD in another namespace).
+....
+
+=== Centralisation des Logs
+
+La centralisation des Logs permet d'analyser via une IHM unique les logs de toutes les applications.
+
+Pour simplifier la mise en place, les applications partagent un même format de Logs.
+
+Le format du Log est :
+
+* Niveau de Log : DEBUG, INFO, ERROR
+* Message du Log
+* Nom de l'application
+* Nom de l'environnement
+* Id de Correlation du Message
+* StackTrace si le message est une exception
+
+[source]
+....
+Scenario: APP_LOGS
+Given I am a developer of an application
+When my application logs a message
+Then the log is traced in the Log Server
+....
+
+RG : Access to the Centralisation Log is accessed by login, mot de passe.
+
+=== Monitoring
+
+Le monitoring permet de monitorer l'état du cluster Kubernetes.
+
+[source]
+....
+Scenario: APP_MONITORING
+Given I am a developer of an application
+When the monitoring system detects an alert
+* Disk Usage > 90 %
+Then the alert is sent by email to a list of recipients
+....
+
+RG : Les accès au serveur de Centralisation des logs sont authentifiés par token.
+
+=== Tolérance aux Pannes
+
+Nous gérons deux types de pannes : Les pannes des applications et les pannes du cluster.
+
+==== Pannes des applications
+
+La gestion des pannes des applications est gérée par Kubernetes.
+
+Pour y arriver, Kubernetes se base sur https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/[les lignes de vie des applications].
+
+Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de redémarrer l'application. Chaque application déployée doit donc définir ses lignes de vie.
+
+....
+Scenario: APP_HEALTHCHECK
+Given I am a developer of an application
+When the application probes do not respond
+The Kubernetes restarts the application
+....
+
+==== Pannes du Cluster
+
+La gestion des pannes du cluster est gérée par une installation multi-maîtres :
+
+* Pour être tolérant à une panne, il faut 3 maîtres
+* Pour être tolérant à deux pannes, il faut 5 maîtres
