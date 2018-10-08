@@ -148,7 +148,7 @@ Nous déployons nos applications dans différents environnements.
 ....
 Scenario: APP_URL_HORS_PROD
 Given I am logged in Jenkins as a Jenkins User
-When I deploy the application monapplication in a non Prod environment XXX
+When I deploy the application monapplication in a non-Prod environment XXX
 Then the application URL is https://monapplication-XXX.k8.wildwidewest.xyz
 ....
 
@@ -173,7 +173,7 @@ Then the application URL is deployed to a Kubernetes namespace with a similar na
 Scenario: K8S_NAMESPACE_SECURITY_ISOLATION
 Given I am a Kubernetes Administrator
 When I create two namespaces
-Then the two namespaces are isolated (a POD from one namespace can not call the services of a POD in another namespace).
+Then the two namespaces are isolated (a POD from one namespace cannot call the services of a POD in another namespace).
 ....
 
 === Centralisation des Logs
@@ -205,13 +205,13 @@ RG : Access to the Centralisation Log is accessed by login, mot de passe.
 
 Le monitoring permet de monitorer l'état du cluster Kubernetes.
 
-[source,gherkin]
+[source]
 ....
 Scenario: APP_MONITORING
 Given I am a developer of an application
 When the monitoring system detects an alert
 * Disk Usage > 90 %
-The the alert is sent by email to a list of recipients
+Then the alert is sent by email to a list of recipients
 ....
 
 RG : Les accès au serveur de Centralisation des logs sont authentifiés par token.
