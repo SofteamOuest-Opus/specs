@@ -64,7 +64,7 @@ Then the Job builds the application's docker image and deploys it to Nexus
 And triggers the RUN Job
 ....
 
-RG : The BUILD is triggered automatically after pushing an update to the GIT repository.
+REQ JNK_JOB_BUILD : The BUILD is triggered automatically after pushing an update to the GIT repository.
 
 ==== Job de RELEASE
 
@@ -117,19 +117,19 @@ When I execute the FULL-RUN job and specify
 Then the applications are deployed
 ....
 
-RG : If any of the information necessary to deploy an application is not defined, the application is not deployed.
+REQ JNK_JOB_FULL_RUN : If any of the information necessary to deploy an application is not defined, the application is not deployed.
 
 === Nexus
 
 Nous utilisons https://Nexus.k8.wildwidewest.xyz/[Nexus] pour archiver les jars RELEASE ainsi que les images Docker des applications.
 
-RG : Access to Nexus Server requires authentication (login, password).
+REQ NXS_SECURITY : Access to Nexus Server requires authentication (login, password).
 
 === SonarQube
 
 Nous utilisons https://sonarqube.k8.wildwidewest.xyz/[SonarQube] pour analyser la qualité du code développé.
 
-RG : Access to SonarQube Server requires authentication (token).
+REQ SNQ_SECURITY : Access to SonarQube Server requires authentication (token).
 
 === JIRA
 
@@ -212,7 +212,7 @@ When my application logs a message
 Then the log is traced in the Log Server
 ....
 
-RG : Access to Log Server requires authentication (login, password)
+REQ APP_LOGS : Access to Log Server requires authentication (login, password)
 
 === Monitoring
 
@@ -228,7 +228,7 @@ When the monitoring system detects an alert
 Then the alert is sent by email to a list of recipients
 ....
 
-RG : Access to the Monitoring Server requires authentication (login, password).
+REQ APP_MONITORING : Access to the Monitoring Server requires authentication (login, password).
 
 === Tolérance aux Pannes
 
