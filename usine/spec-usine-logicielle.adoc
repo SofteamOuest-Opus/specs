@@ -31,7 +31,8 @@ De manière à simplifier au maximum la mise en place de l'Usine Logicielle, le 
 
 [source]
 ....
-Scenario: JNK_CONF
+@TAG JNK_CONF
+Scenario: 
 Given I am logged in Jenkins as a Jenkins Administrator
 When I import a Jenkins Configuration File
 Then the Jenkins configuration is correctly updated
@@ -55,7 +56,8 @@ Le Job de BUILD d'une application permet de construire les binaires (image Docke
 
 [source]
 ....
-Scenario: JNK_JOB_BUILD
+@TAG JNK_JOB_BUILD
+Scenario: 
 Given I am logged in Jenkins as a Jenkins User
 When I execute an application BUILD job
 Then the Job builds the application's docker image and deploys it to Nexus
@@ -70,7 +72,8 @@ Le Job de RELEASE permet de créer une RELEASE des sources et binaires d'une app
 
 [source]
 ....
-Scenario: JNK_JOB_RELEASE
+@TAG JNK_JOB_RELEASE
+Scenario: 
 Given I am logged in Jenkins as a Jenkins User
 When I execute an application RELEASE job
 Then the Job builds the application's docker image in RELEASE version and deploys it to Nexus
@@ -83,7 +86,8 @@ Le Job de RUN permet de déployer une application sur le cluster.
 
 [source]
 ....
-Scenario: JNK_JOB_RUN
+@TAG JNK_JOB_RUN
+Scenario: 
 Given I am logged in Jenkins as a Jenkins User
 When I execute an application RUN job and specify
 * the application name
@@ -101,7 +105,8 @@ Le Job prend les même paramètres que le Job de RUN (pour chaque application à
 
 [source]
 ....
-Scenario: JNK_JOB_FULL_RUN
+@TAG JNK_JOB_FULL_RUN
+Scenario: 
 Given I am logged in Jenkins as a Jenkins User
 When I execute the FULL-RUN job and specify
 * for each application
@@ -132,7 +137,8 @@ Nous utilisons https://wildwidewest.atlassian.net[JIRA] pour suivre le développ
 
 [source]
 ....
-Scenario: APP_COMMIT
+@TAG APP_COMMIT
+Scenario: 
 Given I am a developer
 When I put a JIRA ticket number in a commit
 Then my commit appears in the JIRA ticket
@@ -148,7 +154,8 @@ Nous déployons nos applications dans différents environnements.
 
 [source]
 ....
-Scenario: APP_URL_HORS_PROD
+@TAG APP_URL_HORS_PROD
+Scenario: 
 Given I am logged in Jenkins as a Jenkins User
 When I deploy the application myapplication in a non-Prod environment XXX
 Then the application URL is https://myapplication-XXX.k8.wildwidewest.xyz
@@ -156,7 +163,8 @@ Then the application URL is https://myapplication-XXX.k8.wildwidewest.xyz
 
 [source]
 ....
-Scenario: APP_URL_PROD
+@TAG APP_URL_PROD
+Scenario: 
 Given I am logged in Jenkins as a Jenkins User
 When I deploy the application myapplication in the Prod environment
 Then the application URL is https://myapplication.k8.wildwidewest.xyz
@@ -164,7 +172,8 @@ Then the application URL is https://myapplication.k8.wildwidewest.xyz
 
 [source]
 ....
-Scenario: K8S_ENVIRONMENT_NAMESPACE
+@TAG K8S_ENVIRONMENT_NAMESPACE
+Scenario: 
 Given I am logged in Jenkins as a Jenkins User
 When I deploy the application myapplication in an environment
 Then the application URL is deployed to a Kubernetes namespace with a similar name
@@ -172,7 +181,8 @@ Then the application URL is deployed to a Kubernetes namespace with a similar na
 
 [source]
 ....
-Scenario: K8S_NAMESPACE_SECURITY_ISOLATION
+@TAG K8S_NAMESPACE_SECURITY_ISOLATION
+Scenario: 
 Given I am a Kubernetes Administrator
 When I create two namespaces
 Then the two namespaces are isolated (a POD from one namespace cannot call the services of a POD in another namespace).
@@ -195,7 +205,8 @@ Le format du Log est :
 
 [source]
 ....
-Scenario: APP_LOGS
+@TAG APP_LOGS
+Scenario: 
 Given I am a developer of an application
 When my application logs a message
 Then the log is traced in the Log Server
@@ -208,6 +219,7 @@ RG : Access to Log Server requires authentication (login, password)
 Le monitoring permet de monitorer l'état du cluster Kubernetes.
 
 [source]
+@TAG APP_MONITORING
 ....
 Scenario: APP_MONITORING
 Given I am a developer of an application
@@ -231,7 +243,8 @@ Pour y arriver, Kubernetes se base sur https://kubernetes.io/docs/tasks/configur
 Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de redémarrer l'application. Chaque application déployée doit donc définir ses lignes de vie.
 
 ....
-Scenario: APP_HEALTHCHECK
+@TAG APP_HEALTHCHECK
+Scenario: 
 Given I am a developer of an application
 When the applications probes do not respond
 The Kubernetes restarts the application
