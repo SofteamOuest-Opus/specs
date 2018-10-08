@@ -135,11 +135,6 @@ Nous déployons nos applications dans différents environnements.
 * L'environnement de RE7 permet de tester une version RELEASE avant Mise en Prod (=> version à qualifier).
 * L'environnement de PROD correspond à l'environnement de PROD (=> version mise à dispo des utilisateurs).
 
-De manière à isoler les applications des différents environnements,
-
-* Chaque environnement est matérialisé par un namespace dans le cluster Kubernetes
-* Les namespaces sont isolés
-
 [source]
 ....
 Scenario: KUBERNETES_NAMESPACE
@@ -194,12 +189,14 @@ RG : Les accès au serveur de Centralisation des logs sont authentifiés par tok
 
 Le monitoring permet de monitorer l'état du cluster Kubernetes.
 
-Nous monitorons :
-
-* Le CPU (critère à définir)
-* Le disque (utilisation > 90 %)
-
-Les alertes de monitoring sont envoyées par email aux membres du projet.
+[source]
+....
+Scenario:
+En tant que Développeur d'une application,
+Quand le système de monitoring détecte une alert,
+* Utilisation Disque > 90 %
+Alors l'alerte est envoyée par email aux membres du projet
+....
 
 RG : Les accès au serveur de Centralisation des logs sont authentifiés par token.
 
@@ -213,9 +210,7 @@ La gestion des pannes des applications est gérée par Kubernetes.
 
 Pour y arriver, Kubernetes se base sur https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/[les lignes de vie des applications].
 
-Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de redémarrer l'application.
-
-Chaque application déployée doit donc définir ses lignes de vie.
+Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de redémarrer l'application. Chaque application déployée doit donc définir ses lignes de vie.
 
 ....
 Scenario: APP_HEALTHCHECK
