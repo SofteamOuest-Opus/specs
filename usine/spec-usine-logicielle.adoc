@@ -178,7 +178,7 @@ Then the application URL is https://myapplication.k8.wildwidewest.xyz
 Scenario: Map Application Environment to Kubernetes Namespace
 Given I am logged in Jenkins as a Jenkins User
 When I deploy the application myapplication in an environment
-Then the application URL is deployed to a Kubernetes namespace with a similar name
+Then the application URL is deployed to a Kubernetes namespace with the same name
 ....
 
 [source]
