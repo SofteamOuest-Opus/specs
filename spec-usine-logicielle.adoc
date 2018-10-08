@@ -25,7 +25,15 @@ Nous utilisons https://jenkins.k8.wildwidewest.xyz[Jenkins] pour orchestrer les 
 
 ==== Configuration Jenkins
 
-De manière à simplifier au maximum la mise en place de l'Usine Logicielle, le serveur Jenkins est configuré automatiquement.
+De manière à simplifier au maximum la mise en place de l'Usine Logicielle, le serveur Jenkins est configuré automatiquement, en utilisant https://jenkins.io/projects/jcasc/[Jenkins Configuration as Code].
+
+[source]
+....
+Scenario: JENKINS_CONF
+En tant que Gestionnaire d'Intégration Continue,
+Quand j'importe un fichier de configuration du serveur Jenkins
+Alors le serveur est correctement configuré
+....
 
 La configuration concerne notamment :
 
@@ -47,47 +55,47 @@ Nous implémentons différents types de Jobs, notamment :
 
 ==== Job de BUILD
 
-Le Job de BUILD d'une application permet de :
+Le Job de BUILD d'une application permet de construire les binaires (image Docker) de l'application (en version SNAPSHOT) et déclencher un Job de Déploiement
 
-* Construire l'image Docker de l'application (en version SNAPSHOT)
-* Déclencher un Job de Déploiement
+[source]
+....
+Scenario: JENKINS_JOB_BUILD
+En tant qu'Utilisateur IC,
+Quand j'exécute le Job de BUILD d'une application
+Alors le job construit et déploie l'image Docker de l'application
+Et déclenche le Job du RUN sur l'application
+....
 
-En fin de BUILD, sur la branche develop, l'application est déployée sur le cluster, dans l'environnement de DEV.
+RG : Le Job de BUILD est déclenché automatiquement après tout push sur les sources de l'application.
 
 ==== Job de RELEASE
 
-Le Job de RELEASE d'une application permet de :
+Le Job de RELEASE permet de créer une RELEASE des sources et binaires d'une application.
 
-* Construire l'image Docker de l'application en version RELEASE
-* Construire les jars de l'application en version RELEASE
-* Déployer les jars de l'application sur le Nexus
-
-Le job de RELEASE d'un Chart prend en paramètre :
-
-* La version de la RELEASE
-* La prochaine version de développement
-
-==== Job de RELEASE d'un Chart
-
-Un Chart Helm est un package de déploiement d'une application dans Kubernetes.
-
-Le dépôt Charts centralise :
-
-* Les packages Helm (appelés Charts) de toutes les applications.
-* Les RELEASES des charts : une RELEASE d'un chart est une archive TGZ.
-
-Le job de RELEASE d'un Chart prend en paramètre la version de la RELEASE et génère l'archive TGZ.
+[source]
+....
+Scenario: JENKINS_JOB_RELEASE
+En tant que Responsable Livraison d'une application,
+Quand j'exécute le Job de RELEASE de cette application en indiquant la version de RELEASE
+Alors le Job construit et déploie l'image Docker de l'application en version RELEASE
+Et construit et déploie les jars de l'application en version RELEASE
+....
 
 ==== Job de RUN
 
 Le Job de RUN permet de déployer une application sur le cluster.
 
-C'est un Job paramétrable qui prend en paramètre :
-
-* Le nom de l'application à déployer
-* Le tag de l'image Docker à déployer
-* La version du package Helm à utiliser pour le déploiement
-* L'environnement de déploiement (dev, prod)
+[source]
+....
+Scenario: JENKINS_JOB_RUN
+En tant qu'Utilisateur IC,
+Quand j'exécute le Job de RUN en indiquant
+* le nom de l'application
+* la version de l'application
+* la version du package Helm
+* l'environnement de déploiement (dev, prod)
+Alors l'application est déployée
+....
 
 ==== Job de FULL-RUN
 
@@ -95,7 +103,19 @@ Le Job de FULL-RUN permet de déployer toutes les applications.
 
 Le Job prend les même paramètres que le Job de RUN (pour chaque application à déployer).
 
-Si le tag de l'image Docker d'une application n'est pas défini, l'application n'est pas déployée.
+[source]
+....
+Scenario: JENKINS_JOB_FULL_RUN
+En tant qu'Utilisateur IC,
+Quand j'exécute le Job de FULL-RUN en indiquant pour chaque application
+* le nom de l'application
+* la version de l'application
+* la version du package Helm
+* l'environnement de déploiement (dev, prod)
+Alors toutes les applications sont déployées
+....
+
+RG : Si le tag de l'image Docker d'une application n'est pas défini, l'application n'est pas déployée.
 
 === Nexus
 
@@ -129,7 +149,7 @@ Le nom de l'environnement apparaît dans l'URL de l'application.
 
 Si le nom de l'application est mon application,
 
-* Si le nom de l''environnement est PROD, l'URL d'accès est https://monapplication.k8.wildwidewest.xyz
+* Si le nom de l'environnement est PROD, l'URL d'accès est https://monapplication.k8.wildwidewest.xyz
 * Sinon (le nom de l'environnement est XXX), l'URL d'accès est https://monapplication-XXX.k8.wildwidewest.xyz (=> le nom de l'environnement se retrouve dans l'URL de l'application)
 
 === Centralisation des Logs
