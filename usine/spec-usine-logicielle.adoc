@@ -1,5 +1,7 @@
 = Usine Logicielle
 
+:toc:
+
 Nous mettons en place l'Usine Logicielle pour industrialiser nos développements et notamment accélérer les temps de mises en prod en suivant une démarche de Continuous Delivery : tout commit sur un dépôt GIT d'une application déclenche la construction des binaires de l'application suivi du déploiement de l'application.
 
 Pour ce faire, l'Usine Logicielle fournit des outils pour automatiser la construction des binaires ainsi que des environnements de déploiement.
@@ -60,7 +62,7 @@ Then the Job builds the application's docker image and deploys it to Nexus
 And triggers the RUN Job
 ....
 
-RG : The BUILD is triggered after pushing an update to the GIT repository.
+RG : The BUILD is triggered automatically after pushing an update to the GIT repository.
 
 ==== Job de RELEASE
 
