@@ -25,7 +25,7 @@ Nous utilisons https://jenkins.k8.wildwidewest.xyz[Jenkins] pour orchestrer les 
 
 ==== Configuration Jenkins
 
-De manière à simplifier au maximum la mise en place de l'Usine Logicielle, le serveur Jenkins est configuré automatiquement, en utilisant https://jenkins.io/projects/jcasc/[Jenkins Configuration as Code].
+De manière à simplifier au maximum la mise en place de l'Usine Logicielle, le serveur Jenkins est configuré automatiquement, en utilisant le plugin https://jenkins.io/projects/jcasc/[Jenkins Configuration as Code].
 
 [source]
 ....
@@ -55,7 +55,7 @@ Le Job de BUILD d'une application permet de construire les binaires (image Docke
 ....
 Scenario: JNK_JOB_BUILD
 Given I am logged in Jenkins as a Jenkins User
-When I execute the BUILD job of an application
+When I execute an application BUILD job
 Then the Job builds the application's docker image and deploys it to Nexus
 And triggers the RUN Job
 ....
@@ -70,7 +70,7 @@ Le Job de RELEASE permet de créer une RELEASE des sources et binaires d'une app
 ....
 Scenario: JNK_JOB_RELEASE
 Given I am logged in Jenkins as a Jenkins User
-When I execute the RELEASE job of an application
+When I execute an application RELEASE job
 Then the Job builds the application's docker image in RELEASE version and deploys it to Nexus
 And the Job builds the application's jar in RELEASE version and deploys it to Nexus
 ....
@@ -83,7 +83,7 @@ Le Job de RUN permet de déployer une application sur le cluster.
 ....
 Scenario: JNK_JOB_RUN
 Given I am logged in Jenkins as a Jenkins User
-When I execute the RUN job of an application and specify
+When I execute an application RUN job and specify
 * the application name
 * the application version
 * the application "helm package" version
@@ -107,22 +107,22 @@ When I execute the FULL-RUN job and specify
  - its version
  - its "helm package" version
 * the target environment
-Then the application is deployed
+Then the applications are deployed
 ....
 
-RG : If any of an application information is not defined, the application is not deployed.
+RG : If any of the information necessary to deploy an application is not defined, the application is not deployed.
 
 === Nexus
 
 Nous utilisons https://Nexus.k8.wildwidewest.xyz/[Nexus] pour archiver les jars RELEASE ainsi que les images Docker des applications.
 
-RG : Les accès au serveur Nexus par les Jobs de BUILD sont authentifiés par login, password.
+RG : Access to Nexus Server requires authentication (login, password).
 
 === SonarQube
 
 Nous utilisons https://sonarqube.k8.wildwidewest.xyz/[SonarQube] pour analyser la qualité du code développé.
 
-RG : Les accès au serveur SonarQube par les Jobs de BUILD sont authentifiés par token.
+RG : Access to SonarQube Server requires authentication (token).
 
 === JIRA
 
@@ -132,7 +132,7 @@ Nous utilisons https://wildwidewest.atlassian.net[JIRA] pour suivre le développ
 ....
 Scenario: APP_COMMIT
 Given I am a developer
-When I put a JIRA ticket number in the header of a comment
+When I put a JIRA ticket number in a commit
 Then my commit appears in the JIRA ticket
 ....
 
@@ -148,23 +148,23 @@ Nous déployons nos applications dans différents environnements.
 ....
 Scenario: APP_URL_HORS_PROD
 Given I am logged in Jenkins as a Jenkins User
-When I deploy the application monapplication in a non-Prod environment XXX
-Then the application URL is https://monapplication-XXX.k8.wildwidewest.xyz
+When I deploy the application myapplication in a non-Prod environment XXX
+Then the application URL is https://myapplication-XXX.k8.wildwidewest.xyz
 ....
 
 [source]
 ....
 Scenario: APP_URL_PROD
 Given I am logged in Jenkins as a Jenkins User
-When I deploy the application monapplication in the Prod environment
-Then the application URL is https://monapplication.k8.wildwidewest.xyz
+When I deploy the application myapplication in the Prod environment
+Then the application URL is https://myapplication.k8.wildwidewest.xyz
 ....
 
 [source]
 ....
 Scenario: K8S_ENVIRONMENT_NAMESPACE
 Given I am logged in Jenkins as a Jenkins User
-When I deploy the application monapplication in an environment
+When I deploy the application myapplication in an environment
 Then the application URL is deployed to a Kubernetes namespace with a similar name
 ....
 
@@ -199,7 +199,7 @@ When my application logs a message
 Then the log is traced in the Log Server
 ....
 
-RG : Access to the Centralisation Log is accessed by login, mot de passe.
+RG : Access to Log Server requires authentication (login, password)
 
 === Monitoring
 
@@ -210,11 +210,11 @@ Le monitoring permet de monitorer l'état du cluster Kubernetes.
 Scenario: APP_MONITORING
 Given I am a developer of an application
 When the monitoring system detects an alert
-* Disk Usage > 90 %
+* CPU Usage > 90 %
 Then the alert is sent by email to a list of recipients
 ....
 
-RG : Les accès au serveur de Centralisation des logs sont authentifiés par token.
+RG : Access to the Monitoring Server requires authentication (login, password).
 
 === Tolérance aux Pannes
 
@@ -231,7 +231,7 @@ Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de red
 ....
 Scenario: APP_HEALTHCHECK
 Given I am a developer of an application
-When the application probes do not respond
+When the applications probes do not respond
 The Kubernetes restarts the application
 ....
 
