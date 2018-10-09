@@ -58,15 +58,13 @@ Le Job de BUILD d'une application permet de construire les binaires (image Docke
 
 [source]
 ....
-@TAG JNK_JOB_BUILD
+@TAG JNK_JOB_BUILD REQ_JNK_JOB_BUILD
 Scenario: Build Application
 Given I am logged in Jenkins as a Jenkins User
 When I execute an application BUILD job
 Then the Job builds the application's docker image and deploys it to Nexus
 And triggers the RUN Job
 ....
-
-REQ JNK_JOB_BUILD : The BUILD is triggered automatically after pushing an update to the GIT repository.
 
 ==== Job de RELEASE
 
@@ -107,7 +105,7 @@ Le Job prend les même paramètres que le Job de RUN (pour chaque application à
 
 [source]
 ....
-@TAG JNK_JOB_FULL_RUN
+@TAG JNK_JOB_FULL_RUN REQ_JNK_JOB_FULL_RUN
 Scenario: Run All Applications
 Given I am logged in Jenkins as a Jenkins User
 When I execute the FULL-RUN job and specify
@@ -119,19 +117,13 @@ When I execute the FULL-RUN job and specify
 Then the applications are deployed
 ....
 
-REQ JNK_JOB_FULL_RUN : If any of the information necessary to deploy an application is not defined, the application is not deployed.
-
 === Nexus
 
 Nous utilisons https://Nexus.k8.wildwidewest.xyz/[Nexus] pour archiver les jars RELEASE ainsi que les images Docker des applications.
 
-REQ NXS_SECURITY : Access to Nexus Server requires authentication (login, password).
-
 === SonarQube
 
 Nous utilisons https://sonarqube.k8.wildwidewest.xyz/[SonarQube] pour analyser la qualité du code développé.
-
-REQ SNQ_SECURITY : Access to SonarQube Server requires authentication (token).
 
 === JIRA
 
@@ -202,7 +194,7 @@ Le format du Log est :
 * Message du Log
 * Nom de l'application
 * Nom de l'environnement
-* Id de Correlation du Message
+* Id de Corrélation du Message
 * StackTrace si le message est une exception
 
 [source]
@@ -213,8 +205,6 @@ Given I am a developer of an application
 When my application logs a message
 Then the log is traced in the Log Server
 ....
-
-REQ APP_LOGS : Access to Log Server requires authentication (login, password)
 
 === Monitoring
 
@@ -229,8 +219,6 @@ When the monitoring system detects an alert
 * CPU Usage > 90 %
 Then the alert is sent by email to a list of recipients
 ....
-
-REQ APP_MONITORING : Access to the Monitoring Server requires authentication (login, password).
 
 === Tolérance aux Pannes
 
@@ -258,3 +246,29 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 
 * Pour être tolérant à une panne, il faut 3 maîtres
 * Pour être tolérant à deux pannes, il faut 5 maîtres
+
+== Exigences
+
+=== REQ_JNK_JOB_BUILD
+
+The BUILD is triggered automatically after pushing an update to the GIT repository.
+
+=== REQ_JNK_JOB_FULL_RUN
+
+If any of the information necessary to deploy an application is not defined, the application is not deployed.
+
+=== REQ_NXS_SECURITY
+
+Access to Nexus Server requires authentication (login, password).
+
+=== REQ_SNQ_SECURITY
+
+Access to SonarQube Server requires authentication (token).
+
+=== REQ_APP_LOGS
+
+Access to Log Server requires authentication (login, password)
+
+=== REQ_APP_MONITORING
+
+Access to the Monitoring Server requires authentication (login, password).
