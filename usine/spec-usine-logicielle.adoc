@@ -103,7 +103,7 @@ Le Job de RUN permet de déployer une application sur le cluster.
 
 [source]
 ....
-@TAG SCN_JNK_JOB_RUN REQ_JNK_JOB_RUN_SEC
+@TAG SCN_JNK_JOB_RUN REQ_JNK_JOB_RUN_SEC REQ_APP_SSL
 Scenario: Run Application
 Given I am logged in Jenkins as a Jenkins User
 When I execute an application RUN job and specify
@@ -157,7 +157,7 @@ Nous déployons nos applications dans différents environnements.
 
 [source]
 ....
-@TAG SCN_APP_URL_HORS_PROD
+@TAG SCN_APP_URL_HORS_PROD REQ_ENVIRONMENT_ISOLATION
 Scenario: Non-Prod Application URL
 Given I am logged in Jenkins as a Jenkins User
 When I deploy the application myapplication in a non-Prod environment XXX
@@ -173,24 +173,6 @@ When I deploy the application myapplication in the Prod environment
 Then the application URL is https://myapplication.k8.wildwidewest.xyz
 ....
 
-[source]
-....
-@TAG SCN_K8S_ENVIRONMENT_NAMESPACE
-Scenario: Map Application Environment to Kubernetes Namespace
-Given I am logged in Jenkins as a Jenkins User
-When I deploy the application myapplication in an environment
-Then the application URL is deployed to a Kubernetes namespace with the same name
-....
-
-[source]
-....
-@TAG SCN_K8S_NAMESPACE_SECURITY_ISOLATION
-Scenario: Isolate Kubernetes Namespaces
-Given I am a Kubernetes Administrator
-When I create two namespaces
-Then the two namespaces are isolated (a POD from one namespace cannot call the services of a POD in another namespace).
-....
-
 === Centralisation des Logs
 
 La centralisation des Logs permet d'analyser via une IHM unique les logs de toutes les applications.
@@ -199,7 +181,7 @@ Pour simplifier la mise en place, les applications partagent un même format de 
 
 [source]
 ....
-@TAG SCN_APP_LOGS REQ_LOG_SERVER_SECURITY
+@TAG SCN_APP_LOGS REQ_LOG_SERVER_SECURITY REQ_APP_LOGS
 Scenario: Log Tracing
 Given I am a developer of an application
 When my application logs a message
@@ -295,3 +277,11 @@ Logs must respect the following format :
 * APPLICATION_NAME : Environnement Name
 * CORRELATION_ID : Message Correlation ID
 * STACKTRACE : StackTrace if the message is an exception
+
+=== REQ_APP_SSL
+
+Application must be accessible only via HTTPS.
+
+=== REQ_ENVIRONMENT_ISOLATION
+
+Kubernetes Environments must be isolated. A Kubernete Service can not call the services of other environments.
