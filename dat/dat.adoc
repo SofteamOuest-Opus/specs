@@ -4,6 +4,22 @@
 
 image::assets/ArchitectureLogique.png[]
 
+=== Description
+
+L'objectif du système OPUS est de modéliser les processus de SOFTEAM.
+
+OPUS est construit comme un ensemble d'applications autonomes.
+
+Chaque application dispose d'une base de données locale qui lui permet de stocker ses données propre ainsi qu'une vue des données (des autres applications) nécessaires à son fonctionnement. Chaque application gère par exemple sa propre liste d'utilisateurs en ne conservant que les informations utiles.
+
+Les applications communiquent de manière synchrone et asynchone.
+
+* Si un service A d'une application a besoin d'une donnée gérée par un service B d'une autre application (pour réaliser un traitement), le service A appelle le service B en mode synchrone.
+
+* Les événements métier sont publiés sur le bus de message. Ceci permet par exemple a une application de s'abonner aux événements de création d'utilisateur pour conserver sa base de données d'utilisateurs à jour.
+
+=== Composants
+
 .Composants
 |===
 |Composant | Fonction
@@ -39,24 +55,34 @@ image::assets/ArchitectureLogique.png[]
 |Carnet de commandes
 
 |Calendrier
-|Calendrier des Utilisateus et Alerting
+|Calendrier des Utilisateurs et Gestion d'Alertes
 
 |Tableau des effectifs
 |Gestion des effectifs
 
+|Salesforce
+|Salesforce
+
+|CV Gen
+|Application de Gestion de CV
+
 |===
-
-
-=== Authentification
-
-=== Evenements
-
 
 == ARCHITECTURE PHYSIQUE
 
 === Cluster Kubernetes
 
 === Partitions NFS
+
+== SECURITE
+
+=== Authentification
+
+La gestion de l'authentification/autorisation est géré par mise en place du protocole https://openid.net/connect/[OpenID Connect].
+
+* Authorization Code Flow : Processus d'authentification, via un navigateur Web, à une application Web avec BackEnd.
+
+== RESILIENCE
 
 === Tolérance aux Pannes
 
@@ -81,9 +107,12 @@ The Kubernetes restarts the application
 ==== Pannes du Cluster
 
 La gestion des pannes du cluster est gérée par une installation multi-maîtres :
-
 * Pour être tolérant à une panne, il faut 3 maîtres
 * Pour être tolérant à deux pannes, il faut 5 maîtres
+
+=== Haute Disponibilité
+
+=== Monitoring
 
 .Dimensionnement des Services
 |===

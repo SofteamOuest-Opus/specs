@@ -33,7 +33,7 @@ De manière à simplifier au maximum la mise en place de l'Usine Logicielle, le 
 
 [source]
 ....
-@TAG SCN_JNK_CONF
+@TAG SCN_JNK_CONF REQ_JNK_SEC
 Scenario: Jenkins configured via JCASC
 Given I am logged in Jenkins as a Jenkins Administrator
 When I import a Jenkins Configuration File
@@ -58,7 +58,7 @@ Le Job de BUILD d'une application permet de construire les binaires (image Docke
 
 [source]
 ....
-@TAG SCN_JNK_JOB_BUILD REQ_JNK_JOB_BUILD REQ_NEXUS REQ_SONARQUBE
+@TAG SCN_JNK_JOB_BUILD REQ_JNK_SEC REQ_JNK_BUILD REQ_NXS REQ_SNQ
 Scenario: Build Application
 Given I am logged in Jenkins as a Jenkins User
 When I execute an application BUILD job
@@ -103,7 +103,7 @@ Le Job de RUN permet de déployer une application sur le cluster.
 
 [source]
 ....
-@TAG SCN_JNK_JOB_RUN REQ_JNK_JOB_RUN_SEC REQ_APP_SSL
+@TAG SCN_JNK_JOB_RUN REQ_JNK_RUN_SEC REQ_APP_SSL
 Scenario: Run Application
 Given I am logged in Jenkins as a Jenkins User
 When I execute an application RUN job and specify
@@ -122,7 +122,7 @@ Le Job prend les même paramètres que le Job de RUN (pour chaque application à
 
 [source]
 ....
-@TAG SCN_JNK_JOB_FULL_RUN REQ_JNK_JOB_FULL_RUN
+@TAG SCN_JNK_JOB_FULL_RUN REQ_JNK_FULL_RUN
 Scenario: Run All Applications
 Given I am logged in Jenkins as a Jenkins User
 When I execute the FULL-RUN job and specify
@@ -157,7 +157,7 @@ Nous déployons nos applications dans différents environnements.
 
 [source]
 ....
-@TAG SCN_APP_URL_HORS_PROD REQ_ENVIRONMENT_ISOLATION
+@TAG SCN_APP_URL_HORS_PROD REQ_ENV_ISOLATION
 Scenario: Non-Prod Application URL
 Given I am logged in Jenkins as a Jenkins User
 When I deploy the application myapplication in a non-Prod environment XXX
@@ -181,7 +181,7 @@ Pour simplifier la mise en place, les applications partagent un même format de 
 
 [source]
 ....
-@TAG SCN_APP_LOGS REQ_LOG_SERVER_SECURITY REQ_APP_LOGS
+@TAG SCN_APP_LOGS REQ_LOG_SERVER_SEC REQ_APP_LOGS
 Scenario: Log Tracing
 Given I am a developer of an application
 When my application logs a message
@@ -194,7 +194,7 @@ Le monitoring permet de monitorer l'état du système.
 
 [source]
 ....
-@TAG SCN_APP_MONITORING REQ_MONITORING_SECURITY
+@TAG SCN_APP_MONITORING REQ_MNT_SEC
 Scenario: Application Monitoring
 Given I am a developer of an application
 When the monitoring system detects an alert
@@ -203,42 +203,6 @@ Then the alert is sent by email to a list of recipients
 ....
 
 == Exigences
-
-=== REQ_JNK_JOB_BUILD
-
-The BUILD is triggered automatically after pushing an update to the GIT repository.
-
-=== REQ_JNK_JOB_FULL_RUN
-
-If any of the information necessary to deploy an application is not defined, the application is not deployed.
-
-=== REQ_JNK_JOB_RUN_SEC
-
-Secrets musts be stored in the chart and encrypted (https://github.com/mozilla/sops).
-
-=== REQ_NXS_SECURITY
-
-Access to Nexus Server requires authentication (login, password).
-
-=== REQ_SNQ_SECURITY
-
-Access to SonarQube Server requires authentication (token).
-
-=== REQ_LOG_SERVER_SECURITY
-
-Access to Log Server requires authentication (login, password)
-
-=== REQ_MONITORING_SECURITY
-
-Access to the Monitoring Server requires authentication (login, password).
-
-=== REQ_NEXUS
-
-Jars and Docker images are stored in https://Nexus.k8.wildwidewest.xyz/[Nexus].
-
-=== REQ_SONARQUBE
-
-Quality Analysis is achieved using https://sonarqube.k8.wildwidewest.xyz/[SonarQube].
 
 === REQ_APP_LOGS
 
@@ -253,8 +217,48 @@ Logs must respect the following format :
 
 === REQ_APP_SSL
 
-Application must be accessible only via HTTPS.
+Applications must be accessible only via HTTPS.
 
-=== REQ_ENVIRONMENT_ISOLATION
+=== REQ_JNK_SEC
+
+Access to Jenkins Server requires authentication (login, password).
+
+=== REQ_JNK_BUILD
+
+The BUILD is triggered automatically after pushing an update to the GIT repository.
+
+=== REQ_JNK_FULL_RUN
+
+If any of the information necessary to deploy an application is not defined, the application is not deployed.
+
+=== REQ_JNK_RUN_SEC
+
+Secrets musts be stored in the chart and encrypted (https://github.com/mozilla/sops).
+
+=== REQ_NXS
+
+Jars and Docker images are stored in https://Nexus.k8.wildwidewest.xyz/[Nexus].
+
+=== REQ_NXS_SEC
+
+Access to Nexus Server requires authentication (login, password).
+
+=== REQ_SNQ_SEC
+
+Access to SonarQube Server requires authentication (token).
+
+=== REQ_SNQ
+
+Quality Analysis is achieved using https://sonarqube.k8.wildwidewest.xyz/[SonarQube].
+
+=== REQ_LOG_SERVER_SEC
+
+Access to Log Server requires authentication (login, password)
+
+=== REQ_MNT_SEC
+
+Access to the Monitoring Server requires authentication (login, password).
+
+=== REQ_ENV_ISOLATION
 
 Kubernetes Environments must be isolated. A Kubernete Service can not call the services of other environments.
