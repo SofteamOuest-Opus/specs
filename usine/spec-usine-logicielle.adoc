@@ -6,7 +6,7 @@ Nous mettons en place l'Usine Logicielle pour industrialiser nos développements
 
 Pour ce faire, l'Usine Logicielle fournit des outils pour automatiser la construction des binaires ainsi que des environnements de déploiement.
 
-image::SoftwareFactory.png[]
+image::assets/SoftwareFactory.png[]
 
 == Outillage
 

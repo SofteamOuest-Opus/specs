@@ -2,6 +2,56 @@
 
 == ARCHITECTURE LOGIQUE
 
+image::assets/ArchitectureLogique.png[]
+
+.Composants
+|===
+|Composant | Fonction
+
+|Keycloak
+|Serveur d'Authentication
+
+|Kafka
+|Bus de messages
+
+|Blob Management
+|Gestion du stockage de Fichiers
+
+|User Management
+|Gestion des données Utilisateur
+
+|Mission Management
+|Gestion des données Mission
+
+|Team Management
+|Gestion des données Equipe
+
+|User Skill Management
+|Gestion des compétences des Utilisateurs
+
+|Team Skill Management
+|Gestion des compétences des Equipes
+
+|Plan de charge
+|Plan de charge
+
+|Carnet de commandes
+|Carnet de commandes
+
+|Calendrier
+|Calendrier des Utilisateus et Alerting
+
+|Tableau des effectifs
+|Gestion des effectifs
+
+|===
+
+
+=== Authentification
+
+=== Evenements
+
+
 == ARCHITECTURE PHYSIQUE
 
 === Cluster Kubernetes
