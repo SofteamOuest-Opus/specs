@@ -80,13 +80,15 @@ Les applications communiquent de manière synchrone et asynchone.
 
 La gestion de l'authentification/autorisation est géré par mise en place du protocole https://openid.net/connect/[OpenID Connect].
 
-* Authorization Code Flow : Processus d'authentification, via un navigateur Web, à une application Web avec BackEnd.
+Le Flow a utiliser est "Authorization Code Flow" : c'est un processus d'authentification, via un navigateur Web, à une application Web avec BackEnd (capable de gérer des secrets).
+
+Quand un service appelle un autre service, il passe le token d'authentification dans les entêtes de la requête.
 
 == RESILIENCE
 
 === Tolérance aux Pannes
 
-Nous gérons deux types de pannes : es pannes des applications et les pannes du cluster.
+Nous gérons deux types de pannes : les pannes des applications et les pannes du cluster.
 
 ==== Pannes des applications
 
@@ -102,7 +104,7 @@ Scenario: Application HealthCheck
 Given I am a developer of an application
 When the applications probes do not respond
 The Kubernetes restarts the application
-....
+....n
 
 ==== Pannes du Cluster
 
