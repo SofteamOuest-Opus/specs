@@ -6,6 +6,8 @@ Nous mettons en place l'Usine Logicielle pour industrialiser nos développements
 
 Pour ce faire, l'Usine Logicielle fournit des outils pour automatiser la construction des binaires ainsi que des environnements de déploiement.
 
+image::SoftwareFactory.png[]
+
 == Outillage
 
 L'Outillage mis en place permet :
@@ -14,8 +16,6 @@ L'Outillage mis en place permet :
 * La construction des binaires de l'application et l'exécution des tests unitaires (via Jenkins)
 * L'archivage des binaires (dans Nexus)
 * L'analyse qualité des sources (via SonarQube)
-
-image::SoftwareFactory.png[]
 
 === Gestion des Sources
 
@@ -58,11 +58,12 @@ Le Job de BUILD d'une application permet de construire les binaires (image Docke
 
 [source]
 ....
-@TAG SCN_JNK_JOB_BUILD REQ_JNK_JOB_BUILD
+@TAG SCN_JNK_JOB_BUILD REQ_JNK_JOB_BUILD REQ_NEXUS REQ_SONARQUBE
 Scenario: Build Application
 Given I am logged in Jenkins as a Jenkins User
 When I execute an application BUILD job
 Then the Job builds the application's docker image and deploys it to Nexus
+And runs the quality analysis
 And triggers the RUN Job
 ....
 
@@ -133,14 +134,6 @@ When I execute the FULL-RUN job and specify
 Then the applications are deployed
 ....
 
-=== Nexus
-
-Nous utilisons https://Nexus.k8.wildwidewest.xyz/[Nexus] pour archiver les jars RELEASE ainsi que les images Docker des applications.
-
-=== SonarQube
-
-Nous utilisons https://sonarqube.k8.wildwidewest.xyz/[SonarQube] pour analyser la qualité du code développé.
-
 === JIRA
 
 Nous utilisons https://wildwidewest.atlassian.net[JIRA] pour suivre le développement du Projet.
@@ -204,18 +197,9 @@ La centralisation des Logs permet d'analyser via une IHM unique les logs de tout
 
 Pour simplifier la mise en place, les applications partagent un même format de Logs.
 
-Le format du Log est :
-
-* Niveau de Log : DEBUG, INFO, ERROR
-* Message du Log
-* Nom de l'application
-* Nom de l'environnement
-* Id de Corrélation du Message
-* StackTrace si le message est une exception
-
 [source]
 ....
-@TAG SCN_APP_LOGS
+@TAG SCN_APP_LOGS REQ_LOG_SERVER_SECURITY
 Scenario: Log Tracing
 Given I am a developer of an application
 When my application logs a message
@@ -228,7 +212,7 @@ Le monitoring permet de monitorer l'état du cluster Kubernetes.
 
 [source]
 ....
-@TAG SCN_APP_MONITORING
+@TAG SCN_APP_MONITORING REQ_MONITORING_SECURITY
 Scenario: Application Monitoring
 Given I am a developer of an application
 When the monitoring system detects an alert
@@ -285,10 +269,29 @@ Access to Nexus Server requires authentication (login, password).
 
 Access to SonarQube Server requires authentication (token).
 
-=== REQ_APP_LOGS
+=== REQ_LOG_SERVER_SECURITY
 
 Access to Log Server requires authentication (login, password)
 
-=== REQ_APP_MONITORING
+=== REQ_MONITORING_SECURITY
 
 Access to the Monitoring Server requires authentication (login, password).
+
+=== REQ_NEXUS
+
+Jars and Docker images are stored in https://Nexus.k8.wildwidewest.xyz/[Nexus].
+
+=== REQ_SONARQUBE
+
+Quality Analysis is achieved using https://sonarqube.k8.wildwidewest.xyz/[SonarQube].
+
+=== REQ_APP_LOGS
+
+Logs must respect the following format :
+
+* LEVEL: Log Level (DEBUG, INFO, ERROR)
+* MESSAGE
+* APPLICATION_NAME : Application Name
+* APPLICATION_NAME : Environnement Name
+* CORRELATION_ID : Message Correlation ID
+* STACKTRACE : StackTrace if the message is an exception
