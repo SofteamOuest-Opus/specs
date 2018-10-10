@@ -190,7 +190,7 @@ Then the log is traced in the Log Server
 
 === Monitoring
 
-Le monitoring permet de monitorer l'état du cluster Kubernetes.
+Le monitoring permet de monitorer l'état du système.
 
 [source]
 ....
@@ -201,33 +201,6 @@ When the monitoring system detects an alert
 * CPU Usage > 90 %
 Then the alert is sent by email to a list of recipients
 ....
-
-=== Tolérance aux Pannes
-
-Nous gérons deux types de pannes : Les pannes des applications et les pannes du cluster.
-
-==== Pannes des applications
-
-La gestion des pannes des applications est gérée par Kubernetes.
-
-Pour y arriver, Kubernetes se base sur https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/[les lignes de vie des applications].
-
-Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de redémarrer l'application. Chaque application déployée doit donc définir ses lignes de vie.
-
-....
-@TAG SCN_APP_HEALTHCHECK
-Scenario: Application HealthCheck
-Given I am a developer of an application
-When the applications probes do not respond
-The Kubernetes restarts the application
-....
-
-==== Pannes du Cluster
-
-La gestion des pannes du cluster est gérée par une installation multi-maîtres :
-
-* Pour être tolérant à une panne, il faut 3 maîtres
-* Pour être tolérant à deux pannes, il faut 5 maîtres
 
 == Exigences
 
