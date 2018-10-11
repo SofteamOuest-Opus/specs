@@ -75,7 +75,7 @@ Les applications communiquent de manière synchrone et asynchrone.
 
 === Cluster Kubernetes
 
-Le cluster Kubernetes est un orchestrateur Docker : il permet d'automatiser le deploiement, le scaling, la gestion d'applications conteneurisées.
+Le cluster Kubernetes est un orchestrateur Docker : il permet d'automatiser le deploiement, la mise à l'échelle (scaling), la gestion d'applications conteneurisées.
 
 K8s ne gère pas la persistance des données des applications. K8s permet néanmoins aux conteneurs d'utiliser des moyens de persistance externes (exemple: partition NFS).
 
@@ -91,11 +91,14 @@ Les partitions NFS sont fournies par OVH.
 
 Pour dimensionner l'architecture physique, nous définissons des hypothèses sur les exigences en RAM/CPU/Disque des applications à déployer.
 
-A partir du dimensionnement des applications, nous définissions pour différents types de VMs le nombre de VM nécessaires.
+En partant de ce dimensionnement, nous calculons pour différents types de VMs le nombre de VM nécessaires.
 
-Le nombre nécessaire d'un type de VM est
+Nous prenons aussi comme hypothèse que les besoins principaux des applications sont des besoins de RAM.
 
-Puis nous
+Pour calculer le nombre de noeuds il faut prévoir, en plus des applications, l'exécution de
+
+* d'un agent https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/[kubelet]
+* d'un agent https://www.elastic.co/fr/products/beats/filebeat[FileBeat] pour la centralisation des logs
 
 .Dimensionnement
 |===
