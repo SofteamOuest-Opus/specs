@@ -8,7 +8,8 @@ image::assets/ArchitectureLogique.png[]
 
 === Description
 
-L'objectif du système OPUS est de modéliser les processus de SOFTEAM.
+L'objectif du système OPUS est de modéliser le fonctionnement de SOFTEAM.
+* Gérer les utilisateurs, les équipes, les compétences, les plans de charges, ...
 
 OPUS est construit comme un ensemble d'applications autonomes.
 
@@ -82,57 +83,19 @@ Le cluster est composé de plusieurs noeuds : chaque noeud est une VM. Il existe
 
 L'état du cluster est géré via une base de données clef-valeur https://coreos.com/etcd/[etcd].
 
-
-
 === Partitions NFS
 
-== SECURITE
+Les partitions NFS sont fournies par OVH.
 
-=== Authentification
+=== Dimensionnement
 
-La gestion de l'authentification/autorisation est géré par mise en place du protocole https://openid.net/connect/[OpenID Connect].
+Pour dimensionner l'architecture physique, nous définissons des hypothèses sur les exigences en RAM/CPU/Disque des applications à déployer.
 
-Le Flow a utiliser est "Authorization Code Flow" : ce processus permet à un utilisateur de s'authentifier via un navigateur Web, à une application Web qui a un BackEnd capable de gérer des secrets (c'est le cas de nos applications).
+A partir du dimensionnement des applications, nous définissions pour différents types de VMs le nombre de VM nécessaires.
 
-Quand un service appelle un autre service, il passe le token d'authentification dans les entêtes de la requête.
+Le nombre nécessaire d'un type de VM est
 
-== RESILIENCE
-
-=== Tolérance aux Pannes
-
-Nous gérons deux types de pannes : les pannes des applications et les pannes du cluster.
-
-==== Pannes des applications
-
-La gestion des pannes des applications est gérée par Kubernetes.
-
-Pour y arriver, Kubernetes se base sur https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/[les lignes de vie des applications].
-
-Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de redémarrer l'application. Chaque application déployée doit donc définir ses lignes de vie.
-
-....
-@TAG SCN_APP_HEALTHCHECK
-Scenario: Application HealthCheck
-Given I am a developer of an application
-When the applications probes do not respond
-Then the Kubernetes restarts the application
-....
-
-==== Pannes du Cluster
-
-La gestion des pannes du cluster est gérée de deux manières.
-
-La première solution consiste à faire un backup des données du cluster. En cas de panne du master, nous pouvons recréer un master identique au master en panne (en repartant des données du backup).
-
-La seconde solution plus complexe consiste à réaliser une installation multi-maîtres. Dans ce cas, la brique qui contient l'état du cluster (le serveur etcd) est redondé.
-
-Remarque : 
-* Pour être tolérant à une panne, il faut 3 maîtres
-* Pour être tolérant à deux pannes, il faut 5 maîtres
-
-=== Haute Disponibilité
-
-=== Monitoring
+Puis nous
 
 .Dimensionnement
 |===
@@ -292,7 +255,7 @@ Remarque :
 
 |===
 
-.Dimensionnement de chaque Noeud
+.Dimensionnement des noeuds du cluster
 |===
 |Service| RAM
 
@@ -304,7 +267,7 @@ Remarque :
 |0,5 Go
 |===
 
-.Nombre d'instances
+.Nombre de serveurs
 |===
 |RAM / Instance| #Instance
 
@@ -328,7 +291,7 @@ Remarque :
 |16 vCPU
 |77,94 €
 
-|SP-64
+|https://www.ovh.com/fr/serveurs_dedies/enterprise/1801sp01.xml[SP-64]
 |64 Go
 |4c/8t
 |99,99 €
@@ -337,7 +300,7 @@ Remarque :
 |4c/8t
 |99,99 €
 
-|SP-128-S
+|https://www.ovh.com/fr/serveurs_dedies/enterprise/1801sp94.xml[SP-128-S]
 |128 Go
 |8c/16t
 |169,99 €
@@ -347,6 +310,54 @@ Remarque :
 |169,99 €
 
 |===
+
+== SÉCURITÉ
+
+=== Authentification
+
+La gestion de l'authentification/autorisation est géré par mise en place du protocole https://openid.net/connect/[OpenID Connect].
+
+Le Flow a utiliser est "Authorization Code Flow" : ce processus permet à un utilisateur de s'authentifier via un navigateur Web, à une application Web qui a un BackEnd capable de gérer des secrets (c'est le cas de nos applications).
+
+Quand un service appelle un autre service, il passe le token d'authentification dans les entêtes de la requête.
+
+== RÉSILIENCE
+
+=== Tolérance aux Pannes
+
+Nous gérons deux types de pannes : les pannes des applications et les pannes du cluster.
+
+==== Pannes des applications
+
+La gestion des pannes des applications est gérée par Kubernetes.
+
+Pour y arriver, Kubernetes se base sur https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/[les lignes de vie des applications].
+
+Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de redémarrer l'application. Chaque application déployée doit donc définir ses lignes de vie.
+
+....
+@TAG SCN_APP_HEALTHCHECK
+Scenario: Application HealthCheck
+Given I am a developer of an application
+When the applications probes do not respond
+Then the Kubernetes restarts the application
+....
+
+==== Pannes du Cluster
+
+La gestion des pannes du cluster est gérée de deux manières.
+
+La première solution consiste à faire un backup des données du cluster. En cas de panne du master, nous pouvons recréer un master identique au master en panne (en repartant des données du backup).
+
+La seconde solution plus complexe consiste à réaliser une installation multi-maîtres. Dans ce cas, la brique qui contient l'état du cluster (le serveur etcd) est redondé.
+
+Remarque : 
+* Pour être tolérant à une panne, il faut 3 maîtres
+* Pour être tolérant à deux pannes, il faut 5 maîtres
+
+=== Haute Disponibilité
+
+=== Monitoring
 
 == Exigences
 
