@@ -1,5 +1,7 @@
 = Dossier d'Architecture Technique
 
+:toc:
+
 == ARCHITECTURE LOGIQUE
 
 image::assets/ArchitectureLogique.png[]
@@ -12,7 +14,7 @@ OPUS est construit comme un ensemble d'applications autonomes.
 
 Chaque application dispose d'une base de données locale qui lui permet de stocker ses données propre ainsi qu'une vue des données (des autres applications) nécessaires à son fonctionnement. Chaque application gère par exemple sa propre liste d'utilisateurs en ne conservant que les informations utiles.
 
-Les applications communiquent de manière synchrone et asynchone.
+Les applications communiquent de manière synchrone et asynchrone.
 
 * Si un service A d'une application a besoin d'une donnée gérée par un service B d'une autre application (pour réaliser un traitement), le service A appelle le service B en mode synchrone.
 
@@ -25,7 +27,7 @@ Les applications communiquent de manière synchrone et asynchone.
 |Composant | Fonction
 
 |Keycloak
-|Serveur d'Authentication
+|Serveur d'Authentification
 
 |Kafka
 |Bus de messages
@@ -104,7 +106,7 @@ Scenario: Application HealthCheck
 Given I am a developer of an application
 When the applications probes do not respond
 The Kubernetes restarts the application
-....n
+....
 
 ==== Pannes du Cluster
 
@@ -116,9 +118,9 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 
 === Monitoring
 
-.Dimensionnement des Services
+.Dimensionnement
 |===
-|Service | Techno | CPU | Disk | Instance | Total CPU | Total Disk
+|Service | Techno | RAM | Disk | Instance | Total RAM | Total Disk
 
 |Jenkins
 |Java
@@ -144,29 +146,45 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 |4 Go
 |30 Go
 
+|Keycloak
+|Java
+|1 Go
+|2 Go
+|1
+|1 Go
+|2 Go
+
 |Kibana
 |Node
-|2 Go
+|1 Go
 |1 Go
 |1
-|2 Go
+|1 Go
 |1 Go
 
 |ElasticSearch
 |Java
 |2 Go
-|20 Go
+|5 Go
 |2
 |4 Go
-|40 Go
+|10 Go
 
-|FileBeat
-|Java
+|Blob Mgmt
+|C#
+|1 Go
+|1 Go
+|2
+|2 Go
+|2 Go
+
+|Blob Mgmt Database
+|MongoDB
 |512 Mo
 |1 Go
-|1 par slave
-|
-|
+|2
+|1 Go
+|2 Go
 
 |User Mgmt
 |C#
@@ -202,10 +220,10 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 
 |Team Mgmt
 |Node
-|512 Mo
+|1 Go
 |1 Go
 |2
-|1 Go
+|2 Go
 |2 Go
 
 |Team Mgmt Database
@@ -242,38 +260,33 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 
 |User Skill Mgmt Database
 |ElasticSearch
-|instance infre
-|idem
-|idem
-|idem
-|idem
+|0
+|0
+|0
+|0
+|0
 
 |Total
 |
 |
 |
 |
-|38 Go
-|167 Go
+|43 Go
+|195 Go
 
 |===
-
 
 .Dimensionnement du Cluster
-|===
-|Type |Instance | RAM | Total RAM
 
-|Master
-|3
-|8 Go
-|24 Go
+|FileBeat
+|Java
+|512 Mo
+|1 Go
+|1 par slave
+|
+|
 
-|Slave
-|5
-|8 Go
-|40 Go
 
-|===
 
 
 .Pricing
@@ -284,15 +297,15 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 |8 Go
 |2 vCPU
 |12,99 €
-|8
+|6
 |64 Go
 |16 vCPU
-|103,92 €
+|77,94 €
 
 |SP-64
 |64 Go
 |4c/8t
-|119,99 €
+|99,99 €
 |1
 |64 Go
 |4c/8t
@@ -301,7 +314,7 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 |SP-128-S
 |128 Go
 |8c/16t
-|119,99 €
+|169,99 €
 |1
 |128 Go
 |8c/16t
