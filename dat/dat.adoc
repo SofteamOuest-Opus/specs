@@ -24,7 +24,7 @@ Les applications communiquent de manière synchrone et asynchrone.
 
 .Composants
 |===
-|Composant | Fonction
+|Composant| Fonction
 
 |Keycloak
 |Serveur d'Authentification
@@ -74,7 +74,13 @@ Les applications communiquent de manière synchrone et asynchrone.
 
 === Cluster Kubernetes
 
-Le cluster
+Le cluster Kubernetes est un orchestrateur Docker : il permet d'automatiser le deploiement, le scaling, la gestion d'applications conteneurisées.
+
+K8s ne gère pas la persistance des données des applications. K8s permet néanmoins aux conteneurs d'utiliser des moyens de persistance externes (exemple: partition NFS).
+
+Le cluster est composé de plusieurs noeuds : chaque noeud est une VM. Il existe deux types de noeuds : des noeuds maître (master) et des noeuds esclave (slave).
+
+L'état du cluster est géré via une base de données clef-valeur https://coreos.com/etcd/[etcd].
 
 === Partitions NFS
 
@@ -84,7 +90,7 @@ Le cluster
 
 La gestion de l'authentification/autorisation est géré par mise en place du protocole https://openid.net/connect/[OpenID Connect].
 
-Le Flow a utiliser est "Authorization Code Flow" : c'est un processus d'authentification, via un navigateur Web, à une application Web avec BackEnd (capable de gérer des secrets).
+Le Flow a utiliser est "Authorization Code Flow" : ce processus permet à un utilisateur de s'authentifier via un navigateur Web, à une application Web qui a un BackEnd capable de gérer des secrets (c'est le cas de nos applications).
 
 Quand un service appelle un autre service, il passe le token d'authentification dans les entêtes de la requête.
 
@@ -122,7 +128,7 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 
 .Dimensionnement
 |===
-|Service | Techno | RAM / Instance| Disk / Instance | Instance | Total RAM | Total Disk
+|Service| Techno| RAM / Instance| Disk / Instance| Instance| Total RAM| Total Disk
 
 |Jenkins
 |Java
@@ -280,7 +286,7 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 
 .Dimensionnement de chaque Noeud
 |===
-|Service | RAM
+|Service| RAM
 
 |Kubernetes Node
 |1 Go
@@ -303,7 +309,7 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 
 .Pricing
 |===
-|Type Serveur| RAM / Instance  | vCPU / Instance |  Prix / Instance | #Instance|  RAM Total | CPU Total | Prix Total
+|Type Serveur| RAM / Instance| vCPU / Instance|  Prix / Instance| #Instance|  RAM Total| CPU Total| Prix Total
 
 |VPS SSD 3
 |8 Go
@@ -332,5 +338,10 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 |8c/16t
 |169,99 €
 
-
 |===
+
+== Exigences
+
+=== REQ_K8S_BACKUP
+
+The Kubernetes state must be backed up regularly; The Kubernetes state must be restored from backup Snapshots.
