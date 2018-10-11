@@ -82,6 +82,8 @@ Le cluster est composé de plusieurs noeuds : chaque noeud est une VM. Il existe
 
 L'état du cluster est géré via une base de données clef-valeur https://coreos.com/etcd/[etcd].
 
+
+
 === Partitions NFS
 
 == SECURITE
@@ -113,12 +115,18 @@ Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de red
 Scenario: Application HealthCheck
 Given I am a developer of an application
 When the applications probes do not respond
-The Kubernetes restarts the application
+Then the Kubernetes restarts the application
 ....
 
 ==== Pannes du Cluster
 
-La gestion des pannes du cluster est gérée par une installation multi-maîtres :
+La gestion des pannes du cluster est gérée de deux manières.
+
+La première solution consiste à faire un backup des données du cluster. En cas de panne du master, nous pouvons recréer un master identique au master en panne (en repartant des données du backup).
+
+La seconde solution plus complexe consiste à réaliser une installation multi-maîtres. Dans ce cas, la brique qui contient l'état du cluster (le serveur etcd) est redondé.
+
+Remarque : 
 * Pour être tolérant à une panne, il faut 3 maîtres
 * Pour être tolérant à deux pannes, il faut 5 maîtres
 
