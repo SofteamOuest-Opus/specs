@@ -66,13 +66,15 @@ Les applications communiquent de manière synchrone et asynchrone.
 |Salesforce
 
 |CV Gen
-|Application de Gestion de CV
+|Application SOFTEAM de Gestion de CV
 
 |===
 
 == ARCHITECTURE PHYSIQUE
 
 === Cluster Kubernetes
+
+Le cluster
 
 === Partitions NFS
 
@@ -274,7 +276,6 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 |43 Go
 |195 Go
 
-
 |===
 
 .Dimensionnement de chaque Noeud
@@ -289,18 +290,16 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 |0,5 Go
 |===
 
-
+.Nombre d'instances
 |===
 |RAM / Instance| #Instance
 
 |8 Go
 |5,1875
 
-
 |64
 |0,6484375
 |===
-
 
 .Pricing
 |===
