@@ -120,7 +120,7 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 
 .Dimensionnement
 |===
-|Service | Techno | RAM | Disk | Instance | Total RAM | Total Disk
+|Service | Techno | RAM / Instance| Disk / Instance | Instance | Total RAM | Total Disk
 
 |Jenkins
 |Java
@@ -270,23 +270,36 @@ La gestion des pannes du cluster est gérée par une installation multi-maîtres
 |
 |
 |
-|
+|32
 |43 Go
 |195 Go
 
+
 |===
 
-.Dimensionnement du Cluster
+.Dimensionnement de chaque Noeud
+|===
+|Service | RAM
+
+|Kubernetes Node
+|1 Go
+
 
 |FileBeat
-|Java
-|512 Mo
-|1 Go
-|1 par slave
-|
-|
+|0,5 Go
+|===
 
 
+|===
+|RAM / Instance| #Instance
+
+|8 Go
+|5,1875
+
+
+|64
+|0,6484375
+|===
 
 
 .Pricing
