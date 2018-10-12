@@ -1,0 +1,239 @@
+= Software Requirements Document - User Mgmt Application
+
+:toc:
+
+== Français / English glossary
+
+[options="header"]
+|==============================================================================
+| Français                              | English
+| Spécifications fonctionnelles         | Software requirements document 
+| Règle de gestion                      | Business rule 
+| Collaborateur                         | Employee 
+| Resources humaines                    | Human resources manager    
+| Direction                             | Top management             
+|==============================================================================
+
+== User Scenario List
+
+=== Scenario U_1
+
+....
+As an Employee
+I can log in
+So that I can use the application, according to my granted permissions
+....
+
+=== Scenario U_2
+
+....
+As an Employee
+I can view my profile
+So that I can read and control my personal data
+....
+
+==== Business Rules List
+
+===== RG U_2_1
+
+Personal data _readable_ by Employee are :
+
+* Last Name
+* First Name
+* E-mail address
+* Photo
+* Office (Nantes/Rennes)
+* Date of hire
+* Manager
+* Human resources manager
+* Status (Internship/Subcontractor/Freelancer)
+* Permissions (Employee/Human resources manager/Top management)
+
+=== Scenario U_3
+
+....
+As an Employee
+I can edit my personal data
+So that my profile is up to date
+....
+
+==== Business Rules List
+
+===== RG U_3_1
+
+Personal data _editable_ by Employee on _his own profile_ are :
+
+* Last Name
+* First Name
+* E-mail address
+* Photo
+
+===== RG U_3_1
+
+Mandatory data :
+
+* Last Name
+* First Name
+* E-mail address
+
+Optional data :
+
+* Photo
+
+=== Scenario U_4
+
+....
+As a Human resources manager
+I can view any other employee's personal data
+So that I can control her/his personal data
+....
+
+==== Business Rules List
+
+cf. <<RG U_2_1>> 
+
+===== RG U_4_1
+
+Personal data _readable_ by human resources manager on _any profile_ are :
+
+* Last Name
+* First Name
+* E-mail address
+* Photo URL
+* Office (Nantes/Rennes)
+* Date of hire
+* Leaving date
+* Leaving cause
+* Manager
+* Human resources manager
+* Status (Internship/Subcontractor/Freelancer)
+* Permissions (Employee/Human resources manager/Top management)
+
+=== Scenario U_5
+
+....
+As a Human resources manager
+I can edit any other employee's personal data
+So that sensitive information on his profile are up to date
+....
+
+==== Business Rules List
+
+cf. <<RG U_3_1>> 
+
+===== RG U_5_1
+
+Personal data _editable_ by human resources manager on _any profile_ are :
+
+* Last Name
+* First Name
+* E-mail address
+* Photo URL
+* Office (Nantes/Rennes)
+* Date of hire
+* Leaving date
+* Leaving cause
+* Manager
+* Human resources manager
+* Status (Internship/Subcontractor/Freelancer)
+* Permissions (Employee/Human resources manager/Top management)
+
+=== Scenario U_6
+
+....
+As a Human resources manager
+I can créer un nouveau Employee
+So that mettre à jour les données sensibles de son profil
+....
+
+==== Business Rules List
+
+cf. <<RG U_3_1>>, <<RG U_5_1>>
+
+
+=== Scenario U_7
+
+....
+As a Human resources manager
+I can supprimer les données personnelles d'un Employee (ancien ou actuel)
+So that anonymiser son profil et de me conformer au RGPD
+....
+
+===== RG U_7_1
+
+Personal data à anonymiser sont :
+
+* Last Name
+* First Name
+* E-mail address
+* Photo URL
+* jour/mois de la date d'entrée dans l’entreprise
+* jour/mois de la Leaving date
+
+== Liste des Scenarios système
+
+=== Scenario S_1
+
+....
+As a Système
+I can charger en masse une liste de Employees
+So that initialiser la base de données plus rapidement
+....
+
+==== Business Rules List
+
+===== RG S_1_1
+
+Personal data pouvant être chargées en masse sont :
+
+* Last Name
+* First Name
+* E-mail address
+* Office (Nantes/Rennes)
+* Manager
+* Human resources manager
+* Status (Internship/Subcontractor/Freelancer)
+* Permissions (Employee/Human resources manager/Top management)
+
+=== Scenario S_2
+
+....
+As a Application externe
+I can consulter Personal data d'un Employee
+So that mettre à jour ma base de données
+....
+
+==== Business Rules List
+
+===== RG S_2_1
+
+Personal data pouvant être _consultées_ par l'application externe sont :
+
+* Last Name
+* First Name
+* E-mail address
+* Photo URL
+* Office (Nantes/Rennes)
+* Manager
+* Human resources manager
+* Status (Internship/Subcontractor/Freelancer)
+* Permissions (Employee/Human resources manager/Top management)
+
+=== Scenario S_3
+
+....
+As a Application externe
+I can être notifié lors de la mise à jour des données d'un Employee
+So that réaliser les opérations nécessaires
+....
+
+== Annexes
+
+=== Rôles
+
+* Employee
+* Human resources manager
+* Top management
+* Système
+* Application externe
+
