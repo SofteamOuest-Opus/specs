@@ -7,18 +7,21 @@
 === Scenario U_1
 
 ....
-As an Employee
-I can log in
-So that I can use the application, according to my granted permissions
+Given an Employee with valid credentials
+When I login as this Employee
+Then I can access the application according to my permissions
 ....
 
 === Scenario U_2
 
 ....
-As an Employee
-I can view my profile
-So that I can read and control my personal data
+Given an Employee
+When I am logged in as this Employee 
+Then I can view my profile and personal data
 ....
+
+So that::
+I can read and control my personal data
 
 ==== Business Rules List
 
@@ -33,17 +36,20 @@ Personal data _readable_ by Employee are :
 * Office (Nantes/Rennes)
 * Date of hire
 * Manager
-* Human resources manager
+* Human resource manager
 * Status (Internship/Subcontractor/Freelancer)
-* Permissions (Employee/Human resources manager/Top management)
+* Permissions (Employee/Human resource manager/Top management)
 
 === Scenario U_3
 
 ....
-As an Employee
-I can edit my personal data
-So that my profile is up to date
+Given an Employee
+When I am logged in as this Employee 
+Then I can edit my personal data
 ....
+
+So that::
+my profile is up to date
 
 ==== Business Rules List
 
@@ -58,23 +64,25 @@ Personal data _editable_ by Employee on _his own profile_ are :
 
 ===== RG U_3_1
 
-Mandatory data :
-
+Mandatory data::
 * Last Name
 * First Name
 * E-mail address
 
-Optional data :
-
+Optional data::
 * Photo
 
 === Scenario U_4
 
 ....
-As a Human resources manager
-I can view any other employee's personal data
-So that I can control her/his personal data
+Given a Human resource manager
+And an Employee
+When I am logged in as this Human resource manager 
+I can view that Employee's personal data
 ....
+
+So that::
+I can check her/his personal data
 
 ==== Business Rules List
 
@@ -82,7 +90,7 @@ cf. <<RG U_2_1>>
 
 ===== RG U_4_1
 
-Personal data _readable_ by human resources manager on _any profile_ are :
+Personal data _readable_ by Human resource manager on _any profile_ are :
 
 * Last Name
 * First Name
@@ -93,17 +101,21 @@ Personal data _readable_ by human resources manager on _any profile_ are :
 * Leaving date
 * Leaving cause
 * Manager
-* Human resources manager
+* Human resource manager
 * Status (Internship/Subcontractor/Freelancer)
-* Permissions (Employee/Human resources manager/Top management)
+* Permissions (Employee/Human resource manager/Top management)
 
 === Scenario U_5
 
 ....
-As a Human resources manager
-I can edit any other employee's personal data
-So that sensitive information on his profile are up to date
+Given a Human resource manager
+And an Employee
+When I am logged in as this Human resource manager 
+I can edit that Employee's personal data
 ....
+
+So that::
+sensitive information on his profile are up to date
 
 ==== Business Rules List
 
@@ -111,7 +123,7 @@ cf. <<RG U_3_1>>
 
 ===== RG U_5_1
 
-Personal data _editable_ by human resources manager on _any profile_ are :
+Personal data _editable_ by Human resource manager on _any profile_ are :
 
 * Last Name
 * First Name
@@ -122,30 +134,36 @@ Personal data _editable_ by human resources manager on _any profile_ are :
 * Leaving date
 * Leaving cause
 * Manager
-* Human resources manager
+* Human resource manager
 * Status (Internship/Subcontractor/Freelancer)
-* Permissions (Employee/Human resources manager/Top management)
+* Permissions (Employee/Human resource manager/Top management)
 
 === Scenario U_6
 
 ....
-As a Human resources manager
+Given a Human resource manager
+When I am logged in as this Human resource manager 
 I can create a new Employee
-So that sensitive information on his profile are up to date
 ....
+
+So that::
+sensitive information on his profile are up to date
 
 ==== Business Rules List
 
 cf. <<RG U_3_1>>, <<RG U_5_1>>
 
-
 === Scenario U_7
 
 ....
-As a Human resources manager
-I can delete personal data of any Employee (former or actual)
-So that his profile can be made anonymous and be GDPR conformant
+Given a Human resource manager
+And an Employee (former or actual)
+When I am logged in as this Human resource manager 
+I can delete personal data of this Employee 
 ....
+
+So that::
+his profile can be made anonymous and be GDPR conformant
 
 ===== RG U_7_1
 
@@ -163,10 +181,13 @@ Personal data to anonymize are :
 === Scenario S_1
 
 ....
-As System
-I can bulk insert an Employee list
-So that database is seeded faster
+Given an Employee list
+When I bulk insert this list
+Then all employees are created or updated
 ....
+
+So that::
+database is seeded faster
 
 ==== Business Rules List
 
@@ -179,17 +200,21 @@ Bulk inserted personal data are  :
 * E-mail address
 * Office (Nantes/Rennes)
 * Manager
-* Human resources manager
+* Human resource manager
 * Status (Internship/Subcontractor/Freelancer)
-* Permissions (Employee/Human resources manager/Top management)
+* Permissions (Employee/Human resource manager/Top management)
 
 === Scenario S_2
 
 ....
-As an external application
-I can read personal data of an Employee
-So that I can update my own database
+Given an Employee
+And an authenticated external application
+When I request for personal data of an Employee
+Then I can read personal data of this Employee
 ....
+
+So that::
+I can update my own database
 
 ==== Business Rules List
 
@@ -203,24 +228,28 @@ Personal data _readable_ by external application are :
 * Photo URL
 * Office (Nantes/Rennes)
 * Manager
-* Human resources manager
+* Human resource manager
 * Status (Internship/Subcontractor/Freelancer)
-* Permissions (Employee/Human resources manager/Top management)
+* Permissions (Employee/Human resource manager/Top management)
 
 === Scenario S_3
 
 ....
-As an external application
-I can be notified of updates on an Employee's personal data
-So that I can perform associated operations
+Given an Employee
+And an authenticated external application
+When the employee is updated
+Then the external application is notified of the update
 ....
+
+So that::
+I can perform associated operations
 
 == Annexes
 
 === Rôles
 
 * Employee
-* Human resources manager
+* Human resource manager
 * Top management
 * System
 * External application
@@ -233,7 +262,7 @@ So that I can perform associated operations
 | Spécifications fonctionnelles         | Software requirements document 
 | Règle de gestion                      | Business rule 
 | Collaborateur                         | Employee 
-| Resources humaines                    | Human resources manager    
+| Resources humaines                    | Human resource manager    
 | Direction                             | Top management             
 | Date d'embauche                       | Date of hire
 | Date de départ                        | Leaving date
