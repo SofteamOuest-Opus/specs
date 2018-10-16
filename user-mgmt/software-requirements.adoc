@@ -2,18 +2,6 @@
 
 :toc:
 
-== Français / English glossary
-
-[options="header"]
-|==============================================================================
-| Français                              | English
-| Spécifications fonctionnelles         | Software requirements document 
-| Règle de gestion                      | Business rule 
-| Collaborateur                         | Employee 
-| Resources humaines                    | Human resources manager    
-| Direction                             | Top management             
-|==============================================================================
-
 == User Scenario List
 
 === Scenario U_1
@@ -142,8 +130,8 @@ Personal data _editable_ by human resources manager on _any profile_ are :
 
 ....
 As a Human resources manager
-I can créer un nouveau Employee
-So that mettre à jour les données sensibles de son profil
+I can create a new Employee
+So that sensitive information on his profile are up to date
 ....
 
 ==== Business Rules List
@@ -155,36 +143,36 @@ cf. <<RG U_3_1>>, <<RG U_5_1>>
 
 ....
 As a Human resources manager
-I can supprimer les données personnelles d'un Employee (ancien ou actuel)
-So that anonymiser son profil et de me conformer au RGPD
+I can delete personal data of any Employee (former or actual)
+So that his profile can be made anonymous and be GDPR conformant
 ....
 
 ===== RG U_7_1
 
-Personal data à anonymiser sont :
+Personal data to anonymize are :
 
 * Last Name
 * First Name
 * E-mail address
 * Photo URL
-* jour/mois de la date d'entrée dans l’entreprise
-* jour/mois de la Leaving date
+* Day/Month of Date of Hire
+* Day/Month of Leaving date
 
-== Liste des Scenarios système
+== System Scenario List
 
 === Scenario S_1
 
 ....
-As a Système
-I can charger en masse une liste de Employees
-So that initialiser la base de données plus rapidement
+As System
+I can bulk insert an Employee list
+So that database is seeded faster
 ....
 
 ==== Business Rules List
 
 ===== RG S_1_1
 
-Personal data pouvant être chargées en masse sont :
+Bulk inserted personal data are  :
 
 * Last Name
 * First Name
@@ -198,16 +186,16 @@ Personal data pouvant être chargées en masse sont :
 === Scenario S_2
 
 ....
-As a Application externe
-I can consulter Personal data d'un Employee
-So that mettre à jour ma base de données
+As an external application
+I can read personal data of an Employee
+So that I can update my own database
 ....
 
 ==== Business Rules List
 
 ===== RG S_2_1
 
-Personal data pouvant être _consultées_ par l'application externe sont :
+Personal data _readable_ by external application are :
 
 * Last Name
 * First Name
@@ -222,9 +210,9 @@ Personal data pouvant être _consultées_ par l'application externe sont :
 === Scenario S_3
 
 ....
-As a Application externe
-I can être notifié lors de la mise à jour des données d'un Employee
-So that réaliser les opérations nécessaires
+As an external application
+I can be notified of updates on an Employee's personal data
+So that I can perform associated operations
 ....
 
 == Annexes
@@ -234,6 +222,24 @@ So that réaliser les opérations nécessaires
 * Employee
 * Human resources manager
 * Top management
-* Système
-* Application externe
+* System
+* External application
+
+=== Français / English glossary
+
+[options="header"]
+|==============================================================================
+| Français                              | English
+| Spécifications fonctionnelles         | Software requirements document 
+| Règle de gestion                      | Business rule 
+| Collaborateur                         | Employee 
+| Resources humaines                    | Human resources manager    
+| Direction                             | Top management             
+| Date d'embauche                       | Date of hire
+| Date de départ                        | Leaving date
+| Cause de départ                       | Leaving cause
+| Stage                                 | Internship
+| Sous-traitant                         | Subcontractor
+| Indépendant                           | Freelancer
+|==============================================================================
 
