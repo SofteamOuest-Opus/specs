@@ -6,13 +6,16 @@
 
 Description des fonctionnalités des l'application.
 
- === Scénario 1
+=== Scénario 1
 
- ....
+[source, javascript]
+----
  Given
  When
  Then
- ....
+----
+
+=== Scénario 2
 
 ==  RGs list
 
