@@ -4,10 +4,10 @@
 
 == Features
 
-Description des fonctionnalités des l'application.
+Description des fonctionnalités de l'application.
 
 === Scénario 1
-[source, javascript]
+
 ----
  Given
  When
@@ -15,7 +15,7 @@ Description des fonctionnalités des l'application.
 ----
 
 === Scénario 2
-[source, javascript]
+
 ----
  Given
  When
