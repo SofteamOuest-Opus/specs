@@ -58,6 +58,33 @@ Then the team name and it's members must be updated
 === Scenario EVENT_LISTEN_003
 ....
 Given Team Skill management running
+When a user-creation event is broadcasted
+Then the user last name and first name must be visible on the team edition screen
+....
+==== Business rules
+* <<BR USER_1>>
+* <<BR USER_2>>
+
+=== Scenario EVENT_LISTEN_004
+....
+Given Team Skill management running
+When a user-update event is broadcasted
+Then the user last name and first name must be updated on the team edition screen
+....
+==== Business rules
+* <<BR USER_1>>
+* <<BR USER_2>>
+
+=== Scenario EVENT_LISTEN_005
+....
+Given Team Skill management running
+When a user-delete event is broadcasted
+Then the user be deleted from the team to which it belongs
+....
+
+=== Scenario EVENT_LISTEN_006
+....
+Given Team Skill management running
 When a user-skill-update event is broadcasted
 Then the user skill levels must be updated on the team edition screen
 ....
@@ -110,4 +137,12 @@ If the user isn't known by the system yet, the user must be created with all the
 === BR EVENT_USER_SKILL_2
 ....
 If the user has been deleted, the event must be ignored
+....
+=== BR USER_1
+....
+A user first name size must be between 1 and 32 characters
+....
+=== BR USER_2
+....
+A user last name size must be between 1 and 32 characters
 ....
