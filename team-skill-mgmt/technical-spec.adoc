@@ -1,0 +1,106 @@
+= Technical Specification - Team Skill Management Application
+
+:toc:
+
+== Development guidelines
+
+=== Handling data synchronization issues
+
+Inconsistent data event will happen. The application must be able to handle such cases.
+To ease synchronisation management some guidelines must be followed.
+For each domain data, a master source must be identified.
+
+* The master source is always considered right
+* A second hand data must never be used to update an existing data
+* A second hand data can be used to fill missing data
+
+Considering the previous rules, the management of unknown resources remains an issue. In such cases
+there are either two possibilities:
+
+* we are handling an event related to a resource we have not yet received the creation event.
+* we are handling an event related to a resource we have already processed the deletion event.
+In the first case, we must treat the event with best effort to be sure not to lose update from any apps.
+In the second case, the event must be ignored.
+
+To be able to identify in which case we are, on a resource deletion, a soft delete must be performed, and, if possible,
+only the primary key should be kept (GDPR)
+
+=== Handling contract synchronization issues
+
+Contract synchronisation issue might happen. The application must be as resilient as possible.
+When reading data from an external system, tolerant reader guidelines must be followed.
+
+== REST API
+
+TODO: Swagger documentation git link
+
+== Events
+
+=== Consumed events
+
+==== Users //FIXME: check contract against User-management
+===== Creation
+Topic : user-creation
+Avro link : todo
+
+====== Data read
+* id
+* first name
+* last name
+
+====== Update
+Topic : user-update
+Avro link : todo
+
+====== Data read
+* id
+* first name
+* last name
+
+===== Deletion
+Topic : user-deletion
+Avro link : todo
+
+====== Data read
+* id
+
+==== User Skills // FIXME: check contract against user-sill-management
+===== Update
+Topic : user-skill-update
+Avro link : todo
+
+====== Data read
+* user_id
+* skill_levels
+
+==== Teams
+===== Creation
+Topic : team-creation
+Avro link : todo
+
+====== Data read
+* id
+* members.id
+
+===== Update
+Topic : team-update
+Avro link : todo
+
+====== Data read
+* id
+* members.id
+
+
+===== Deletion
+Topic : team-deletion
+Avro link : todo
+
+====== Data read
+* id
+
+=== Published event
+
+==== Team Skill
+===== Update
+Topic : team-skill-update
+Avro link : todo
