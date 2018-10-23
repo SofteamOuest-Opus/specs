@@ -62,8 +62,8 @@ When a user-skill-update event is broadcasted
 Then the user skill levels must be updated on the team edition screen
 ....
 ==== Business rules
-* <<BR EVENT_TEAM_1>>
-* <<BR EVENT_TEAM_2>>
+* <<BR EVENT_USER_SKILL_1>>
+* <<BR EVENT_USER_SKILL_2>>
 * <<BR SKILL_1>>
 
 === Scenario EVENT_PUBLISH_001
@@ -102,4 +102,12 @@ If a member of the group isn't known by the system yet, the member must be added
 === BR EVENT_TEAM_2
 ....
 If a member of the group has been deleted, the member must be ignored from the team
+....
+=== BR EVENT_USER_SKILL_1
+....
+If the user isn't known by the system yet, the user must be created with all the provided fields
+....
+=== BR EVENT_USER_SKILL_2
+....
+If the user has been deleted, the event must be ignored
 ....
