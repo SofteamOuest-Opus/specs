@@ -65,6 +65,8 @@ Then team i no longer visible in teams list
 
 ==== Business Rules List
 
+<<RG TEA_1>>, <<RG TEA_2>>, <<RG TEA_3>>, <<RG TEA_4>>, <<RG TEA_5>>, <<RG TEA_6>>
+
 ===== RG TEA_1
 
 Data of a team are :
@@ -96,7 +98,7 @@ A team can be associated with only one project
 ===== RG TEA_6
 
 Search criteria for team are :
-* Team Name
+* Team name
 * Team description
-* Team Project name
+* Project name of the team
 * Firstname/Lastname of team member

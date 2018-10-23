@@ -1,0 +1,62 @@
+== Manage projects features
+
+=== Scenario PRJ_1 : List project
+
+....
+Given User is connected as 'project manager'
+When User asks projects list
+Then entire projects list is displayed
+....
+
+=== Scenario PRJ_2 : Add project
+
+....
+Given User is connected as 'project manager'
+When User create a new project
+And User asks projects list
+Then project is visible in projects list
+....
+
+=== Scenario PRJ_3 : Modify project
+
+....
+Given User is connected as 'project manager'
+When User change name of one project
+And User asks projects list
+Then project name is changed
+....
+
+=== Scenario PRJ_4 : Delete project
+
+....
+Given User is connected as 'project manager'
+When User delete one project
+And User asks projects list
+Then project no longer exists
+....
+
+==== Business Rules List
+
+<<RG PRJ_1>>, <<RG PRJ_2>>, <<RG PRJ_3>>
+
+===== RG PRJ_1
+
+Data of a project are :
+
+
+* Id : unique, readable
+* Name : unique, readable/writable
+* Description : readable/writable
+* Customer : readable/writable
+
+
+===== RG PRJ_2
+
+Data diplayed in projects list are :
+
+* Name : unique, readable/writable
+* Customer : readable/writable
+
+===== RG PRJ_3
+
+Role allowed to add/modify/delete/request project is 'Project manager'
