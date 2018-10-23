@@ -1,8 +1,8 @@
-= Software Requirements Document - User Mgmt Application
+= Software Requirements Specification - User Mgmt Application
 
 :toc:
 
-== User Scenario List
+== List of User Scenarios
 
 === Scenario U_1
 
@@ -23,7 +23,7 @@ Then I can view my profile and personal data
 So that::
 I can read and control my personal data
 
-==== Business Rules List
+==== List of Business Rules
 
 ===== RG U_2_1
 
@@ -51,7 +51,7 @@ Then I can edit my personal data
 So that::
 my profile is up to date
 
-==== Business Rules List
+==== List of Business Rules
 
 ===== RG U_3_1
 
@@ -84,7 +84,7 @@ I can view that Employee's personal data
 So that::
 I can check her/his personal data
 
-==== Business Rules List
+==== List of Business Rules
 
 cf. <<RG U_2_1>> 
 
@@ -117,7 +117,7 @@ I can edit that Employee's personal data
 So that::
 sensitive information on his profile are up to date
 
-==== Business Rules List
+==== List of Business Rules
 
 cf. <<RG U_3_1>> 
 
@@ -149,7 +149,7 @@ I can create a new Employee
 So that::
 sensitive information on his profile are up to date
 
-==== Business Rules List
+==== List of Business Rules
 
 cf. <<RG U_3_1>>, <<RG U_5_1>>
 
@@ -189,7 +189,7 @@ Then all employees are created or updated
 So that::
 database is seeded faster
 
-==== Business Rules List
+==== List of Business Rules
 
 ===== RG S_1_1
 
@@ -209,14 +209,14 @@ Bulk inserted personal data are  :
 ....
 Given an Employee
 And an authenticated external application
-When I request for personal data of an Employee
-Then I can read personal data of this Employee
+When that external application requests for personal data of this Employee
+Then it can read personal data of this Employee
 ....
 
 So that::
-I can update my own database
+it can update his own database
 
-==== Business Rules List
+==== List of Business Rules
 
 ===== RG S_2_1
 
@@ -237,12 +237,12 @@ Personal data _readable_ by external application are :
 ....
 Given an Employee
 And an authenticated external application
-When the employee is updated
-Then the external application is notified of the update
+When this employee is updated
+Then that external application is notified of the update
 ....
 
 So that::
-I can perform associated operations
+The external application can perform any relevant operation of its own
 
 == Annexes
 
@@ -259,7 +259,7 @@ I can perform associated operations
 [options="header"]
 |==============================================================================
 | Français                              | English
-| Spécifications fonctionnelles         | Software requirements document 
+| Spécifications fonctionnelles         | Software requirements document _or_ Software requirements specification 
 | Règle de gestion                      | Business rule 
 | Collaborateur                         | Employee 
 | Resources humaines                    | Human resource manager    

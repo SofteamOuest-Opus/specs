@@ -1,0 +1,23 @@
+= Software Design Description - User Mgmt Application
+
+:toc:
+
+== Data Design
+
+=== REST API
+
+* TODO Swagger Documentation
+* TODO link to GIT repo
+
+== Architecture Design
+
+=== Events
+
+==== Published events
+
+* TODO Name of Kafka topic
+* TODO Link to Avro schema
+
+== Interface Design
+
+== Procedural Design
