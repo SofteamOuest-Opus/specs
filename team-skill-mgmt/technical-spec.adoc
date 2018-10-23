@@ -17,8 +17,9 @@ For each domain data, a master source must be identified.
 Considering the previous rules, the management of unknown resources remains an issue. In such cases
 there are two possibilities:
 
-* we are handling an event related to a resource we have not yet received the creation event.
-* we are handling an event related to a resource we have already processed the deletion event.
+* we are handling an event related to a resource for which we have not yet received the creation event.
+* we are handling an event related to a resource for which we have already processed the deletion event.
+
 In the first case, we must treat the event with best effort to be sure not to lose update from any apps.
 In the second case, the event must be ignored.
 
@@ -41,6 +42,7 @@ TODO: Swagger documentation git link
 ==== Users //FIXME: check contract against User-management
 ===== Creation
 Topic : user-creation
+
 Avro link : todo
 
 ====== Data read
@@ -50,6 +52,7 @@ Avro link : todo
 
 ====== Update
 Topic : user-update
+
 Avro link : todo
 
 ====== Data read
@@ -59,6 +62,7 @@ Avro link : todo
 
 ===== Deletion
 Topic : user-deletion
+
 Avro link : todo
 
 ====== Data read
@@ -67,6 +71,7 @@ Avro link : todo
 ==== User Skills // FIXME: check contract against user-sill-management
 ===== Update
 Topic : user-skill-update
+
 Avro link : todo
 
 ====== Data read
@@ -76,6 +81,7 @@ Avro link : todo
 ==== Teams
 ===== Creation
 Topic : team-creation
+
 Avro link : todo
 
 ====== Data read
@@ -84,6 +90,7 @@ Avro link : todo
 
 ===== Update
 Topic : team-update
+
 Avro link : todo
 
 ====== Data read
@@ -93,6 +100,7 @@ Avro link : todo
 
 ===== Deletion
 Topic : team-deletion
+
 Avro link : todo
 
 ====== Data read
@@ -103,4 +111,5 @@ Avro link : todo
 ==== Team Skill
 ===== Update
 Topic : team-skill-update
+
 Avro link : todo
