@@ -2,60 +2,7 @@
 
 :toc:
 
-== Manage projects features
+include::functional-specifications-project.adoc[]
 
-=== Scenario PRJ_1 : List project
+include::functional-specifications-team.adoc[]
 
-....
-Given User is connected as 'project manager'
-When User asks projects list
-Then entire projects list is displayed
-....
-
-=== Scenario PRJ_2 : Add project
-
-....
-Given User is connected as 'project manager'
-When User create a new project
-And User asks projects list
-Then project is visible in projects list
-....
-
-=== Scenario PRJ_3 : Modify project
-
-....
-Given User is connected as 'project manager'
-When User change name of one project
-And User asks projects list
-Then project name is changed
-....
-
-=== Scenario PRJ_4 : Delete project
-
-....
-Given User is connected as 'project manager'
-When User delete one project
-And User asks projects list
-Then project no longer exists
-....
-
-==== Business Rules List
-
-===== RG PRJ_1
-
-Data of a project are :
-
-* Name : unique, readable/writable
-* Customer : readable/writable
-* Id : readable
-
-===== RG PRJ_2
-
-Data diplayed in projects list are :
-
-* Name : unique, readable/writable
-* Customer : readable/writable
-
-===== RG PRJ_3
-
-Role allowed to add/modify/remove project is 'Project manager'

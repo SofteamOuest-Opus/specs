@@ -1,0 +1,102 @@
+== Manage teams features
+
+=== Scenario TEA_1 : List teams
+
+....
+Given User is connected as 'team manager'
+When User asks teams list
+Then entire teams list is displayed
+....
+
+=== Scenario TEA_2 : Add team
+
+....
+Given User is connected as 'team manager'
+When User create a new team with name
+And User asks teams list
+Then team is visible in teams list
+....
+
+=== Scenario TEA_3 : Add team member
+
+....
+Given User is connected as 'team manager'
+When User search and select a team in existing teams
+And User search and select a person
+And User select function for the member
+And User add member to the team
+Then member is added to team
+....
+
+=== Scenario TEA_4 : Delete team member
+
+....
+Given User is connected as 'team manager'
+When User search and select a team in existing teams
+And User delete team member
+Then member is deleted from  team
+....
+
+=== Scenario TEA_5 : Associate team project
+
+....
+Given User is connected as 'team manager'
+When User search and select a team in existing teams
+User search and select a project in existing projects
+Then project is associated with team
+....
+
+=== Scenario TEA_6 : Display team
+
+....
+Given User is connected as 'team manager'
+When User search and select a team in existing teams
+Then team is displayed
+....
+
+=== Scenario TEA_7 : Delete team
+
+....
+Given User is connected as 'team manager'
+When User search and select a team in existing teams
+And User delete team
+Then team i no longer visible in teams list
+....
+
+==== Business Rules List
+
+===== RG TEA_1
+
+Data of a team are :
+
+* Id : unique, readable
+* Name : unique, readable/writable
+* Description : readable/writable
+* List of members : person object
+* Project
+
+===== RG TEA_2
+
+Data displayed in teams list are :
+
+* Name
+
+===== RG TEA_3
+
+Role allowed to add/modify/delete/request teams is 'Team manager'
+
+===== RG TEA_4
+
+For each member added to a team, functions assignable to member are : 'Project manager', 'Project leader', 'Scrum master', 'Team leader', 'Developer', 'Architect', 'Analyst'
+
+===== RG TEA_5
+
+A team can be associated with only one project
+
+===== RG TEA_6
+
+Search criteria for team are :
+* Team Name
+* Team description
+* Team Project name
+* Firstname/Lastname of team member
