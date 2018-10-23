@@ -15,7 +15,7 @@ For each domain data, a master source must be identified.
 * A second hand data can be used to fill missing data
 
 Considering the previous rules, the management of unknown resources remains an issue. In such cases
-there are either two possibilities:
+there are two possibilities:
 
 * we are handling an event related to a resource we have not yet received the creation event.
 * we are handling an event related to a resource we have already processed the deletion event.
