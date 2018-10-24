@@ -4,9 +4,7 @@
 
 Ce document décrit l'architecture technique du système OPUS.
 
-Le système OPUS implémente des processus SOFTEAM :
-
-* Gérer les utilisateurs, les équipes, les compétences, les plans de charges, ...
+Le système OPUS implémente différents services de gestion des utilisateurs, des équipes, des compétences, des plans de charges, ...
 
 == ARCHITECTURE LOGIQUE
 
@@ -116,160 +114,31 @@ En partant de cette estimation globale, nous calculons en fonction de la puissan
 [[dimensionnement_apps]]
 .Dimensionnement des Applications
 |===
-|Service| Techno| RAM / Instance| Disk / Instance| Instance| Total RAM| Total Disk
-
-|Jenkins
-|Java
-|4 Go
-|20 Go
-|1
-|4 Go
-|20 Go
-
-|Nexus
-|Java
-|4 Go
-|30 Go
-|1
-|4 Go
-|30 Go
-
-|SonarQube
-|Java
-|4 Go
-|30 Go
-|1
-|4 Go
-|30 Go
-
-|Keycloak
-|Java
-|1 Go
-|2 Go
-|1
-|1 Go
-|2 Go
-
-|Kibana
-|Node
-|1 Go
-|1 Go
-|1
-|1 Go
-|1 Go
-
-|ElasticSearch
-|Java
-|2 Go
-|5 Go
-|2
-|4 Go
-|10 Go
-
-|Blob Mgmt
-|C#
-|1 Go
-|1 Go
-|2
-|2 Go
-|2 Go
-
-|Blob Mgmt Database
-|MongoDB
-|512 Mo
-|1 Go
-|2
-|1 Go
-|2 Go
-
-|User Mgmt
-|C#
-|1 Go
-|1 Go
-|2
-|2 Go
-|2 Go
-
-|User Mgmt Database
-|MongoDB
-|512 Mo
-|1 Go
-|2
-|1 Go
-|2 Go
-
-|Mission Mgmt
-|Kotlin
-|1 Go
-|1 Go
-|2
-|2 Go
-|2 Go
-
-|Mission Mgmt Database
-|PostgreSQL
-|512 Mo
-|1 Go
-|2
-|1 Go
-|2 Go
-
-|Team Mgmt
-|Node
-|1 Go
-|1 Go
-|2
-|2 Go
-|2 Go
-
-|Team Mgmt Database
-|PostgreSQL
-|512 Mo
-|1 Go
-|2
-|1 Go
-|2 Go
-
-|Team Skill Mgmt
-|Kotlin
-|1 Go
-|1 Go
-|2
-|2 Go
-|2 Go
-
-|Team Skill Mgmt Database
-|Kafka
-|2 Go
-|10 Go
-|3
-|6 Go
-|30 Go
-
-|User Skill Mgmt
-|Java
-|1 Go
-|1 Go
-|2
-|2 Go
-|2 Go
-
-|User Skill Mgmt Database
-|ElasticSearch
-|0
-|0
-|0
-|0
-|0
-
-|Total
-|
-|
-|
-|32
-|43 Go
-|195 Go
-
+|   |  |  |  | RAM / Instance | Disk / Instance | Instance | Total RAM | Total Disk | CPU |
+|  :------ | :------ | :------ | ------ | :------ | :------ | :------ | :------ | :------ | :------ |
+|  Tools Software Factory |  |  |  |  |  |  |  |  |  |
+|   | Jenkins | Java |  | 4 | 20 | 1 | 4 | 20 | 1 |
+|   | Nexus | Java |  | 4 | 30 | 1 | 4 | 30 | 1 |
+|   | SonarQube | Java |  | 4 | 30 | 1 | 4 | 30 | 1 |
+|   | Keycloak | Java |  | 1 | 2 | 1 | 1 | 2 | 1 |
+|  Monitoring |  |  |  |  |  |  |  |  |  |
+|   | Kibana | Node |  | 1 | 1 | 1 | 1 | 1 | 1 |
+|   | ElasticSearch | Java |  | 2 | 5 | 2 | 4 | 10 | 1 |
+|   | Grafana | Java |  | 1 | 2 | 1 | 1 | 2 | 1 |
+|  Apps |  |  |  |  |  |  |  |  |  |
+|   | Blob Mgmt | C# |  | 1 | 1 | 2 | 2 | 2 | 1 |
+|   | Blob Mgmt Database | MongoDB |  | 0.5 | 1 | 2 | 1 | 2 | 1 |
+|   | User Mgmt | C# |  | 1 | 1 | 2 | 2 | 2 | 1 |
+|   | User Mgmt Database | MongoDB |  | 0.5 | 1 | 2 | 1 | 2 | 1 |
+|   | Mission Mgmt | Kotlin |  | 1 | 1 | 2 | 2 | 2 | 1 |
+|   | Mission Mgmt Database | PostgreSQL |  | 0.5 | 1 | 2 | 1 | 2 | 1 |
+|   | Team Mgmt | Node |  | 1 | 1 | 2 | 2 | 2 | 1 |
+|   | Team Mgmt Database | PostgreSQL |  | 0.5 | 1 | 2 | 1 | 2 | 1 |
+|   | Team Skill Mgmt | Kotlin |  | 1 | 1 | 2 | 2 | 2 | 1 |
+|   | Team Skill Mgmt Database | Kafka |  | 2 | 20 | 4 | 8 | 80 | 1 |
+|   | User Skill Mgmt | Java |  | 1 | 1 | 2 | 2 | 2 | 1 |
+|   | User Skill Mgmt Database | ElasticSearch |  |  |  |  |  |  | 1 |
+|   | Total |  |  |  |  | 32 | 43 | 195 | 19 |
 |===
 
 .Dimensionnement non utile des nœuds du cluster
@@ -298,37 +167,13 @@ En partant de cette estimation globale, nous calculons en fonction de la puissan
 === Pricing
 
 .Pricing
-|===
-|Type Serveur| RAM / Instance| vCPU / Instance|  Prix / Instance| #Instance|  RAM Total| CPU Total| Prix Total
 
-|VPS SSD 3
-|8 Go
-|2 vCPU
-|12,99 €
-|7
-|64 Go
-|16 vCPU
-|77,94 €
+|  **Name** | **unit RAM** | **unit vCPU** | **unit Price** | **nb Instance** | **total RAM** | **total vCPU** | **total Price** |
+|  :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
+|  VPS SSD 3 | 8 | 2 | 11.99 | 7 | 56 | 14 | 83.93 |
+|  SP-32 | 32 | 8 | 69.99 | 2 | 64 | 16 | 139.98 |
+|  SP-64 | 64 | 8 | 99.99 | 1 | 64 | 8 | 99.99 |
 
-|https://www.ovh.com/fr/serveurs_dedies/enterprise/1801sp01.xml[SP-64]
-|64 Go
-|4c/8t
-|99,99 €
-|1
-|64 Go
-|4c/8t
-|99,99 €
-
-|https://www.ovh.com/fr/serveurs_dedies/enterprise/1801sp94.xml[SP-128-S]
-|128 Go
-|8c/16t
-|169,99 €
-|1
-|128 Go
-|8c/16t
-|169,99 €
-
-|===
 
 == SÉCURITÉ
 
@@ -385,4 +230,8 @@ Remarque :
 
 === REQ_K8S_BACKUP
 
-The Kubernetes state must be backed up regularly; The Kubernetes state must be restorable from backup Snapshots.
+The Kubernetes state must be backed up regularly; The Kubernetes state must be restorable from a Snapshot.
+
+=== REQ_K8S_APP_PROBE
+
+In order to handle application faults, the applications must define the liveness probes.
