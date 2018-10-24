@@ -168,12 +168,13 @@ En partant de cette estimation globale, nous calculons en fonction de la puissan
 
 .Pricing
 
+|===
 |  **Name** | **unit RAM** | **unit vCPU** | **unit Price** | **nb Instance** | **total RAM** | **total vCPU** | **total Price** |
 |  :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
 |  VPS SSD 3 | 8 | 2 | 11.99 | 7 | 56 | 14 | 83.93 |
 |  SP-32 | 32 | 8 | 69.99 | 2 | 64 | 16 | 139.98 |
 |  SP-64 | 64 | 8 | 99.99 | 1 | 64 | 8 | 99.99 |
-
+|===
 
 == SÉCURITÉ
 
