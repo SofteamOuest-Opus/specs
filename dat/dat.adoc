@@ -26,7 +26,9 @@ L'architecture implémente aussi des patterns https://martinfowler.com/articles/
 
 * Si un service A d'une application a besoin d'une donnée gérée par un service B d'une autre application (pour réaliser un traitement), le service A appelle le service B en mode synchrone.
 
-=== Composants
+=== Services Implémentés
+
+Le tableau ci-dessous liste les services implémentés dans le cadre du projet.
 
 .Composants
 |===
@@ -68,20 +70,82 @@ L'architecture implémente aussi des patterns https://martinfowler.com/articles/
 |Tableau des effectifs
 |Gestion des effectifs
 
+|===
+
+=== Flux Entrants
+
+|===
+|Composant| Flux Entrants
+
+|Keycloak
+|HTTPS
+
+|Kafka
+|Accessible uniquement du cluster
+
+|Blob Management
+|HTTPS
+
+|User Management
+|HTTPS
+
+|Mission Management
+|HTTPS
+
+|Team Management
+|HTTPS
+
+|User Skill Management
+|HTTPS
+
+|Team Skill Management
+|HTTPS
+
+|Plan de charge
+|HTTPS
+
+|Carnet de commandes
+|HTTPS
+
+|Calendrier
+|HTTPS
+
+|Tableau des effectifs
+|HTTPS
+
+|===
+
+=== Flux Sortants
+
+Le tableau ci-dessous liste les services externes appelés.
+
+|===
+|Composant| Fonction | Protocole
+
+|Mail
+|Envoi de Mails
+|SMTP
+
 |Salesforce
-|Salesforce
+|Référentiel des données des collabs
+|HTTP ? Fichier ?
 
 |CV Gen
-|Application SOFTEAM de Gestion de CV
+|Référentiel des CVs SOFTEAM
+|HTTP
 
 |===
 
 == ARCHITECTURE PHYSIQUE
 
-L'architecture physique est basée sur deux points :
+L'architecture physique est basée sur deux types de ressources :
 
-* Le déploiement d'applications conteneurisées sur un cluster Kubernetes
-* La persistance de volumes des conteneurs sur des disques NFS
+* Des VMs Linux (CentOS)
+* Des partitions NFS pour la persistance des données
+
+Les applications sont gérées par un cluster Kubernetes déployées sur les VMs.
+
+Les données des applications sont stockées sur les partitions NFS.
 
 === Cluster Kubernetes
 
@@ -89,7 +153,20 @@ Le cluster Kubernetes est un orchestrateur Docker : il permet d'automatiser le d
 
 K8s ne gère pas la persistance des données des applications. K8s permet néanmoins aux conteneurs d'utiliser des moyens de persistance externes (exemple: partition NFS).
 
-Le cluster est composé de plusieurs nœuds : chaque nœud est une VM. K8s gère deux types de nœuds : des nœuds maître (master) et des nœuds esclave (slave).
+==== Noeuds du Cluster
+
+Le cluster est composé de plusieurs nœuds : chaque nœud est une VM. 
+
+K8s gère deux types de nœuds : 
+
+* des nœuds maître (master) 
+* des nœuds esclave (slave)
+
+==== Enregistrement DNS
+
+Un enregistrement DNS de type A associe le nom de domaine en wildcard *.wildwidewest.xyz vers le master du cluster.
+
+L'enregistrement est réalisé chez OVH.
 
 === Partitions NFS
 
@@ -99,20 +176,10 @@ Les partitions NFS sont fournies par OVH.
 
 === Dimensionnement
 
-Pour dimensionner l'architecture physique, nous nous basons sur l'hypothèse que les besoins principaux des applications sont des besoins de RAM. En effet, les applications déployées sont des applications java (besoin de RAM important) peu sollicitées (aucun processus métier qui nécessite du CPU).
-
-Ensuite, nous estimons les besoins globaux (cf. <<dimensionnement_apps>>) en RAM des applications.
-
-En partant de cette estimation globale, nous calculons en fonction de la puissance de VMs le nombre de VMs nécessaires (cf. <<dimensionnement_serveurs>>).
-
-* Pour calculer la RAM utile d'un serveur il faut prendre en compte l'exécution, sur chaque nœud :
-  * d'un agent https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/[kubelet]
-  * d'un agent https://www.elastic.co/fr/products/beats/filebeat[FileBeat] pour la centralisation des logs
-
-#VM = #RAM Total / (#RAM VM - #RAM Kubelet - # RAM FileBeat)
+Pour commencer, nous estimons les besoins globaux (cf. <<dimensionnement_apps>>) en RAM et CPU des services.
 
 [[dimensionnement_apps]]
-.Dimensionnement des Applications
+.Dimensionnement des Services
 |===
 |  Service | Techno | RAM / Instance | Disk / Instance | Instance | Total RAM | Total Disk | CPU |
 |  Jenkins | Java | 4 | 20 | 1 | 4 | 20 | 1 |
@@ -134,53 +201,38 @@ En partant de cette estimation globale, nous calculons en fonction de la puissan
 |  Team Skill Mgmt Database | Kafka | 2 | 20 | 4 | 8 | 80 | 1 |
 |  User Skill Mgmt | Java | 1 | 1 | 2 | 2 | 2 | 1 |
 |  User Skill Mgmt Database | ElasticSearch |  |  |  |  |  | 1 |
-|  Total |  |  |  | 32 | 43 | 195 | 19 |
+|  Total |  |  |  | 32 | 43 Go | 195 Go | 19 vCPU |
 |===
 
-.Dimensionnement non utile des nœuds du cluster
-|===
-|Service| RAM
+Ensuite, nous calculons le nombre de VMs nécessaires en fonction de :
 
-|Kubernetes Node
-|1 Go
+* La puissance de VMs (cf. <<dimensionnement_serveurs>>)
+* Les ressources CPU/RAM utilisées par Kubernetes
 
-|FileBeat
-|0,5 Go
-|===
+nb Instance = total RAM / (unit RAM - RAM Kubelet - RAM FileBeat)
+
+nb Instance = total RAM / (unit RAM - 1 Go - 512 Mo)
+
+Pour terminer, nous caractérisons le cluster en termes de coûts, vCPU et RAM.
 
 [[dimensionnement_serveurs]]
 .Dimensionnement des Serveurs
 |===
-|RAM / Instance| #Instance
-
-|8 Go
-|6,615384615
-
-|64 Go
-|0,688
-|===
-
-=== Pricing
-
-.Pricing
-
-|===
-|  **Name** | **unit RAM** | **unit vCPU** | **unit Price** | **nb Instance** | **total RAM** | **total vCPU** | **total Price** 
-
-|  VPS SSD 3 | 8 | 2 | 11.99 | 7 | 56 | 14 | 83.93 
-|  SP-32 | 32 | 8 | 69.99 | 2 | 64 | 16 | 139.98 
-|  SP-64 | 64 | 8 | 99.99 | 1 | 64 | 8 | 99.99 
+|  VM type | unit RAM | unit vCPU | unit Price | nb Instance | total RAM | total vCPU | total Price |
+|  VPS SSD 3 | 8 | 2 | 11.99 | 7 | 56 | 14 | 83.93 |
+|  SP-32 | 32 | 8 | 69.99 | 2 | 64 | 16 | 139.98 |
+|  SP-64 | 64 | 8 | 99.99 | 1 | 64 | 8 | 99.99 |
 |===
 
 == SÉCURITÉ
 
 === Connexion SSH
 
-La connexion SSH aux VMs du cluster est réalisé par enregistrement de clefs SSH.
+La connexion SSH (@see <<REQ_CLUSTER_SSH>>) aux VMs du cluster est réalisé par enregistrement de clefs SSH.
 
 === Authentification applicatif
 
-La gestion de l'authentification/autorisation est géré par mise en place du protocole https://openid.net/connect/[OpenID Connect].
+La gestion de l'authentification/autorisation (@see <<REQ_APP_AUTHENTICATION>>) est géré par mise en place du protocole https://openid.net/connect/[OpenID Connect].
 
 Le Flow a utiliser est "Authorization Code Flow" : ce processus permet à un utilisateur de s'authentifier via un navigateur Web, à une application Web qui a un BackEnd capable de gérer des secrets (c'est le cas de nos applications).
 
@@ -212,7 +264,7 @@ Then the Kubernetes restarts the application
 
 La gestion des pannes du cluster est gérée de deux manières.
 
-La première solution consiste à faire un backup des données du cluster. En cas de panne du master, nous pouvons recréer un master identique au master en panne (en repartant des données du backup).
+La première solution consiste à faire un backup des données du cluster (@REQ_K8S_BACKUP). En cas de panne du master, nous pouvons recréer (@see <<REQ_K8S_RESTORE>>) un master identique au master en panne (en repartant des données du backup).
 
 * L'état du cluster est géré via une base de données clef-valeur https://coreos.com/etcd/[etcd].
 
@@ -225,9 +277,21 @@ Remarque :
 
 == EXIGENCES
 
+=== REQ_APP_AUTHENTICATION
+
+Authentication/authorisation is achieved via https://openid.net/connect/[OpenID Connect].
+
+=== REQ_CLUSTER_SSH
+
+Users connect to the cluster using a public SSH key.
+
 === REQ_K8S_BACKUP
 
-The Kubernetes state must be backed up regularly; The Kubernetes state must be restorable from a Snapshot.
+The Kubernetes state must be backed up regularly; 
+
+=== REQ_K8S_RESTORE
+
+The Kubernetes state must be restorable from a Snapshot.
 
 === REQ_K8S_APP_PROBE
 
