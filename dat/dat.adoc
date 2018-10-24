@@ -138,7 +138,7 @@ Le tableau ci-dessous liste les services externes appelés.
 
 == ARCHITECTURE PHYSIQUE
 
-L'architecture physique est basée sur deux types de ressources :
+L'architecture physique est basée sur 3 types de ressources :
 
 * Des VMs Linux (CentOS)
 * Des partitions NFS pour la persistance des données
@@ -153,20 +153,22 @@ Le cluster Kubernetes est un orchestrateur Docker : il permet d'automatiser le d
 
 K8s ne gère pas la persistance des données des applications. K8s permet néanmoins aux conteneurs d'utiliser des moyens de persistance externes (exemple: partition NFS).
 
-==== Noeuds du Cluster
+==== Nœuds du Cluster
 
-Le cluster est composé de plusieurs nœuds : chaque nœud est une VM. 
+Le cluster Kubernetes est composé de plusieurs nœuds (chaque nœud est une VM). 
 
 K8s gère deux types de nœuds : 
 
-* des nœuds maître (master) 
-* des nœuds esclave (slave)
+* Des nœuds maître (master) 
+* Des nœuds esclave (slave)
 
 ==== Enregistrement DNS
 
+Un enregistrement DNS est associé au cluster pour permettre l'accès aux applications via des noms de domaines.
+
 Un enregistrement DNS de type A associe le nom de domaine en wildcard *.wildwidewest.xyz vers le master du cluster.
 
-L'enregistrement est réalisé chez OVH.
+L'enregistrement DNS est réalisé chez OVH.
 
 === Partitions NFS
 
