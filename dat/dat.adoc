@@ -189,11 +189,13 @@ Pour terminer, nous caractérisons le cluster en termes de coûts, vCPU et RAM.
 [[dimensionnement_serveurs]]
 .Dimensionnement des Serveurs
 |===
-|  VM type | unit RAM | unit vCPU | unit Price | nb Instance | total RAM | total vCPU | total Price
+|  VM type | Unit RAM | Unit vCPU | Unit Price | Nb Instance | Total RAM | Total vCPU | Total Price
 |  VPS SSD 3 | 8 | 2 | 11.99 | 7 | 56 | 14 | 83.93
 |  SP-32 | 32 | 8 | 69.99 | 2 | 64 | 16 | 139.98
 |  SP-64 | 64 | 8 | 99.99 | 1 | 64 | 8 | 99.99
 |===
+
+Les deux solutions VPS SSD 3 et SP-64 sont assez similaires. Nous préférons la solution à base de VPS qui nous permettra de tester différentes architectures Kubernetes (1 master, plusieurs masters).
 
 == SÉCURITÉ
 
@@ -258,7 +260,7 @@ Users connect to the cluster using a public SSH key.
 
 === REQ_K8S_BACKUP
 
-The Kubernetes state must be backed up regularly; 
+The Kubernetes state must be backed up regularly.
 
 === REQ_K8S_RESTORE
 
@@ -266,4 +268,4 @@ The Kubernetes state must be restorable from a Snapshot.
 
 === REQ_K8S_APP_PROBE
 
-In order to handle application faults, the applications must define the liveness probes.
+In order to handle application faults (via Kubernetes), applications must define the liveness probes.
