@@ -33,6 +33,18 @@ Then I can see team's composition and there skill level for each skill requireme
 * <<BR SKILL_3>>
 * <<BR SKILL_4>>
 
+=== Scenario TEAM_004
+....
+Given I am logged as a XXXX on the selection screen
+When I select a team
+Then I can see the minimu team skill requirements in a radar, filled with the maximum skill level reached by the team members
+....
+==== Business rules
+* <<BR SKILL_1>>
+* <<BR SKILL_2>>
+* <<BR SKILL_3>>
+* <<BR SKILL_4>>
+
 === Scenario EVENT_LISTEN_001
 ....
 Given Team Skill management running
