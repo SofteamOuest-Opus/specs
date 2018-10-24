@@ -32,85 +32,54 @@ Le tableau ci-dessous liste les services implémentés dans le cadre du projet.
 
 .Composants
 |===
-|Composant| Fonction
+|Composant| Fonction | Flux entrants
 
 |Keycloak
 |Serveur d'Authentification
+|HTTPS
 
 |Kafka
 |Bus de messages
-
-|Blob Management
-|Gestion du stockage de Fichiers
-
-|User Management
-|Gestion des données Utilisateur
-
-|Mission Management
-|Gestion des données Mission
-
-|Team Management
-|Gestion des données Equipe
-
-|User Skill Management
-|Gestion des compétences des Utilisateurs
-
-|Team Skill Management
-|Gestion des compétences des Equipes
-
-|Plan de charge
-|Plan de charge
-
-|Carnet de commandes
-|Carnet de commandes
-
-|Calendrier
-|Calendrier des Utilisateurs et Gestion d'Alertes
-
-|Tableau des effectifs
-|Gestion des effectifs
-
-|===
-
-=== Flux Entrants
-
-|===
-|Composant| Flux Entrants
-
-|Keycloak
-|HTTPS
-
-|Kafka
 |Accessible uniquement du cluster
 
 |Blob Management
+|Gestion du stockage de Fichiers
 |HTTPS
 
 |User Management
+|Gestion des données Utilisateur
 |HTTPS
 
 |Mission Management
+|Gestion des données Mission
 |HTTPS
 
 |Team Management
+|Gestion des données Equipe
 |HTTPS
 
 |User Skill Management
+|Gestion des compétences des Utilisateurs
 |HTTPS
 
 |Team Skill Management
+|Gestion des compétences des Equipes
 |HTTPS
 
+|Plan de charge
 |Plan de charge
 |HTTPS
 
 |Carnet de commandes
+|Carnet de commandes
 |HTTPS
 
 |Calendrier
+|Calendrier des Utilisateurs et Gestion d'Alertes
 |HTTPS
 
 |Tableau des effectifs
+|Gestion des effectifs
 |HTTPS
 
 |===
@@ -138,7 +107,7 @@ Le tableau ci-dessous liste les services externes appelés.
 
 == ARCHITECTURE PHYSIQUE
 
-L'architecture physique est basée sur 3 types de ressources :
+L'architecture physique est basée sur 2 types de ressources :
 
 * Des VMs Linux (CentOS)
 * Des partitions NFS pour la persistance des données
