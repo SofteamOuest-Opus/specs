@@ -180,9 +180,10 @@ Ensuite, nous calculons le nombre de VMs nécessaires en fonction de :
 * La puissance de VMs (cf. <<dimensionnement_serveurs>>)
 * Les ressources CPU/RAM utilisées par Kubernetes
 
-nb Instance = total RAM / (unit RAM - RAM Kubelet - RAM FileBeat)
+La formule utilisée : 
 
-nb Instance = total RAM / (unit RAM - 1 Go - 512 Mo)
+* nb Instance = total RAM / (unit RAM - RAM Kubelet - RAM FileBeat)
+* nb Instance = total RAM / (unit RAM - 1 Go - 512 Mo)
 
 Pour terminer, nous caractérisons le cluster en termes de coûts, vCPU et RAM.
 
@@ -195,7 +196,7 @@ Pour terminer, nous caractérisons le cluster en termes de coûts, vCPU et RAM.
 |  SP-64 | 64 | 8 | 99.99 | 1 | 64 | 8 | 99.99
 |===
 
-Les deux solutions VPS SSD 3 et SP-64 sont assez similaires. Nous préférons la solution à base de VPS qui nous permettra de tester différentes architectures Kubernetes (1 master, plusieurs masters).
+Les deux solutions VPS SSD 3 et SP-64 sont assez similaires. Nous préférons la solution à base de VPS qui nous permettra de tester différentes architectures Kubernetes (exemple : single master, multi masters).
 
 == SÉCURITÉ
 
