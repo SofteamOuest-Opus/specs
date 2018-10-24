@@ -4,7 +4,7 @@
 
 Ce document décrit l'architecture technique du système OPUS.
 
-Le système OPUS implémente des processus SOFTEAM.
+Le système OPUS implémente des processus SOFTEAM :
 
 * Gérer les utilisateurs, les équipes, les compétences, les plans de charges, ...
 
@@ -14,7 +14,7 @@ image::assets/ArchitectureLogique.png[]
 
 === Description
 
-L'architecture d'OPUS est construit comme un ensemble d'applications autonomes.
+L'architecture du système est construit comme un ensemble d'applications autonomes.
 
 La conception du système est basée sur le pattern https://martinfowler.com/articles/201701-event-driven.html[Event-Carried State Transfer]. C'est le mode de communication principal entre les applications.
 
@@ -22,11 +22,11 @@ La conception du système est basée sur le pattern https://martinfowler.com/art
 
 De cette manière, chaque application dispose d'une base de données locale qui lui permet de stocker ses données propres ainsi qu'une vue des données (des autres applications) nécessaires à son fonctionnement. Chaque application gère par exemple sa propre liste d'utilisateurs en ne filtrant que les informations utiles.
 
+Ces mécanismes de communication asynchrones simplifient l'intégration de nouvelles applications.
+
 L'architecture implémente aussi des patterns https://martinfowler.com/articles/enterpriseREST.html[REST].
 
 * Si un service A d'une application a besoin d'une donnée gérée par un service B d'une autre application (pour réaliser un traitement), le service A appelle le service B en mode synchrone.
-
-Ces mécanismes de communication asynchrones simplifient l'intégration de nouvelles applications.
 
 === Composants
 
@@ -80,10 +80,10 @@ Ces mécanismes de communication asynchrones simplifient l'intégration de nouve
 
 == ARCHITECTURE PHYSIQUE
 
-L'architecture est basée sur deux points :
+L'architecture physique est basée sur deux points :
 
-* L'utilisation de Kubernetes pour la gestion d'applications conteneurisées
-* L'utilisation de partitions NFS pour la persistance de données
+* Le déploiement d'applications conteneurisées sur un cluster Kubernetes
+* La persistance de volumes des conteneurs sur des disques NFS
 
 === Cluster Kubernetes
 
@@ -91,38 +91,27 @@ Le cluster Kubernetes est un orchestrateur Docker : il permet d'automatiser le d
 
 K8s ne gère pas la persistance des données des applications. K8s permet néanmoins aux conteneurs d'utiliser des moyens de persistance externes (exemple: partition NFS).
 
-Le cluster est composé de plusieurs nœuds : chaque nœud est une VM. Il existe deux types de nœuds : des nœuds maître (master) et des nœuds esclave (slave).
+Le cluster est composé de plusieurs nœuds : chaque nœud est une VM. K8s gère deux types de nœuds : des nœuds maître (master) et des nœuds esclave (slave).
 
 === Partitions NFS
 
-Les partitions NFS sont fournies par OVH.
+Les partitions NFS sont fournies par OVH. 
+
+* OVH gère la haute disponibilité et le backup des partitions
 
 === Dimensionnement
 
-Pour dimensionner l'architecture physique, nous nous basons sur l'hypothèse que les besoins principaux des applications sont des besoins de RAM. En effet, les applications déployées sont des applications java (besoin de RAM important) peu sollicitées (besoin de CPU faible).
+Pour dimensionner l'architecture physique, nous nous basons sur l'hypothèse que les besoins principaux des applications sont des besoins de RAM. En effet, les applications déployées sont des applications java (besoin de RAM important) peu sollicitées (aucun processus métier qui nécessite du CPU).
 
 Ensuite, nous estimons les besoins globaux (cf. <<dimensionnement_apps>>) en RAM des applications.
 
-En partant de cette estimation globale, nous calculons pour différents types de VMs le nombre de VM nécessaires (cf. <<dimensionnement_serveurs>>).
+En partant de cette estimation globale, nous calculons en fonction de la puissance de VMs le nombre de VMs nécessaires (cf. <<dimensionnement_serveurs>>).
 
-Pour calculer le nombre de nœuds il faut prendre en compte l'exécution, sur chaque nœud :
-
-* d'un agent https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/[kubelet]
-* d'un agent https://www.elastic.co/fr/products/beats/filebeat[FileBeat] pour la centralisation des logs
+* Pour calculer la RAM utile d'un serveur il faut prendre en compte l'exécution, sur chaque nœud :
+  * d'un agent https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/[kubelet]
+  * d'un agent https://www.elastic.co/fr/products/beats/filebeat[FileBeat] pour la centralisation des logs
 
 #VM = #RAM Total / (#RAM VM - #RAM Kubelet - # RAM FileBeat)
-
-[[dimensionnement_serveurs]]
-.Dimensionnement des Serveurs
-|===
-|RAM / Instance| #Instance
-
-|8 Go
-|6,615384615
-
-|64 Go
-|0,688
-|===
 
 [[dimensionnement_apps]]
 .Dimensionnement des Applications
@@ -283,7 +272,7 @@ Pour calculer le nombre de nœuds il faut prendre en compte l'exécution, sur ch
 
 |===
 
-.Dimensionnement des nœuds du cluster
+.Dimensionnement non utile des nœuds du cluster
 |===
 |Service| RAM
 
@@ -292,6 +281,18 @@ Pour calculer le nombre de nœuds il faut prendre en compte l'exécution, sur ch
 
 |FileBeat
 |0,5 Go
+|===
+
+[[dimensionnement_serveurs]]
+.Dimensionnement des Serveurs
+|===
+|RAM / Instance| #Instance
+
+|8 Go
+|6,615384615
+
+|64 Go
+|0,688
 |===
 
 === Pricing
@@ -371,7 +372,7 @@ La gestion des pannes du cluster est gérée de deux manières.
 
 La première solution consiste à faire un backup des données du cluster. En cas de panne du master, nous pouvons recréer un master identique au master en panne (en repartant des données du backup).
 
-L'état du cluster est géré via une base de données clef-valeur https://coreos.com/etcd/[etcd].
+* L'état du cluster est géré via une base de données clef-valeur https://coreos.com/etcd/[etcd].
 
 La seconde solution plus complexe consiste à réaliser une installation multi-maîtres. Dans ce cas, la brique qui contient l'état du cluster (i.e. le serveur etcd) est redondé.
 
