@@ -9,7 +9,7 @@
 ....
 En tant que collaborateur RH 
 Quand je crée un collaborateur
-Alors son parcours d'intégratio démarre
+Alors son parcours d'intégration démarre
 ....
 
 ==== Liste des RG

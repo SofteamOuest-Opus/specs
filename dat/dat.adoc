@@ -151,8 +151,18 @@ Pour commencer, nous estimons les besoins globaux (cf. <<dimensionnement_apps>>)
 
 [[dimensionnement_apps]]
 .Dimensionnement des Services
+
+Hypothèses concernant le dimensionnement des services développés :
+ 
+* Les services backend nécessitent 1 Go RAM
+* Les services développés sont déployés deux fois (une fois en DEV et une fois en PROD)
+
+Information concernant le dimensionnement du Kafka :
+
+* En DEV, Kafka est mono instance. En PROD, Kafka a 3 instances (pour Haute Disponibilité).
+
 |===
-|  Service | Techno | RAM / Instance | Disk / Instance | Instance | Total RAM | Total Disk | CPU
+|  Service | Techno | RAM / Instance | Disk / Instance | Nb Instance | Total RAM | Total Disk | Total CPU
 |  Jenkins | Java | 4 | 20 | 1 | 4 | 20 | 1
 |  Nexus | Java | 4 | 30 | 1 | 4 | 30 | 1
 |  SonarQube | Java | 4 | 30 | 1 | 4 | 30 | 1
