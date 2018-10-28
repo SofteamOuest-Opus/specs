@@ -39,7 +39,7 @@ Description des fonctionnalités de l'application.
 ----
 
 ==== Business rules
-* <<USM_BR_1>>
+* <<_usm_br_1>>
 
 === Scénario USM_M_1
 
@@ -50,7 +50,7 @@ Description des fonctionnalités de l'application.
 ----
 
 ==== Business rules
-* <<USM_BR_2>>
+* <<_usm_br_2>>
 
 === Scénario USM_S_1
 
@@ -61,12 +61,12 @@ Description des fonctionnalités de l'application.
 ----
 
 ==  Business rules list
-==== USM_BR_1
+== USM_BR_1
 ....
 Skill levels are integers between 1 and 5 inclusive
 ....
 
-==== USM_BR_2
+== USM_BR_2
 ....
 Manager is a profile for sales people, HR and local managers
 ....
