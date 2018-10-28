@@ -4,13 +4,16 @@
 
 == Scenarios
 
-=== Scenario TEAM_001
+=== Scenario TEAM_001: Browse teams
 ....
 Given I am logged as a XXXX
 When I access to team selection screen
 Then I can see the teams present in the system
 ....
-=== Scenario TEAM_002
+==== Business rules
+* <<BR BROWSE_1>>
+
+=== Scenario TEAM_002: Edit team
 ....
 Given I am logged as a XXXX on the selection screen
 When I select a team
@@ -21,11 +24,11 @@ Then I can set minimum skill requirements the team must meet
 * <<BR SKILL_2>>
 * <<BR SKILL_3>>
 
-=== Scenario TEAM_003
+=== Scenario TEAM_003: Display skill requirements
 ....
 Given I am logged as a XXXX on the selection screen
 When I select a team
-Then I can see team's composition and there skill level for each skill requirement set on the team
+Then I can see team's composition and their skill level for each skill requirement set on the team
 ....
 ==== Business rules
 * <<BR SKILL_1>>
@@ -33,11 +36,11 @@ Then I can see team's composition and there skill level for each skill requireme
 * <<BR SKILL_3>>
 * <<BR SKILL_4>>
 
-=== Scenario TEAM_004
+=== Scenario TEAM_004: Display skill radar
 ....
 Given I am logged as a XXXX on the selection screen
 When I select a team
-Then I can see the minimu team skill requirements in a radar, filled with the maximum skill level reached by the team members
+Then I can see the minimum team skill requirements in a radar, filled with the maximum skill level reached by the team members
 ....
 ==== Business rules
 * <<BR SKILL_1>>
@@ -45,7 +48,7 @@ Then I can see the minimu team skill requirements in a radar, filled with the ma
 * <<BR SKILL_3>>
 * <<BR SKILL_4>>
 
-=== Scenario EVENT_LISTEN_001
+=== Scenario EVENT_LISTEN_001: Team creation
 ....
 Given Team Skill management running
 When a team creation event is broadcasted
@@ -56,7 +59,7 @@ Then the team must be saved in the system and accessible through the team select
 * <<BR EVENT_TEAM_1>>
 * <<BR EVENT_TEAM_2>>
 
-=== Scenario EVENT_LISTEN_002
+=== Scenario EVENT_LISTEN_002: Team update
 ....
 Given Team Skill management running
 When a team update event is broadcasted
@@ -67,7 +70,18 @@ Then the team name and it's members must be updated
 * <<BR EVENT_TEAM_1>>
 * <<BR EVENT_TEAM_2>>
 
-=== Scenario EVENT_LISTEN_003
+=== Scenario EVENT_LISTEN_003: Team delete
+....
+Given Team Skill management running
+When a team delete event is broadcasted
+Then the team must no longer be visible on the team selection screen
+....
+==== Business rules
+* <<BR TEAM_1>>
+* <<BR EVENT_TEAM_1>>
+* <<BR EVENT_TEAM_2>>
+
+=== Scenario EVENT_LISTEN_004: User creation
 ....
 Given Team Skill management running
 When a user-creation event is broadcasted
@@ -77,7 +91,7 @@ Then the user last name and first name must be visible on the team edition scree
 * <<BR USER_1>>
 * <<BR USER_2>>
 
-=== Scenario EVENT_LISTEN_004
+=== Scenario EVENT_LISTEN_005: User update
 ....
 Given Team Skill management running
 When a user-update event is broadcasted
@@ -87,14 +101,14 @@ Then the user last name and first name must be updated on the team edition scree
 * <<BR USER_1>>
 * <<BR USER_2>>
 
-=== Scenario EVENT_LISTEN_005
+=== Scenario EVENT_LISTEN_006: User delete
 ....
 Given Team Skill management running
 When a user-delete event is broadcasted
 Then the user be deleted from the team to which it belongs
 ....
 
-=== Scenario EVENT_LISTEN_006
+=== Scenario EVENT_LISTEN_007: User skill update
 ....
 Given Team Skill management running
 When a user-skill-update event is broadcasted
@@ -105,7 +119,7 @@ Then the user skill levels must be updated on the team edition screen
 * <<BR EVENT_USER_SKILL_2>>
 * <<BR SKILL_1>>
 
-=== Scenario EVENT_PUBLISH_001
+=== Scenario EVENT_PUBLISH_001: Team requirement updated
 ....
 Given I am logged as a XXXX on the selection screen
 When the minimum skill requirements of a team is edited
@@ -114,6 +128,12 @@ Then an update event must be broadcasted
 
 == Business rule list
 
+=== BR BROWSE_1
+....
+On the team selection screen, the following information must be displayed:
+* the team name
+* the number of requirements
+....
 === BR SKILL_1
 ....
 Skill levels are integers between 1 and 5 inclusive
