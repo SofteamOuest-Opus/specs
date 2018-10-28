@@ -149,9 +149,6 @@ L'objectif du dimensionnement est d'estimer les ressources CPU & RAM nécessaire
 
 Pour commencer, nous estimons les besoins globaux (cf. <<dimensionnement_apps>>) en RAM et CPU des services unitairement.
 
-[[dimensionnement_apps]]
-.Dimensionnement des Services
-
 Hypothèses concernant le dimensionnement des services développés :
  
 * Les services backend nécessitent 1 Go RAM
@@ -161,6 +158,8 @@ Information concernant le dimensionnement du Kafka :
 
 * En DEV, Kafka est mono instance. En PROD, Kafka a 3 instances (pour Haute Disponibilité).
 
+[[dimensionnement_apps]]
+.Dimensionnement des Services
 |===
 |  Service | Techno | RAM / Instance | Disk / Instance | Nb Instance | Total RAM | Total Disk | Total CPU
 |  Jenkins | Java | 4 | 20 | 1 | 4 | 20 | 1
