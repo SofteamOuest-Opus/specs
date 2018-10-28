@@ -6,22 +6,69 @@
 
 Description des fonctionnalités de l'application.
 
-=== Scénario 1
+=== Scénario USM_E_1
 
 ----
- Given
- When
- Then
+ Given an User with valid credentials
+ When I login as an Employee
+ Then I can view my own skills
 ----
 
-=== Scénario 2
+=== Scénario USM_E_2
 
 ----
- Given
- When
- Then
+ Given an User logged as an Employee
+ When I view my own skills
+ Then my skills are organised by back, front or devops skills
 ----
 
-==  RGs list
+=== Scénario USM_E_3
+
+----
+ Given an User logged as an Employee
+ When I edit my own skill
+ Then I can add a new skill from a list or create a new one
+----
+
+=== Scénario USM_E_4
+
+----
+ Given an User logged as an Employee
+ When I add a new skill
+ Then I can define my level in that skill
+----
+
+==== Business rules
+* <<USM_BR_1>>
+
+=== Scénario USM_M_1
+
+----
+ Given an User logged as a Manager
+ When I can search Employees by skills and level
+ Then I view a list of Employees matching the search criteria
+----
+
+==== Business rules
+* <<USM_BR_2>>
+
+=== Scénario USM_S_1
+
+----
+ Given an User logged
+ When I create a new skill
+ Then I can tag this skill as back, front or devops skill
+----
+
+==  Business rules list
+==== USM_BR_1
+....
+Skill levels are integers between 1 and 5 inclusive
+....
+
+==== USM_BR_1
+....
+Manager is a profile for sales people, HR and local managers
+....
 
 
