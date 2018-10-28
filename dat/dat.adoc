@@ -156,7 +156,7 @@ Hypothèses concernant le dimensionnement des services développés :
 
 Information concernant le dimensionnement du Kafka :
 
-* En DEV, Kafka est mono instance. En PROD, Kafka a 3 instances (pour Haute Disponibilité).
+* En DEV, Kafka a 1 instance. En PROD, Kafka a 3 instances (pour Haute Disponibilité).
 
 [[dimensionnement_apps]]
 .Dimensionnement des Services
