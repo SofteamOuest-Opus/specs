@@ -18,7 +18,7 @@ La conception du système est basée sur le pattern https://martinfowler.com/art
 
 * Les événements métier sont publiés sur le bus de message. Ceci permet par exemple a une application de s'abonner aux événements de création d'utilisateur pour conserver sa base de données d'utilisateurs à jour.
 
-De cette manière, chaque application dispose d'une base de données locale qui lui permet de stocker ses données propres ainsi qu'une vue des données (des autres applications) nécessaires à son fonctionnement. Chaque application gère par exemple sa propre liste d'utilisateurs en ne filtrant que les informations utiles.
+De cette manière, chaque application dispose d'une base de données locale qui lui permet de stocker ses données propres ainsi qu'une vue des données des autres applications nécessaires à son fonctionnement. Chaque application gère par exemple sa propre liste d'utilisateurs en ne filtrant que les informations utiles.
 
 Ces mécanismes de communication asynchrones simplifient l'intégration de nouvelles applications.
 
@@ -43,7 +43,7 @@ Le tableau ci-dessous liste les services implémentés dans le cadre du projet.
 |Accessible uniquement du cluster
 
 |Blob Management
-|Gestion du stockage de Fichiers
+|Gestion de Fichiers
 |HTTPS
 
 |User Management
@@ -55,7 +55,7 @@ Le tableau ci-dessous liste les services implémentés dans le cadre du projet.
 |HTTPS
 
 |Team Management
-|Gestion des données Equipe
+|Gestion des données Équipe
 |HTTPS
 
 |User Skill Management
@@ -63,7 +63,7 @@ Le tableau ci-dessous liste les services implémentés dans le cadre du projet.
 |HTTPS
 
 |Team Skill Management
-|Gestion des compétences des Equipes
+|Gestion des compétences des Équipes
 |HTTPS
 
 |Plan de charge
@@ -112,7 +112,7 @@ L'architecture physique est basée sur 2 types de ressources :
 * Des VMs Linux (CentOS)
 * Des partitions NFS pour la persistance des données
 
-Les applications sont gérées par un cluster Kubernetes déployées sur les VMs.
+Les applications sont gérées par un cluster Kubernetes déployées sur ces VMs.
 
 Les données des applications sont stockées sur les partitions NFS.
 
@@ -120,7 +120,7 @@ Les données des applications sont stockées sur les partitions NFS.
 
 Le cluster Kubernetes est un orchestrateur Docker : il permet d'automatiser le déploiement, la mise à l'échelle (scaling), la gestion d'applications conteneurisées.
 
-K8s ne gère pas la persistance des données des applications. K8s permet néanmoins aux conteneurs d'utiliser des moyens de persistance externes (exemple: partition NFS).
+K8s ne gère pas la persistance des données des applications. K8s fournit des mécanismes qui permettent aux conteneurs d'utiliser des moyens de persistance externes (exemple: partition NFS).
 
 ==== Nœuds du Cluster
 
@@ -141,13 +141,13 @@ L'enregistrement DNS est réalisé chez OVH.
 
 === Partitions NFS
 
-Les partitions NFS sont fournies par OVH. 
-
-* OVH gère la haute disponibilité et le backup des partitions
+Les partitions NFS sont fournies par OVH. Le service gère la haute disponibilité et le backup des partitions
 
 === Dimensionnement
 
-Pour commencer, nous estimons les besoins globaux (cf. <<dimensionnement_apps>>) en RAM et CPU des services.
+L'objectif du dimensionnement est d'estimer les ressources CPU & RAM nécessaires pour exécuter les services de l'Usine ainsi que les applications développées. Nous gérons deux types d'environnements applicatifs : un environnement de DEV pour la mise au point des applications et un environnement de PROD pour les utilisateurs.
+
+Pour commencer, nous estimons les besoins globaux (cf. <<dimensionnement_apps>>) en RAM et CPU des services unitairement.
 
 [[dimensionnement_apps]]
 .Dimensionnement des Services
@@ -175,6 +175,8 @@ Pour commencer, nous estimons les besoins globaux (cf. <<dimensionnement_apps>>)
 |  Total |  |  |  | 32 | 43 Go | 195 Go | 19 vCPU
 |===
 
+Ainsi, le cluster doit avoir une capacité de 43 Go RAM et 19 vCPU.
+
 Ensuite, nous calculons le nombre de VMs nécessaires en fonction de :
 
 * La puissance de VMs (cf. <<dimensionnement_serveurs>>)
@@ -196,7 +198,7 @@ Pour terminer, nous caractérisons le cluster en termes de coûts, vCPU et RAM.
 |  SP-64 | 64 | 8 | 99.99 | 1 | 64 | 8 | 99.99
 |===
 
-Les deux solutions VPS SSD 3 et SP-64 sont assez similaires. Nous préférons la solution à base de VPS qui nous permettra de tester différentes architectures Kubernetes (exemple : single master, multi masters).
+Les deux solutions VPS SSD 3 et SP-64 sont assez similaires en terme de prix. Nous préférons la solution à base de VPS qui nous permettra de tester différentes architectures Kubernetes (exemple : single master, multi masters).
 
 == SÉCURITÉ
 
@@ -224,15 +226,7 @@ La gestion des pannes des applications est gérée par Kubernetes.
 
 Pour y arriver, Kubernetes se base sur https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/[les lignes de vie des applications].
 
-Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de redémarrer l'application. Chaque application déployée doit donc définir ses lignes de vie.
-
-....
-@TAG SCN_APP_HEALTHCHECK
-Scenario: Application HealthCheck
-Given I am a developer of an application
-When the applications probes do not respond
-Then the Kubernetes restarts the application
-....
+Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de redémarrer l'application. Chaque application déployée doit donc définir ses lignes de vie (@see <<REQ_APP_PROBE>>).
 
 ==== Pannes du Cluster
 
@@ -242,7 +236,7 @@ La première solution consiste à faire un backup des données du cluster (@REQ_
 
 * L'état du cluster est géré via une base de données clef-valeur https://coreos.com/etcd/[etcd].
 
-La seconde solution plus complexe consiste à réaliser une installation multi-maîtres. Dans ce cas, la brique qui contient l'état du cluster (i.e. le serveur etcd) est redondé.
+La seconde solution plus complexe consiste à réaliser une installation multi-maîtres. Dans ce cas, la brique qui contient l'état du cluster (i.e. le serveur etcd) est redondé. Cette seconde solution nécessite aussi le backup des données du cluster.
 
 Remarque :
 
@@ -255,6 +249,10 @@ Remarque :
 
 Authentication/authorisation is achieved via https://openid.net/connect/[OpenID Connect].
 
+=== REQ_APP_PROBE
+
+All services must define liveness and readiness probes.
+
 === REQ_CLUSTER_SSH
 
 Users connect to the cluster using a public SSH key.
@@ -266,7 +264,3 @@ The Kubernetes state must be backed up regularly.
 === REQ_K8S_RESTORE
 
 The Kubernetes state must be restorable from a Snapshot.
-
-=== REQ_K8S_APP_PROBE
-
-In order to handle application faults (via Kubernetes), applications must define the liveness probes.
