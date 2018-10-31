@@ -6,69 +6,95 @@
 
 Description des fonctionnalités de l'application.
 
-=== Scénario USM_E_1
+=== Scénario USM_EMPL_VIEW
 
 ----
+ @TAG SCN_EMPL_VIEW_SKILLS
  Given an User with valid credentials
  When I login as an Employee
  Then I can view my own skills
+ and my skills are organised by type of skills
 ----
 
-=== Scénario USM_E_2
+=== Scénario USM_EMPL_ADD
 
 ----
+ @TAG SNC_EMPL_EDIT_SKILLS REQ_USM_SKILL_1 REQ_USM_SKILL_2
  Given an User logged as an Employee
- When I view my own skills
- Then my skills are organised by back, front or devops skills
-----
-
-=== Scénario USM_E_3
-
-----
- Given an User logged as an Employee
- When I edit my own skill
+ When I edit my skills
  Then I can add a new skill from a list or create a new one
-----
-
-=== Scénario USM_E_4
-
-----
- Given an User logged as an Employee
- When I add a new skill
  Then I can define my level in that skill
 ----
 
 ==== Business rules
-* <<_usm_br_1>>
+* <<REQ_USM_SKILL_1>>
+* <<REQ_USM_SKILL_2>>
 
-=== Scénario USM_M_1
+=== Scénario USM_EMPL_MODIFY_LEVEL
 
 ----
- Given an User logged as a Manager
- When I can search Employees by skills and level
- Then I view a list of Employees matching the search criteria
+ @TAG SNC_EMPL_MODIFY_SKILLS REQ_USM_SKILL_2
+ Given an User logged as an Employee
+ When I edit my skills
+ Then I can modify the level of a skill
 ----
 
 ==== Business rules
-* <<_usm_br_2>>
+* <<REQ_USM_SKILL_2>>
 
-=== Scénario USM_S_1
+=== Scénario USM_EMPL_DEELTE
 
 ----
+ @TAG SNC_EMPL_DELETE_SKILL REQ_USM_SKILL_2
+ Given an User logged as an Employee
+ When I edit my skills
+ Then I can delete a skill
+----
+
+=== Scénario USM_MGR_1
+
+----
+ @TAG SCN_MGR_SEARCH_EMPLOYEE REQ_USM_PROFILE
+ Given an User logged as a Manager
+ When I can search Employees by skills, level or type of skill
+ Then I view a list of Employees matching the search criteria
+ Then I can select an Employee
+ And view the detail of his skills
+----
+
+==== Business rules
+* <<REQ_USM_PROFILE>>
+
+=== Scénario USM_SKILL_1
+
+----
+ @TAG SCN_CREATE_SKILL
  Given an User logged
  When I create a new skill
  Then I can tag this skill as back, front or devops skill
 ----
 
 ==  Business rules list
-== USM_BR_1
+== REQ_USM_SKILL_1
+....
+Skills are define by a technology name and a type
+....
+
+== REQ_USM_SKILL_2
 ....
 Skill levels are integers between 1 and 5 inclusive
 ....
 
-== USM_BR_2
+== REQ_USM_SKILL_3
+....
+Skills can be type of FRONT, BACK or DEVOPS
+....
+
+== REQ_USM_PROFILE
 ....
 Manager is a profile for sales people, HR and local managers
 ....
+
+
 
 
