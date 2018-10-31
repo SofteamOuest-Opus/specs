@@ -1,0 +1,17 @@
+= Français / English glossary
+
+[options="header"]
+|==============================================================================
+| Français                              | English
+| Spécifications fonctionnelles         | Software requirements document _or_ Software requirements specification 
+| Règle de gestion                      | Business rule 
+| Collaborateur                         | Employee 
+| Resources humaines                    | Human resource manager    
+| Direction                             | Top management             
+| Date d'embauche                       | Date of hire
+| Date de départ                        | Leaving date
+| Cause de départ                       | Leaving cause
+| Stage                                 | Internship
+| Sous-traitant                         | Subcontractor
+| Indépendant                           | Freelancer
+|==============================================================================

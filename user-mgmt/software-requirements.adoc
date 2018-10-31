@@ -7,14 +7,6 @@
 === Scenario U_1
 
 ....
-Given an Employee with valid credentials
-When I login as this Employee
-Then I can access the application according to my permissions
-....
-
-=== Scenario U_2
-
-....
 Given an Employee
 When I am logged in as this Employee 
 Then I can view my profile and personal data
@@ -25,9 +17,9 @@ I can read and control my personal data
 
 ==== Business Rules
 
-<<RG U_2_1>>
+<<RG U_1_1>>
 
-=== Scenario U_3
+=== Scenario U_2
 
 ....
 Given an Employee
@@ -40,11 +32,11 @@ my profile is up to date
 
 ==== Business Rules
 
-<<RG U_3_1>>
+<<RG U_2_1>>
 
-<<RG U_3_2>>
+<<RG U_2_2>>
 
-=== Scenario U_4
+=== Scenario U_3
 
 ....
 Given a Human resource manager
@@ -58,11 +50,11 @@ I can check her/his personal data
 
 ==== Business Rules
 
-<<RG U_2_1>> 
+<<RG U_1_1>> 
 
-<<RG U_4_1>>
+<<RG U_3_1>>
 
-=== Scenario U_5
+=== Scenario U_4
 
 ....
 Given a Human resource manager
@@ -76,11 +68,13 @@ sensitive information on his profile are up to date
 
 ==== Business Rules
 
-<<RG U_3_1>> 
+<<RG U_2_1>> 
 
-<<RG U_5_1>>
+<<RG U_2_2>> 
 
-=== Scenario U_6
+<<RG U_4_1>>
+
+=== Scenario U_5
 
 ....
 Given a Human resource manager
@@ -93,13 +87,13 @@ sensitive information on his profile are up to date
 
 ==== Business Rules
 
-<<RG U_3_1>>
+<<RG U_2_1>>
 
-<<RG U_3_2>>
+<<RG U_2_2>>
 
-<<RG U_5_1>>
+<<RG U_4_1>>
 
-=== Scenario U_7
+=== Scenario U_6
 
 ....
 Given a Human resource manager
@@ -113,59 +107,11 @@ his profile can be made anonymous and be GDPR conformant
 
 ==== Business Rules
 
-<<RG U_7_1>>
-
-== System Scenario List
-
-=== Scenario S_1
-
-....
-Given an Employee list
-When I bulk insert this list
-Then all employees are created or updated
-....
-
-So that::
-database is seeded faster
-
-==== Business Rules
-
-<<RG S_1_1>>
-
-=== Scenario S_2
-
-....
-Given an Employee
-And an authenticated external application
-When that external application requests for personal data of this Employee
-Then it can read personal data of this Employee
-....
-
-So that::
-it can update his own database
-
-==== List of Business Rules
-
-<<RG S_2_1>>
-
-<<RG S_2_2>>
-
-
-=== Scenario S_4
-
-....
-Given an Employee
-And an authenticated external application
-When this employee is updated
-Then that external application is notified of the update
-....
-
-So that::
-The external application can perform any relevant operation of its own
+<<RG U_6_1>>
 
 == Business Rules
 
-=== RG U_2_1
+=== RG U_1_1
 
 Personal data _readable_ by Employee are :
 
@@ -178,9 +124,10 @@ Personal data _readable_ by Employee are :
 * Manager
 * Human resource manager
 * Status (Internship/Subcontractor/Freelancer)
-* Permissions (Employee/Human resource manager/Top management)
+* Function
+* Access rights (Employee/Human resource manager/Top management)
 
-=== RG U_3_1
+=== RG U_2_1
 
 Personal data _editable_ by Employee on _his own profile_ are :
 
@@ -189,19 +136,14 @@ Personal data _editable_ by Employee on _his own profile_ are :
 * E-mail address
 * Photo
 
-=== RG U_3_2
+=== RG U_2_2
 
-Rules for personal data _editable_ by Employee :
-
-Mandatory data::
+Mandatory fields in personal data ::
 * Last Name
 * First Name
 * E-mail address
 
-Optional data::
-* Photo
-
-=== RG U_4_1
+=== RG U_3_1
 
 Personal data _readable_ by Human resource manager on _any profile_ are :
 
@@ -216,9 +158,10 @@ Personal data _readable_ by Human resource manager on _any profile_ are :
 * Manager
 * Human resource manager
 * Status (Internship/Subcontractor/Freelancer)
-* Permissions (Employee/Human resource manager/Top management)
+* Function
+* Access rights (Employee/Human resource manager/Top management)
 
-=== RG U_5_1
+=== RG U_4_1
 
 Personal data _editable_ by Human resource manager on _any profile_ are :
 
@@ -233,9 +176,10 @@ Personal data _editable_ by Human resource manager on _any profile_ are :
 * Manager
 * Human resource manager
 * Status (Internship/Subcontractor/Freelancer)
-* Permissions (Employee/Human resource manager/Top management)
+* Function
+* Access rights (Employee/Human resource manager/Top management)
 
-=== RG U_7_1
+=== RG U_6_1
 
 Personal data to anonymize are :
 
@@ -244,45 +188,6 @@ Personal data to anonymize are :
 * E-mail address
 * Photo URL
 * Day/Month of Date of Hire
-* Day/Month of Leaving date
-
-=== RG S_1_1
-
-Bulk inserted personal data are  :
-
-* Last Name
-* First Name
-* E-mail address
-* Office (Nantes/Rennes)
-* Manager
-* Human resource manager
-* Status (Internship/Subcontractor/Freelancer)
-* Permissions (Employee/Human resource manager/Top management)
-
-=== RG S_2_1
-
-Personal data _readable_ by external application are :
-
-* Technical identifier
-* Last Name
-* First Name
-* E-mail address
-* Photo URL
-* Office (Nantes/Rennes)
-* Manager
-* Human resource manager
-* Status (Internship/Subcontractor/Freelancer)
-* Permissions (Employee/Human resource manager/Top management)
-
-
-=== RG S_2_1
-
-The external application can request information for an employee by searching with :
-
-* Technical identifier
-* Last Name
-* First Name
-* E-mail address
 
 == Annexes
 
@@ -294,21 +199,7 @@ The external application can request information for an employee by searching wi
 * System
 * External application
 
-=== Français / English glossary
-
-[options="header"]
-|==============================================================================
-| Français                              | English
-| Spécifications fonctionnelles         | Software requirements document _or_ Software requirements specification 
-| Règle de gestion                      | Business rule 
-| Collaborateur                         | Employee 
-| Resources humaines                    | Human resource manager    
-| Direction                             | Top management             
-| Date d'embauche                       | Date of hire
-| Date de départ                        | Leaving date
-| Cause de départ                       | Leaving cause
-| Stage                                 | Internship
-| Sous-traitant                         | Subcontractor
-| Indépendant                           | Freelancer
-|==============================================================================
-
+=== Status
+* Internship
+* Subcontractor
+* Freelancer
