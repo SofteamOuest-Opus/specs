@@ -14,6 +14,7 @@ Then entire projects list is displayed
 Given User is connected as 'project manager'
 When User create a new project
 And User specify a name and a customer
+And User validate creation
 And User asks projects list
 Then project is visible in projects list
 ....
@@ -22,9 +23,11 @@ Then project is visible in projects list
 
 ....
 Given User is connected as 'project manager'
-When User change name of one project
+And user select a project
+When user changes project name
+And user changes project customer
 And User asks projects list
-Then project name is changed
+Then project name and customer are changed
 ....
 
 === Scenario PRJ_4 : Delete project
@@ -38,9 +41,9 @@ Then project no longer exists
 
 ==== Business Rules List
 
-<<RG_PRJ_1_1>>, <<RG_PRJ_1_2>>,<<RG_PRJ_2>>, <<RG_PRJ_3>>
+<<RG_PRJ_1_1>>,<<RG_PRJ_1_2>>,<<RG_PRJ_2>>,<<RG_PRJ_3>>
 
-===== RG_PRJ_1
+===== RG_PRJ_1_1
 
 Data of a project are :
 
@@ -49,14 +52,13 @@ Data of a project are :
 * Description : readable/writable
 * Customer : readable/writable
 
-===== RG_PRJ_2
+===== RG_PRJ_1_2
 
 Customer associated to a project comes from customer repository
 
-
 ===== RG_PRJ_3
 
-Data diplayed in projects list are :
+Data displayed in projects list are :
 
 * Name : unique, readable/writable
 * Customer : readable/writable
