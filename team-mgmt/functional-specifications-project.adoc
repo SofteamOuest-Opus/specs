@@ -1,58 +1,65 @@
 == Manage projects features
 
-=== Scenario PRJ_1 : List project
+=== Scenario PRJ_1 : List Project
 
 ....
-Given User is connected as 'project manager'
+Given User is connected as Project manager
+And projects exist
 When User asks projects list
 Then entire projects list is displayed
 ....
+<<RG_PRJ_2>>,<<RG_PRJ_3>>,<<RG_PRJ_4>>
 
-=== Scenario PRJ_2 : Add project
+=== Scenario PRJ_2 : Add Project
 
 ....
-Given User is connected as 'project manager'
-When User create a new project
-And User specify a name and a customer
-And User validate creation
+Given User is connected as Project manager
+When User creates a new Project
+And User specifies a name and a Customer
 And User asks projects list
-Then project is visible in projects list
+Then Project is visible in projects list
 ....
+<<RG_PRJ_1>>,<<RG_PRJ_2>>,<<RG_PRJ_4>>
 
-=== Scenario PRJ_3 : Modify project
+=== Scenario PRJ_3 : Modify Project
 
 ....
-Given User is connected as 'project manager'
-And user select a project
-When user changes project name
-And user changes project customer
+Given User is connected as Project manager
+And User select a Project
+When User changes Project name
+And User changes Project Customer
 And User asks projects list
-Then project name and customer are changed
+Then Project name and Customer are changed
 ....
+<<RG_PRJ_1>>,<<RG_PRJ_2>>,<<RG_PRJ_4>>
 
-=== Scenario PRJ_4 : Delete project
+=== Scenario PRJ_4 : Delete Project
 
 ....
-Given User is connected as 'project manager'
+Given User is connected as Project manager
 When User delete one project
 And User asks projects list
 Then project no longer exists
 ....
+<<RG_PRJ_4>>,<<RG_PRJ_5>>
 
 ==== Business Rules List
 
-<<RG_PRJ_1_1>>,<<RG_PRJ_1_2>>,<<RG_PRJ_2>>,<<RG_PRJ_3>>
+<<RG_PRJ_1>>,<<RG_PRJ_2>>,<<RG_PRJ_3>>,<<RG_PRJ_4>>,<<RG_PRJ_5>>
 
-===== RG_PRJ_1_1
+===== RG_PRJ_1
 
 Data of a project are :
 
 * Id : unique, readable
 * Name : unique, readable/writable
 * Description : readable/writable
-* Customer : readable/writable
+* Customer : association
 
-===== RG_PRJ_1_2
+All fields are mandatory
+
+
+===== RG_PRJ_2
 
 Customer associated to a project comes from customer repository
 
@@ -65,4 +72,8 @@ Data displayed in projects list are :
 
 ===== RG_PRJ_4
 
-Role allowed to add/modify/delete/request project is 'Project manager'
+Role allowed to add/modify/delete/request project is Project manager
+
+===== RG_PRJ_5
+
+Project can be delete only if it is not associated to a Customer

@@ -3,65 +3,72 @@
 === Scenario TEA_1 : List teams
 
 ....
-Given User is connected as 'team manager'
+Given User is connected as Team manager
 When User asks teams list
 Then entire teams list is displayed
 ....
+<<RG_TEA_3>>,<<RG_TEA_5>>,<<RG_TEA_6>>
 
-=== Scenario TEA_2 : Add team
+=== Scenario TEA_2 : Add Team
 
 ....
-Given User is connected as 'team manager'
-When User create a new team with name
+Given User is connected as Team manager
+When User create a new Team with name and description
 And User asks teams list
-Then team is visible in teams list
+Then Team is visible in teams list
 ....
+<<RG_TEA_1>>,<<RG_TEA_3>>
 
-=== Scenario TEA_3 : Add team member
-
-....
-Given User is connected as 'team manager'
-When User search and select a team in existing teams
-And User search and select a person
-And User select function for the member
-And User add member to the team
-Then member is added to team
-....
-
-=== Scenario TEA_4 : Delete team member
+=== Scenario TEA_3 : Add Team member
 
 ....
-Given User is connected as 'team manager'
-When User search and select a team in existing teams
-And User delete team member
-Then member is deleted from  team
+Given User is connected as Team manager
+When User search and select a Team in existing teams
+And User search and select a Person as Member
+And User select Function for the Team member
+And User add Member to the Team
+Then Member is added to Team
 ....
+<<RG_TEA_1>>,<<RG_TEA_3>>,<<RG_TEA_4>>
 
-=== Scenario TEA_5 : Associate team project
-
-....
-Given User is connected as 'team manager'
-When User search and select a team in existing teams
-User search and select a project in existing projects
-Then project is associated with team
-....
-
-=== Scenario TEA_6 : Display team
+=== Scenario TEA_4 : Delete Team member
 
 ....
-Given User is connected as 'team manager'
-When User search and select a team in existing teams
-Then team is displayed
+Given User is connected as Team manager
+When User search and select a Team in existing teams
+And User delete Team member
+Then Team member is deleted from Team
 ....
+<<RG_TEA_6>>
 
-=== Scenario TEA_7 : Delete team
+=== Scenario TEA_5 : Associate Team project
 
 ....
-Given User is connected as 'team manager'
-When User search and select a team in existing teams
-And User delete team
-Then team i no longer visible in teams list
+Given User is connected as Team manager
+When User search and select a Team in existing teams
+User search and select a Project in existing projects
+Then Project is associated with Team
 ....
+<<RG_TEA_1>>,<<RG_TEA_5>>
+
+=== Scenario TEA_6 : Display Team
+
+....
+Given User is connected as Team manager
+When User search and select a Team in existing teams
+Then Team is displayed
+....
+<<RG_TEA_1>>
+
+=== Scenario TEA_7 : Delete Team
+
+....
+Given User is connected as Team manager
+When User search and select a Team in existing teams
+And User delete Team
+Then Team is no longer visible in teams list
+....
+<<RG_TEA_3>>
 
 ==== Business Rules List
 
@@ -74,31 +81,32 @@ Data of a team are :
 * Id : unique, readable
 * Name : unique, readable/writable
 * Description : readable/writable
-* List of members : person object
-* Project
+* List of members : Person from repository
+* Project : Person from repository
 
 ===== RG_TEA_2
 
 Data displayed in teams list are :
 
 * Name
+* Project
 
 ===== RG_TEA_3
 
-Role allowed to add/modify/delete/request teams is 'Team manager'
+Role allowed to add/modify/delete/request teams is Team manager
 
 ===== RG_TEA_4
 
-For each member added to a team, functions assignable to member are : 'Project manager', 'Project leader', 'Scrum master', 'Team leader', 'Developer', 'Architect', 'Analyst'
+For each Member added to a Team member, assignable functions to Member are : 'Project manager', 'Project leader', 'Scrum master', 'Team leader', 'Developer', 'Architect', 'Analyst'
 
 ===== RG_TEA_5
 
-A team can be associated with only one project
+A Team can be associated with only one Project
 
 ===== RG_TEA_6
 
-Search criteria for team are :
+Search criteria for Team are :
 * Team name
 * Team description
-* Project name of the team
-* Firstname/Lastname of team member
+* Project name of the Team
+* Firstname/Lastname of Team member
