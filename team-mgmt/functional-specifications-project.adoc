@@ -13,6 +13,7 @@ Then entire projects list is displayed
 ....
 Given User is connected as 'project manager'
 When User create a new project
+And User specify a name and a customer
 And User asks projects list
 Then project is visible in projects list
 ....
@@ -37,26 +38,29 @@ Then project no longer exists
 
 ==== Business Rules List
 
-<<RG PRJ_1>>, <<RG PRJ_2>>, <<RG PRJ_3>>
+<<RG_PRJ_1_1>>, <<RG_PRJ_1_2>>,<<RG_PRJ_2>>, <<RG_PRJ_3>>
 
-===== RG PRJ_1
+===== RG_PRJ_1
 
 Data of a project are :
-
 
 * Id : unique, readable
 * Name : unique, readable/writable
 * Description : readable/writable
 * Customer : readable/writable
 
+===== RG_PRJ_2
 
-===== RG PRJ_2
+Customer associated to a project comes from customer repository
+
+
+===== RG_PRJ_3
 
 Data diplayed in projects list are :
 
 * Name : unique, readable/writable
 * Customer : readable/writable
 
-===== RG PRJ_3
+===== RG_PRJ_4
 
 Role allowed to add/modify/delete/request project is 'Project manager'
