@@ -104,14 +104,16 @@ The external application can request information for an employee by searching wi
 
 === RG S_4_1
 
-External application is notified when :
+External application is notified when:
+
 * Employee is created
 * Employee is deleted
 * Employee is modified
 
 === RG S_4_2
 
-Notifications to External application should have :
+Notifications to External application should have:
+
 * Technical identifier
 * Last Name
 * First Name
@@ -128,13 +130,19 @@ cf <<Published events>>
 
 == Source code
 
-* TODO link to GIT repo
+Source code of front and back-end applications are available in git.
+
+https://github.com/SofteamOuest-Opus/user-mgmt
 
 == Data Design
 
 === REST API
 
-* TODO link to Swagger Documentation
+A RESTful API is available to read informations about Employees.
+
+Documentation on methods/arguments of this API is available in OpenAPI format:
+
+https://github.com/SofteamOuest-Opus/user-mgmt/api/docs/openapi.yaml
 
 == Architecture Design
 
@@ -142,7 +150,12 @@ cf <<Published events>>
 
 ==== Published events
 
-* TODO Name of Kafka topic
+Events are published into a message queue whenever an Employee is created, deleted or modified.
+
+Events are published in the _employee_ topic.
+
+Documentation on events and messaes published in this topic is available in Avro format:
+
 * TODO Link to Avro schema
 
 == Interface Design
