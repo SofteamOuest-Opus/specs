@@ -8,23 +8,13 @@
 ....
 Given I am logged as a XXXX
 When I access to team selection screen
-Then I can see the teams present in the system
+Then I can see the teams present in the system with the following information
+* the team name
+* the agency to which the team belongs
+* the number of requirements set
 ....
-==== Business rules
-* <<BR BROWSE_1>>
 
-=== Scenario TEAM_002: Edit team
-....
-Given I am logged as a XXXX on the selection screen
-When I select a team
-Then I can set minimum skill requirements the team must meet
-....
-==== Business rules
-* <<BR SKILL_1>>
-* <<BR SKILL_2>>
-* <<BR SKILL_3>>
-
-=== Scenario TEAM_003: Display skill requirements
+=== Scenario TEAM_002: Display skill requirements
 ....
 Given I am logged as a XXXX on the selection screen
 When I select a team
@@ -35,6 +25,18 @@ Then I can see team's composition and their skill level for each skill requireme
 * <<BR SKILL_2>>
 * <<BR SKILL_3>>
 * <<BR SKILL_4>>
+
+=== Scenario TEAM_003: Edit Team
+....
+Given I am logged as a XXXX on the team details screen
+When I pick a new skill
+And set a corresponding level
+Then I can add that minimum skill requirement to the team
+....
+==== Business rules
+* <<BR SKILL_1>>
+* <<BR SKILL_2>>
+* <<BR SKILL_3>>
 
 === Scenario TEAM_004: Display skill radar
 ....
@@ -52,7 +54,8 @@ Then I can see the minimum team skill requirements in a radar, filled with the m
 ....
 Given Team Skill management running
 When a team creation event is broadcasted
-Then the team must be saved in the system and accessible through the team selection screen
+Then the team must be saved in the system
+And the team must be accessible through the team selection screen
 ....
 ==== Business rules
 * <<BR TEAM_1>>
@@ -128,12 +131,6 @@ Then an update event must be broadcasted
 
 == Business rule list
 
-=== BR BROWSE_1
-....
-On the team selection screen, the following information must be displayed:
-* the team name
-* the number of requirements
-....
 === BR SKILL_1
 ....
 Skill levels are integers between 1 and 5 inclusive
