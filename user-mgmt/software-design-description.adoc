@@ -2,12 +2,139 @@
 
 :toc:
 
+== Technical Scenarios
+
+=== Scenario S_1
+
+....
+Given an Employee with valid credentials
+When I login as this Employee
+Then I can access the application according to my access rights
+....
+
+=== Scenario S_2
+
+....
+Given an Employee list
+When I bulk insert this list
+Then all employees are created or updated
+....
+
+So that::
+database is seeded faster
+
+==== Business Rules
+
+<<RG S_2_1>>
+
+=== Scenario S_3
+
+....
+Given an Employee
+And an authenticated external application
+When that external application requests for personal data of this Employee
+Then it can read personal data of this Employee
+....
+
+So that::
+it can update his own database
+
+==== List of Business Rules
+
+<<RG S_3_1>>
+
+<<RG S_3_2>>
+
+=== Scenario S_4
+
+....
+Given an Employee
+And an authenticated external application
+When this employee is updated
+Then that external application is notified of the update
+....
+
+So that::
+The external application can perform any relevant operation of its own
+
+==== List of Business Rules
+
+cf. <<Events>>
+
+== Business Rules
+
+=== RG S_2_1
+
+Bulk inserted personal data are  :
+
+* Last Name
+* First Name
+* E-mail address
+* Office (Nantes/Rennes)
+* Manager
+* Human resource manager
+* Status (Internship/Subcontractor/Freelancer)
+* Function
+* Access rights (Employee/Human resource manager/Top management)
+
+=== RG S_3_1
+
+Personal data _readable_ by external application are :
+
+* Technical identifier
+* Last Name
+* First Name
+* E-mail address
+* Photo URL
+* Office (Nantes/Rennes)
+* Manager
+* Human resource manager
+* Status (Internship/Subcontractor/Freelancer)
+* Function
+* Access rights (Employee/Human resource manager/Top management)
+
+=== RG S_3_2
+
+The external application can request information for an employee by searching with :
+
+* Technical identifier
+* Last Name
+* First Name
+* E-mail address
+
+=== RG S_4_1
+
+External application is notified when :
+* Employee is created
+* Employee is deleted
+* Employee is modified
+
+=== RG S_4_2
+
+Notifications to External application should have :
+* Technical identifier
+* Last Name
+* First Name
+* E-mail address
+* Photo URL
+* Office (Nantes/Rennes)
+* Manager
+* Human resource manager
+* Status (Internship/Subcontractor/Freelancer)
+* Function
+* Access rights (Employee/Human resource manager/Top management)
+
+cf <<Published events>>
+
+== Source code
+
+* TODO link to GIT repo
+
 == Data Design
 
 === REST API
 
-* TODO Swagger Documentation
-* TODO link to GIT repo
+* TODO link to Swagger Documentation
 
 == Architecture Design
 
@@ -20,4 +147,4 @@
 
 == Interface Design
 
-== Procedural Design
+* TODO
