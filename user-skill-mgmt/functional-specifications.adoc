@@ -89,7 +89,7 @@ Skill levels are integers between 1 and 5 inclusive
 
 == REQ_USM_SKILL_3
 ....
-A tag can be technical like FRONT, BACK, DEVOPS,... or human competence.
+A tag can be technical like FRONT, BACK, DEVOPS,... or a human competence.
 ....
 
 == REQ_USM_PROFILE
