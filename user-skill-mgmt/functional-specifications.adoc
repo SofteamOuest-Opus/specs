@@ -68,13 +68,13 @@ Description des fonctionnalités de l'application.
 === Scénario USM_SKILL_1
 
 ----
- @TAG SCN_CREATE_SKILL
+ @TAG SCN_CREATE_SKILL REQ_USM_SKILL_3
  Given a logged User
  When I create a new skill
- Then I can tag this skill as back, front or devops skill
+ Then I can tag this skill with a existing tag or add a new one
 ----
-
-Question : il n'y aura que 3 types de tags ? On ne pourra pas gérer des compétences humaines ?
+==== Business rules
+* <<REQ_USM_SKILL_3>>
 
 ==  Business rules list
 == REQ_USM_SKILL_1
@@ -89,7 +89,7 @@ Skill levels are integers between 1 and 5 inclusive
 
 == REQ_USM_SKILL_3
 ....
-Skills can be type of FRONT, BACK or DEVOPS
+A tag can be technical like FRONT, BACK, DEVOPS,... or human competence.
 ....
 
 == REQ_USM_PROFILE
