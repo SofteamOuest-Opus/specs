@@ -10,20 +10,20 @@ Description des fonctionnalités de l'application.
 
 ----
  @TAG SCN_EMPL_VIEW_SKILLS
- Given an User with valid credentials
+ Given a User with valid credentials
  When I login as an Employee
- Then I can view my own skills
- and my skills are organised by type of skills
+ Then I can view my skills
+ And my skills are organized by type of skills
 ----
 
 === Scénario USM_EMPL_ADD
 
 ----
  @TAG SNC_EMPL_EDIT_SKILLS REQ_USM_SKILL_1 REQ_USM_SKILL_2
- Given an User logged as an Employee
+ Given a User logged as an Employee
  When I edit my skills
- Then I can add a new skill from a list or create a new one
- Then I can define my level in that skill
+ Then I can add an existing skill or a new one
+ And I can define my level in that skill
 ----
 
 ==== Business rules
@@ -34,7 +34,7 @@ Description des fonctionnalités de l'application.
 
 ----
  @TAG SNC_EMPL_MODIFY_SKILLS REQ_USM_SKILL_2
- Given an User logged as an Employee
+ Given a User logged as an Employee
  When I edit my skills
  Then I can modify the level of a skill
 ----
@@ -42,11 +42,11 @@ Description des fonctionnalités de l'application.
 ==== Business rules
 * <<REQ_USM_SKILL_2>>
 
-=== Scénario USM_EMPL_DEELTE
+=== Scénario USM_EMPL_DELETE
 
 ----
  @TAG SNC_EMPL_DELETE_SKILL REQ_USM_SKILL_2
- Given an User logged as an Employee
+ Given a User logged as an Employee
  When I edit my skills
  Then I can delete a skill
 ----
@@ -55,8 +55,8 @@ Description des fonctionnalités de l'application.
 
 ----
  @TAG SCN_MGR_SEARCH_EMPLOYEE REQ_USM_PROFILE
- Given an User logged as a Manager
- When I can search Employees by skills, level or type of skill
+ Given a User logged as a Manager
+ When I search Employees by skills, level or type of skill
  Then I view a list of Employees matching the search criteria
  Then I can select an Employee
  And view the detail of his skills
@@ -69,10 +69,12 @@ Description des fonctionnalités de l'application.
 
 ----
  @TAG SCN_CREATE_SKILL
- Given an User logged
+ Given a logged User
  When I create a new skill
  Then I can tag this skill as back, front or devops skill
 ----
+
+Question : il n'y aura que 3 types de tags ? On ne pourra pas gérer des compétences humaines ?
 
 ==  Business rules list
 == REQ_USM_SKILL_1
@@ -94,7 +96,3 @@ Skills can be type of FRONT, BACK or DEVOPS
 ....
 Manager is a profile for sales people, HR and local managers
 ....
-
-
-
-
