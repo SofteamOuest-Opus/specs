@@ -21,7 +21,7 @@ Then all employees are created or updated
 ....
 
 So that::
-database is seeded faster
+database can be seeded faster
 
 ==== Business Rules
 
@@ -59,7 +59,11 @@ The external application can perform any relevant operation of its own
 
 ==== List of Business Rules
 
-cf. <<Events>>
+<<RG S_4_1>>
+
+<<RG S_4_2>>
+
+See also: <<Published events>>
 
 == Business Rules
 
@@ -77,6 +81,8 @@ Bulk inserted personal data are  :
 * Function
 * Access rights (Employee/Human resource manager/Top management)
 
+Used in: <<Scenario S_2>>
+
 === RG S_3_1
 
 Personal data _readable_ by external application are :
@@ -93,6 +99,8 @@ Personal data _readable_ by external application are :
 * Function
 * Access rights (Employee/Human resource manager/Top management)
 
+Used in: <<Scenario S_3>>
+
 === RG S_3_2
 
 The external application can request information for an employee by searching with :
@@ -102,6 +110,8 @@ The external application can request information for an employee by searching wi
 * First Name
 * E-mail address
 
+Used in: <<Scenario S_3>>
+
 === RG S_4_1
 
 External application is notified when:
@@ -109,6 +119,8 @@ External application is notified when:
 * Employee is created
 * Employee is deleted
 * Employee is modified
+
+Used in: <<Scenario S_4>>
 
 === RG S_4_2
 
@@ -126,7 +138,9 @@ Notifications to External application should have:
 * Function
 * Access rights (Employee/Human resource manager/Top management)
 
-cf <<Published events>>
+See also: <<Published events>>
+
+Used in: <<Scenario S_4>>
 
 == Source code
 
@@ -160,4 +174,4 @@ Documentation on events and messaes published in this topic is available in Avro
 
 == Interface Design
 
-* TODO
+* TODO Link to Pencil mockups
