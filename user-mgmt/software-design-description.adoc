@@ -168,10 +168,18 @@ Events are published into a message queue whenever an Employee is created, delet
 
 Events are published in the _employee_ topic.
 
-Documentation on events and messaes published in this topic is available in Avro format:
+Documentation on events and messages published in this topic is available in Avro format:
 
-* TODO Link to Avro schema
+https://github.com/SofteamOuest-Opus/user-mgmt/api/docs/employees.avsc
 
 == Interface Design
 
 * TODO Link to Pencil mockups
+
+== Annexes
+
+Open API Specification::
+https://swagger.io/docs/specification/about/
+
+Avro Schema Specification::
+http://avro.apache.org/docs/current/spec.html
