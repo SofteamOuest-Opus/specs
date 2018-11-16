@@ -261,4 +261,4 @@ Access to the Monitoring Server requires authentication (login, password).
 
 === REQ_ENV_ISOLATION
 
-Kubernetes Environments must be isolated. A Kubernete Service can not call the services of other environments.
+Kubernetes Environments must be isolated. A Kubernete Service of a given environment can not call the services of other environments.
