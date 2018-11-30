@@ -1,0 +1,205 @@
+= Software Requirements Specification - User Mgmt Application
+
+:toc:
+
+== List of User Scenarios
+
+=== Scenario U_1
+
+....
+Given an Employee
+When I am logged in as this Employee 
+Then I can view my profile and personal data
+....
+
+So that::
+I can read and control my personal data
+
+==== Business Rules
+
+<<RG U_1_1>>
+
+=== Scenario U_2
+
+....
+Given an Employee
+When I am logged in as this Employee 
+Then I can edit my personal data
+....
+
+So that::
+my profile is up to date
+
+==== Business Rules
+
+<<RG U_2_1>>
+
+<<RG U_2_2>>
+
+=== Scenario U_3
+
+....
+Given a Human resource manager
+And an Employee
+When I am logged in as this Human resource manager 
+I can view that Employee's personal data
+....
+
+So that::
+I can check her/his personal data
+
+==== Business Rules
+
+<<RG U_1_1>> 
+
+<<RG U_3_1>>
+
+=== Scenario U_4
+
+....
+Given a Human resource manager
+And an Employee
+When I am logged in as this Human resource manager 
+I can edit that Employee's personal data
+....
+
+So that::
+sensitive information on his profile are up to date
+
+==== Business Rules
+
+<<RG U_2_1>> 
+
+<<RG U_2_2>> 
+
+<<RG U_4_1>>
+
+=== Scenario U_5
+
+....
+Given a Human resource manager
+When I am logged in as this Human resource manager 
+I can create a new Employee
+....
+
+So that::
+sensitive information on his profile are up to date
+
+==== Business Rules
+
+<<RG U_2_1>>
+
+<<RG U_2_2>>
+
+<<RG U_4_1>>
+
+=== Scenario U_6
+
+....
+Given a Human resource manager
+And an Employee (former or actual)
+When I am logged in as this Human resource manager 
+I can delete personal data of this Employee 
+....
+
+So that::
+his profile can be made anonymous and be GDPR conformant
+
+==== Business Rules
+
+<<RG U_6_1>>
+
+== Business Rules
+
+=== RG U_1_1
+
+Personal data _readable_ by Employee are :
+
+* Last Name
+* First Name
+* E-mail address
+* Photo
+* Office (Nantes/Rennes)
+* Date of hire
+* Manager
+* Human resource manager
+* Status (Internship/Subcontractor/Freelancer)
+* Function
+* Access rights (Employee/Human resource manager/Top management)
+
+=== RG U_2_1
+
+Personal data _editable_ by Employee on _his own profile_ are :
+
+* Last Name
+* First Name
+* E-mail address
+* Photo
+
+=== RG U_2_2
+
+Mandatory fields in personal data ::
+* Last Name
+* First Name
+* E-mail address
+
+=== RG U_3_1
+
+Personal data _readable_ by Human resource manager on _any profile_ are :
+
+* Last Name
+* First Name
+* E-mail address
+* Photo URL
+* Office (Nantes/Rennes)
+* Date of hire
+* Leaving date
+* Leaving cause
+* Manager
+* Human resource manager
+* Status (Internship/Subcontractor/Freelancer)
+* Function
+* Access rights (Employee/Human resource manager/Top management)
+
+=== RG U_4_1
+
+Personal data _editable_ by Human resource manager on _any profile_ are :
+
+* Last Name
+* First Name
+* E-mail address
+* Photo URL
+* Office (Nantes/Rennes)
+* Date of hire
+* Leaving date
+* Leaving cause
+* Manager
+* Human resource manager
+* Status (Internship/Subcontractor/Freelancer)
+* Function
+* Access rights (Employee/Human resource manager/Top management)
+
+=== RG U_6_1
+
+Personal data to anonymize are :
+
+* Last Name
+* First Name
+* E-mail address
+* Photo URL
+* Day/Month of Date of Hire
+
+== Annexes
+
+=== Rôles
+
+* Employee
+* Human resource manager
+* Top management
+* System
+* External application
+
+=== Status
+* Internship
+* Subcontractor
+* Freelancer
