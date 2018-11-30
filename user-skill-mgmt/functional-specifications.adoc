@@ -1,0 +1,98 @@
+
+= User Skill Mgmt : Spécification fonctionnelle
+
+
+== Features
+
+Description des fonctionnalités de l'application.
+
+=== Scénario USM_EMPL_VIEW
+
+----
+ @TAG SCN_EMPL_VIEW_SKILLS
+ Given a User with valid credentials
+ When I login as an Employee
+ Then I can view my skills
+ And my skills are organized by type of skills
+----
+
+=== Scénario USM_EMPL_ADD
+
+----
+ @TAG SNC_EMPL_EDIT_SKILLS REQ_USM_SKILL_1 REQ_USM_SKILL_2
+ Given a User logged as an Employee
+ When I edit my skills
+ Then I can add an existing skill or a new one
+ And I can define my level in that skill
+----
+
+==== Business rules
+* <<REQ_USM_SKILL_1>>
+* <<REQ_USM_SKILL_2>>
+
+=== Scénario USM_EMPL_MODIFY_LEVEL
+
+----
+ @TAG SNC_EMPL_MODIFY_SKILLS REQ_USM_SKILL_2
+ Given a User logged as an Employee
+ When I edit my skills
+ Then I can modify the level of a skill
+----
+
+==== Business rules
+* <<REQ_USM_SKILL_2>>
+
+=== Scénario USM_EMPL_DELETE
+
+----
+ @TAG SNC_EMPL_DELETE_SKILL REQ_USM_SKILL_2
+ Given a User logged as an Employee
+ When I edit my skills
+ Then I can delete a skill
+----
+
+=== Scénario USM_MGR_1
+
+----
+ @TAG SCN_MGR_SEARCH_EMPLOYEE REQ_USM_PROFILE
+ Given a User logged as a Manager
+ When I search Employees by skills, level or type of skill
+ Then I view a list of Employees matching the search criteria
+ Then I can select an Employee
+ And view the detail of his skills
+----
+
+==== Business rules
+* <<REQ_USM_PROFILE>>
+
+=== Scénario USM_SKILL_1
+
+----
+ @TAG SCN_CREATE_SKILL REQ_USM_SKILL_3
+ Given a logged User
+ When I create a new skill
+ Then I can tag this skill with a existing tag or add a new one
+----
+==== Business rules
+* <<REQ_USM_SKILL_3>>
+
+==  Business rules list
+== REQ_USM_SKILL_1
+....
+Skills are define by a technology name and a type
+....
+
+== REQ_USM_SKILL_2
+....
+Skill levels are integers between 1 and 5 inclusive
+....
+
+== REQ_USM_SKILL_3
+....
+A tag can be technical like FRONT, BACK, DEVOPS,... or a human competence.
+....
+
+== REQ_USM_PROFILE
+....
+Manager is a profile for sales people, HR and local managers
+....

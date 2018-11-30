@@ -2,101 +2,228 @@
 
 :toc:
 
+Ce document décrit l'architecture technique du système OPUS.
+
+Le système OPUS implémente différents services de gestion des utilisateurs, des équipes, des compétences, des plans de charges, ...
+
 == ARCHITECTURE LOGIQUE
 
 image::assets/ArchitectureLogique.png[]
 
 === Description
 
-L'objectif du système OPUS est de modéliser les processus de SOFTEAM.
+L'architecture du système est construit comme un ensemble d'applications autonomes.
 
-OPUS est construit comme un ensemble d'applications autonomes.
-
-Chaque application dispose d'une base de données locale qui lui permet de stocker ses données propre ainsi qu'une vue des données (des autres applications) nécessaires à son fonctionnement. Chaque application gère par exemple sa propre liste d'utilisateurs en ne conservant que les informations utiles.
-
-Les applications communiquent de manière synchrone et asynchrone.
-
-* Si un service A d'une application a besoin d'une donnée gérée par un service B d'une autre application (pour réaliser un traitement), le service A appelle le service B en mode synchrone.
+La conception du système est basée sur le pattern https://martinfowler.com/articles/201701-event-driven.html[Event-Carried State Transfer]. C'est le mode de communication principal entre les applications.
 
 * Les événements métier sont publiés sur le bus de message. Ceci permet par exemple a une application de s'abonner aux événements de création d'utilisateur pour conserver sa base de données d'utilisateurs à jour.
 
-=== Composants
+De cette manière, chaque application dispose d'une base de données locale qui lui permet de stocker ses données propres ainsi qu'une vue des données des autres applications nécessaires à son fonctionnement. Chaque application gère par exemple sa propre liste d'utilisateurs en ne filtrant que les informations utiles.
+
+Ces mécanismes de communication asynchrones simplifient l'intégration de nouvelles applications.
+
+L'architecture implémente aussi des patterns https://martinfowler.com/articles/enterpriseREST.html[REST].
+
+* Si un service A d'une application a besoin d'une donnée gérée par un service B d'une autre application (pour réaliser un traitement), le service A appelle le service B en mode synchrone.
+
+=== Services Implémentés
+
+Le tableau ci-dessous liste les services implémentés dans le cadre du projet.
 
 .Composants
 |===
-|Composant| Fonction
+|Composant| Fonction | Flux entrants
 
 |Keycloak
 |Serveur d'Authentification
+|HTTPS
 
 |Kafka
 |Bus de messages
+|Accessible uniquement du cluster
 
 |Blob Management
-|Gestion du stockage de Fichiers
+|Gestion de Fichiers
+|HTTPS
 
 |User Management
 |Gestion des données Utilisateur
+|HTTPS
 
 |Mission Management
 |Gestion des données Mission
+|HTTPS
 
 |Team Management
-|Gestion des données Equipe
+|Gestion des données Équipe
+|HTTPS
 
 |User Skill Management
 |Gestion des compétences des Utilisateurs
+|HTTPS
 
 |Team Skill Management
-|Gestion des compétences des Equipes
+|Gestion des compétences des Équipes
+|HTTPS
 
 |Plan de charge
 |Plan de charge
+|HTTPS
 
 |Carnet de commandes
 |Carnet de commandes
+|HTTPS
 
 |Calendrier
 |Calendrier des Utilisateurs et Gestion d'Alertes
+|HTTPS
 
 |Tableau des effectifs
 |Gestion des effectifs
+|HTTPS
+
+|===
+
+=== Flux Sortants
+
+Le tableau ci-dessous liste les services externes appelés.
+
+|===
+|Composant| Fonction | Protocole
+
+|Mail
+|Envoi de Mails
+|SMTP
 
 |Salesforce
-|Salesforce
+|Référentiel des données des collabs
+|HTTP ? Fichier ?
 
 |CV Gen
-|Application SOFTEAM de Gestion de CV
+|Référentiel des CVs SOFTEAM
+|HTTP
 
 |===
 
 == ARCHITECTURE PHYSIQUE
 
+L'architecture physique est basée sur 2 types de ressources :
+
+* Des VMs Linux (CentOS)
+* Des partitions NFS pour la persistance des données
+
+Les applications sont gérées par un cluster Kubernetes déployées sur ces VMs.
+
+Les données des applications sont stockées sur les partitions NFS.
+
 === Cluster Kubernetes
 
-Le cluster Kubernetes est un orchestrateur Docker : il permet d'automatiser le deploiement, le scaling, la gestion d'applications conteneurisées.
+Le cluster Kubernetes est un orchestrateur Docker : il permet d'automatiser le déploiement, la mise à l'échelle (scaling), la gestion d'applications conteneurisées.
 
-K8s ne gère pas la persistance des données des applications. K8s permet néanmoins aux conteneurs d'utiliser des moyens de persistance externes (exemple: partition NFS).
+K8s ne gère pas la persistance des données des applications. K8s fournit des mécanismes qui permettent aux conteneurs d'utiliser des moyens de persistance externes (exemple: partition NFS).
 
-Le cluster est composé de plusieurs noeuds : chaque noeud est une VM. Il existe deux types de noeuds : des noeuds maître (master) et des noeuds esclave (slave).
+==== Nœuds du Cluster
 
-L'état du cluster est géré via une base de données clef-valeur https://coreos.com/etcd/[etcd].
+Le cluster Kubernetes est composé de plusieurs nœuds (chaque nœud est une VM). 
 
+K8s gère deux types de nœuds : 
 
+* Des nœuds maître (master) 
+* Des nœuds esclave (slave)
+
+==== Enregistrement DNS
+
+Un enregistrement DNS est associé au cluster pour permettre l'accès aux applications via des noms de domaines.
+
+Un enregistrement DNS de type A associe le nom de domaine en wildcard *.wildwidewest.xyz vers le master du cluster.
+
+L'enregistrement DNS est réalisé chez OVH.
 
 === Partitions NFS
 
-== SECURITE
+Les partitions NFS sont fournies par OVH. Le service gère la haute disponibilité et le backup des partitions
 
-=== Authentification
+=== Dimensionnement
 
-La gestion de l'authentification/autorisation est géré par mise en place du protocole https://openid.net/connect/[OpenID Connect].
+L'objectif du dimensionnement est d'estimer les ressources CPU & RAM nécessaires pour exécuter les services de l'Usine ainsi que les applications développées. Nous gérons deux types d'environnements applicatifs : un environnement de DEV pour la mise au point des applications et un environnement de PROD pour les utilisateurs.
+
+Pour commencer, nous estimons les besoins globaux (cf. <<dimensionnement_apps>>) en RAM et CPU des services unitairement.
+
+Hypothèses concernant le dimensionnement des services développés :
+ 
+* Les services backend nécessitent 1 Go RAM
+* Les services développés sont déployés deux fois (une fois en DEV et une fois en PROD)
+
+Information concernant le dimensionnement du Kafka :
+
+* En DEV, Kafka a 1 instance. En PROD, Kafka a 3 instances (pour Haute Disponibilité).
+
+[[dimensionnement_apps]]
+.Dimensionnement des Services
+|===
+|  Service | Techno | RAM / Instance | Disk / Instance | Nb Instance | Total RAM | Total Disk | Total CPU
+|  Jenkins | Java | 4 | 20 | 1 | 4 | 20 | 1
+|  Nexus | Java | 4 | 30 | 1 | 4 | 30 | 1
+|  SonarQube | Java | 4 | 30 | 1 | 4 | 30 | 1
+|  Keycloak | Java | 1 | 2 | 1 | 1 | 2 | 1
+|  Kibana | Node | 1 | 1 | 1 | 1 | 1 | 1
+|  ElasticSearch | Java | 2 | 5 | 2 | 4 | 10 | 1
+|  Grafana | Java | 1 | 2 | 1 | 1 | 2 | 1
+|  Blob Mgmt | C# | 1 | 1 | 2 | 2 | 2 | 1
+|  Blob Mgmt Database | MongoDB | 0.5 | 1 | 2 | 1 | 2 | 1
+|  User Mgmt | C# | 1 | 1 | 2 | 2 | 2 | 1
+|  User Mgmt Database | MongoDB | 0.5 | 1 | 2 | 1 | 2 | 1
+|  Mission Mgmt | Kotlin | 1 | 1 | 2 | 2 | 2 | 1
+|  Mission Mgmt Database | PostgreSQL | 0.5 | 1 | 2 | 1 | 2 | 1
+|  Team Mgmt | Node | 1 | 1 | 2 | 2 | 2 | 1
+|  Team Mgmt Database | PostgreSQL | 0.5 | 1 | 2 | 1 | 2 | 1
+|  Team Skill Mgmt | Kotlin | 1 | 1 | 2 | 2 | 2 | 1
+|  Team Skill Mgmt Database | Kafka | 2 | 20 | 4 | 8 | 80 | 1
+|  User Skill Mgmt | Java | 1 | 1 | 2 | 2 | 2 | 1
+|  User Skill Mgmt Database | ElasticSearch |  |  |  |  |  | 1
+|  Total |  |  |  | 32 | 43 Go | 195 Go | 19 vCPU
+|===
+
+Ainsi, le cluster doit avoir une capacité de 43 Go RAM et 19 vCPU.
+
+Ensuite, nous calculons le nombre de VMs nécessaires en fonction de :
+
+* La puissance de VMs (cf. <<dimensionnement_serveurs>>)
+* Les ressources CPU/RAM utilisées par Kubernetes
+
+La formule utilisée : 
+
+* nb Instance = total RAM / (unit RAM - RAM Kubelet - RAM FileBeat)
+* nb Instance = total RAM / (unit RAM - 1 Go - 512 Mo)
+
+Pour terminer, nous caractérisons le cluster en termes de coûts, vCPU et RAM.
+
+[[dimensionnement_serveurs]]
+.Dimensionnement des Serveurs
+|===
+|  VM type | Unit RAM | Unit vCPU | Unit Price | Nb Instance | Total RAM | Total vCPU | Total Price
+|  VPS SSD 3 | 8 | 2 | 11.99 | 7 | 56 | 14 | 83.93
+|  SP-32 | 32 | 8 | 69.99 | 2 | 64 | 16 | 139.98
+|  SP-64 | 64 | 8 | 99.99 | 1 | 64 | 8 | 99.99
+|===
+
+Les deux solutions VPS SSD 3 et SP-64 sont assez similaires en terme de prix. Nous préférons la solution à base de VPS qui nous permettra de tester différentes architectures Kubernetes (exemple : single master, multi masters).
+
+== SÉCURITÉ
+
+=== Connexion SSH
+
+La connexion SSH (@see <<REQ_CLUSTER_SSH>>) aux VMs du cluster est réalisé par enregistrement de clefs SSH.
+
+=== Authentification applicatif
+
+La gestion de l'authentification/autorisation (@see <<REQ_APP_AUTHENTICATION>>) est géré par mise en place du protocole https://openid.net/connect/[OpenID Connect].
 
 Le Flow a utiliser est "Authorization Code Flow" : ce processus permet à un utilisateur de s'authentifier via un navigateur Web, à une application Web qui a un BackEnd capable de gérer des secrets (c'est le cas de nos applications).
 
 Quand un service appelle un autre service, il passe le token d'authentification dans les entêtes de la requête.
 
-== RESILIENCE
+== RÉSILIENCE
 
 === Tolérance aux Pannes
 
@@ -108,248 +235,41 @@ La gestion des pannes des applications est gérée par Kubernetes.
 
 Pour y arriver, Kubernetes se base sur https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/[les lignes de vie des applications].
 
-Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de redémarrer l'application. Chaque application déployée doit donc définir ses lignes de vie.
-
-....
-@TAG SCN_APP_HEALTHCHECK
-Scenario: Application HealthCheck
-Given I am a developer of an application
-When the applications probes do not respond
-Then the Kubernetes restarts the application
-....
+Si la ligne de vie d'une application ne répond pas, Kubernetes se charge de redémarrer l'application. Chaque application déployée doit donc définir ses lignes de vie (@see <<REQ_APP_PROBE>>).
 
 ==== Pannes du Cluster
 
 La gestion des pannes du cluster est gérée de deux manières.
 
-La première solution consiste à faire un backup des données du cluster. En cas de panne du master, nous pouvons recréer un master identique au master en panne (en repartant des données du backup).
+La première solution consiste à faire un backup des données du cluster (@REQ_K8S_BACKUP). En cas de panne du master, nous pouvons recréer (@see <<REQ_K8S_RESTORE>>) un master identique au master en panne (en repartant des données du backup).
 
-La seconde solution plus complexe consiste à réaliser une installation multi-maîtres. Dans ce cas, la brique qui contient l'état du cluster (le serveur etcd) est redondé.
+* L'état du cluster est géré via une base de données clef-valeur https://coreos.com/etcd/[etcd].
 
-Remarque : 
+La seconde solution plus complexe consiste à réaliser une installation multi-maîtres. Dans ce cas, la brique qui contient l'état du cluster (i.e. le serveur etcd) est redondé. Cette seconde solution nécessite aussi le backup des données du cluster.
+
+Remarque :
+
 * Pour être tolérant à une panne, il faut 3 maîtres
 * Pour être tolérant à deux pannes, il faut 5 maîtres
 
-=== Haute Disponibilité
+== EXIGENCES
 
-=== Monitoring
+=== REQ_APP_AUTHENTICATION
 
-.Dimensionnement
-|===
-|Service| Techno| RAM / Instance| Disk / Instance| Instance| Total RAM| Total Disk
+Authentication/authorisation is achieved via https://openid.net/connect/[OpenID Connect].
 
-|Jenkins
-|Java
-|4 Go
-|20 Go
-|1
-|4 Go
-|20 Go
+=== REQ_APP_PROBE
 
-|Nexus
-|Java
-|4 Go
-|30 Go
-|1
-|4 Go
-|30 Go
+All services must define liveness and readiness probes.
 
-|SonarQube
-|Java
-|4 Go
-|30 Go
-|1
-|4 Go
-|30 Go
+=== REQ_CLUSTER_SSH
 
-|Keycloak
-|Java
-|1 Go
-|2 Go
-|1
-|1 Go
-|2 Go
-
-|Kibana
-|Node
-|1 Go
-|1 Go
-|1
-|1 Go
-|1 Go
-
-|ElasticSearch
-|Java
-|2 Go
-|5 Go
-|2
-|4 Go
-|10 Go
-
-|Blob Mgmt
-|C#
-|1 Go
-|1 Go
-|2
-|2 Go
-|2 Go
-
-|Blob Mgmt Database
-|MongoDB
-|512 Mo
-|1 Go
-|2
-|1 Go
-|2 Go
-
-|User Mgmt
-|C#
-|1 Go
-|1 Go
-|2
-|2 Go
-|2 Go
-
-|User Mgmt Database
-|MongoDB
-|512 Mo
-|1 Go
-|2
-|1 Go
-|2 Go
-
-|Mission Mgmt
-|Kotlin
-|1 Go
-|1 Go
-|2
-|2 Go
-|2 Go
-
-|Mission Mgmt Database
-|PostgreSQL
-|512 Mo
-|1 Go
-|2
-|1 Go
-|2 Go
-
-|Team Mgmt
-|Node
-|1 Go
-|1 Go
-|2
-|2 Go
-|2 Go
-
-|Team Mgmt Database
-|PostgreSQL
-|512 Mo
-|1 Go
-|2
-|1 Go
-|2 Go
-
-|Team Skill Mgmt
-|Kotlin
-|1 Go
-|1 Go
-|2
-|2 Go
-|2 Go
-
-|Team Skill Mgmt Database
-|Kafka
-|2 Go
-|10 Go
-|3
-|6 Go
-|30 Go
-
-|User Skill Mgmt
-|Java
-|1 Go
-|1 Go
-|2
-|2 Go
-|2 Go
-
-|User Skill Mgmt Database
-|ElasticSearch
-|0
-|0
-|0
-|0
-|0
-
-|Total
-|
-|
-|
-|32
-|43 Go
-|195 Go
-
-|===
-
-.Dimensionnement de chaque Noeud
-|===
-|Service| RAM
-
-|Kubernetes Node
-|1 Go
-
-
-|FileBeat
-|0,5 Go
-|===
-
-.Nombre d'instances
-|===
-|RAM / Instance| #Instance
-
-|8 Go
-|5,1875
-
-|64
-|0,6484375
-|===
-
-.Pricing
-|===
-|Type Serveur| RAM / Instance| vCPU / Instance|  Prix / Instance| #Instance|  RAM Total| CPU Total| Prix Total
-
-|VPS SSD 3
-|8 Go
-|2 vCPU
-|12,99 €
-|6
-|64 Go
-|16 vCPU
-|77,94 €
-
-|SP-64
-|64 Go
-|4c/8t
-|99,99 €
-|1
-|64 Go
-|4c/8t
-|99,99 €
-
-|SP-128-S
-|128 Go
-|8c/16t
-|169,99 €
-|1
-|128 Go
-|8c/16t
-|169,99 €
-
-|===
-
-== Exigences
+Users connect to the cluster using a public SSH key.
 
 === REQ_K8S_BACKUP
 
-The Kubernetes state must be backed up regularly; The Kubernetes state must be restored from backup Snapshots.
+The Kubernetes state must be backed up regularly.
+
+=== REQ_K8S_RESTORE
+
+The Kubernetes state must be restorable from a Snapshot.
