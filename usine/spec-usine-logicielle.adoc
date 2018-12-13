@@ -208,12 +208,18 @@ Then the alert is sent by email to a list of recipients
 
 Logs must respect the following format :
 
-* LEVEL: Log Level (DEBUG, INFO, ERROR)
-* MESSAGE
-* APPLICATION_NAME : Application Name
-* APPLICATION_NAME : Environnement Name
+* DATE : Timestamp du Log
+* LEVEL : Log Level (DEBUG, INFO, ERROR)
+* LOGGER : Classe de Log
+* CODE : Code d'erreur
 * CORRELATION_ID : Message Correlation ID
+* MESSAGE ; Log Message
 * STACKTRACE : StackTrace if the message is an exception
+
+[source, xml]
+....
+<Pattern>%d{yyyy-MM-dd'T'HH:mm:ssXXX} - %-5level - %logger{20} - %mdc{code} - %mdc{correlationID} - %msg - %exception%n</Pattern>
+....
 
 === REQ_APP_SSL
 
