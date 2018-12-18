@@ -156,7 +156,7 @@ A RESTful API is available to read informations about Employees.
 
 Documentation on methods/arguments of this API is available in OpenAPI format:
 
-https://github.com/SofteamOuest-Opus/user-mgmt/api/docs/openapi.yaml
+https://github.com/SofteamOuest-Opus/user-mgmt/blob/master/api/public/doc/openapi.yaml
 
 == Architecture Design
 
@@ -170,7 +170,7 @@ Events are published in the _employee_ topic.
 
 Documentation on events and messages published in this topic is available in Avro format:
 
-https://github.com/SofteamOuest-Opus/user-mgmt/api/docs/employees.avsc
+https://github.com/SofteamOuest-Opus/user-mgmt/blob/master/api/public/doc/employees.avsc
 
 == Interface Design
 
