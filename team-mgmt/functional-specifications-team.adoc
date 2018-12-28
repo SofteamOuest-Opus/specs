@@ -4,8 +4,8 @@
 
 ....
 Given User is connected as Team manager
-When User asks teams list
-Then entire teams list is displayed
+When User asks project teams list
+Then entire project teams list is displayed
 ....
 <<RG_TEA_3>>,<<RG_TEA_5>>,<<RG_TEA_6>>
 
@@ -24,7 +24,7 @@ Then Team is visible in teams list
 ....
 Given User is connected as Team manager
 When User search and select a Team in existing teams
-And User search and select a Person as Member
+And User search and select an Employee as Member
 And User select Function for the Team member
 And User add Member to the Team
 Then Member is added to Team
@@ -81,8 +81,8 @@ Data of a team are :
 * Id : unique, readable
 * Name : unique, readable/writable
 * Description : readable/writable
-* List of members : Person from repository
-* Project : Person from repository
+* List of members : Employee from repository
+* Project : Project from repository
 
 ===== RG_TEA_2
 
@@ -110,3 +110,10 @@ Search criteria for Team are :
 * Team description
 * Project name of the Team
 * Firstname/Lastname of Team member
+
+===== RG_TEA_7
+
+Search criteria for Employee are :
+* firstname
+* lastname
+* function

@@ -15,7 +15,7 @@ Then entire projects list is displayed
 ....
 Given User is connected as Project manager
 When User creates a new Project
-And User specifies a name and a Customer
+And User specifies a name and a Tenant
 And User asks projects list
 Then Project is visible in projects list
 ....
@@ -27,9 +27,9 @@ Then Project is visible in projects list
 Given User is connected as Project manager
 And User select a Project
 When User changes Project name
-And User changes Project Customer
+And User changes Project Tenant
 And User asks projects list
-Then Project name and Customer are changed
+Then Project name and Tenant are changed
 ....
 <<RG_PRJ_1>>,<<RG_PRJ_2>>,<<RG_PRJ_4>>
 
@@ -54,26 +54,22 @@ Data of a project are :
 * Id : unique, readable
 * Name : unique, readable/writable
 * Description : readable/writable
-* Customer : association
+* Tenant : string
 
 All fields are mandatory
 
 
 ===== RG_PRJ_2
 
-Customer associated to a project comes from customer repository
+Tenant associated to a project comes from tenant repository
 
 ===== RG_PRJ_3
 
 Data displayed in projects list are :
 
 * Name : unique, readable/writable
-* Customer : readable/writable
+* Tenant : readable/writable
 
 ===== RG_PRJ_4
 
 Role allowed to add/modify/delete/request project is Project manager
-
-===== RG_PRJ_5
-
-Project can be delete only if it is not associated to a Customer
