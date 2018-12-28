@@ -1,0 +1,8 @@
+= Functional specifications - Team Mgmt Application
+
+:toc:
+
+include::functional-specifications-project.adoc[]
+
+include::functional-specifications-team.adoc[]
+

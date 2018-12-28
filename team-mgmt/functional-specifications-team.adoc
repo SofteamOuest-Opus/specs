@@ -1,0 +1,119 @@
+== Manage teams features
+
+=== Scenario TEA_1 : List teams
+
+....
+Given User is connected as Team manager
+When User asks project teams list
+Then entire project teams list is displayed
+....
+<<RG_TEA_3>>,<<RG_TEA_5>>,<<RG_TEA_6>>
+
+=== Scenario TEA_2 : Add Team
+
+....
+Given User is connected as Team manager
+When User create a new Team with name and description
+And User asks teams list
+Then Team is visible in teams list
+....
+<<RG_TEA_1>>,<<RG_TEA_3>>
+
+=== Scenario TEA_3 : Add Team member
+
+....
+Given User is connected as Team manager
+When User search and select a Team in existing teams
+And User search and select an Employee as Member
+And User select Function for the Team member
+And User add Member to the Team
+Then Member is added to Team
+....
+<<RG_TEA_1>>,<<RG_TEA_3>>,<<RG_TEA_4>>
+
+=== Scenario TEA_4 : Delete Team member
+
+....
+Given User is connected as Team manager
+When User search and select a Team in existing teams
+And User delete Team member
+Then Team member is deleted from Team
+....
+<<RG_TEA_6>>
+
+=== Scenario TEA_5 : Associate Team project
+
+....
+Given User is connected as Team manager
+When User search and select a Team in existing teams
+User search and select a Project in existing projects
+Then Project is associated with Team
+....
+<<RG_TEA_1>>,<<RG_TEA_5>>
+
+=== Scenario TEA_6 : Display Team
+
+....
+Given User is connected as Team manager
+When User search and select a Team in existing teams
+Then Team is displayed
+....
+<<RG_TEA_1>>
+
+=== Scenario TEA_7 : Delete Team
+
+....
+Given User is connected as Team manager
+When User search and select a Team in existing teams
+And User delete Team
+Then Team is no longer visible in teams list
+....
+<<RG_TEA_3>>
+
+==== Business Rules List
+
+<<RG_TEA_1>>, <<RG_TEA_2>>, <<RG_TEA_3>>, <<RG_TEA_4>>, <<RG_TEA_5>>, <<RG_TEA_6>>
+
+===== RG_TEA_1
+
+Data of a team are :
+
+* Id : unique, readable
+* Name : unique, readable/writable
+* Description : readable/writable
+* List of members : Employee from repository
+* Project : Project from repository
+
+===== RG_TEA_2
+
+Data displayed in teams list are :
+
+* Name
+* Project
+
+===== RG_TEA_3
+
+Role allowed to add/modify/delete/request teams is Team manager
+
+===== RG_TEA_4
+
+For each Member added to a Team member, assignable functions to Member are : 'Project manager', 'Project leader', 'Scrum master', 'Team leader', 'Developer', 'Architect', 'Analyst'
+
+===== RG_TEA_5
+
+A Team can be associated with only one Project
+
+===== RG_TEA_6
+
+Search criteria for Team are :
+* Team name
+* Team description
+* Project name of the Team
+* Firstname/Lastname of Team member
+
+===== RG_TEA_7
+
+Search criteria for Employee are :
+* firstname
+* lastname
+* function
