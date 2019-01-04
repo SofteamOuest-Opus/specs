@@ -174,7 +174,11 @@ https://github.com/SofteamOuest-Opus/user-mgmt/blob/master/api/public/doc/employ
 
 == Interface Design
 
-* TODO Link to Pencil mockups
+Employee mockups::
+link:./wireframes/employee/html/index.html[HTML]
+
+HR Manager mockups::
+link:./wireframes/hr-manager/html/index.html[HTML]
 
 == Annexes
 
