@@ -15,7 +15,7 @@ Then I can access the application according to my access rights
 === Scenario S_2
 
 ....
-Given an Employee list
+Given an Administrator with an Employee list
 When I bulk insert this list
 Then all employees are created or updated
 ....
