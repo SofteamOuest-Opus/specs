@@ -1,4 +1,4 @@
-
+﻿
 = User Skill Mgmt : Spécification fonctionnelle
 
 
@@ -79,7 +79,7 @@ Description des fonctionnalités de l'application.
 ==  Business rules list
 == REQ_USM_SKILL_1
 ....
-Skills are define by a technology name and a type
+Skills are define by a technology name and a type (are fields mandatory ?)
 ....
 
 == REQ_USM_SKILL_2
