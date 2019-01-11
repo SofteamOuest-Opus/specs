@@ -13,7 +13,7 @@ Then I can view my profile and personal data
 ....
 
 So that::
-I can read and control my personal data
+I can read and control my personal informations
 
 ==== Business Rules
 
@@ -42,11 +42,11 @@ my profile is up to date
 Given a Human resource manager
 And an Employee
 When I am logged in as this Human resource manager 
-I can view that Employee's personal data
+Then I can view that Employee's personal data
 ....
 
 So that::
-I can check her/his personal data
+I can read and control her/his personal informations
 
 ==== Business Rules
 
@@ -60,7 +60,7 @@ I can check her/his personal data
 Given a Human resource manager
 And an Employee
 When I am logged in as this Human resource manager 
-I can edit that Employee's personal data
+Then I can edit that Employee's personal data
 ....
 
 So that::
@@ -79,11 +79,11 @@ sensitive information on his profile are up to date
 ....
 Given a Human resource manager
 When I am logged in as this Human resource manager 
-I can create a new Employee
+Then I can create a new Employee
 ....
 
 So that::
-sensitive information on his profile are up to date
+newly hired employees or missing employees are visible in the application
 
 ==== Business Rules
 
@@ -99,11 +99,11 @@ sensitive information on his profile are up to date
 Given a Human resource manager
 And an Employee (former or actual)
 When I am logged in as this Human resource manager 
-I can delete personal data of this Employee 
+Then I can delete personal data of this Employee 
 ....
 
 So that::
-his profile can be made anonymous and be GDPR conformant
+his profile can be made anonymous and the application is GDPR conformant
 
 ==== Business Rules
 
@@ -127,6 +127,8 @@ Personal data _readable_ by Employee are :
 * Function
 * Access rights (Employee/Human resource manager/Top management)
 
+Used in: <<Scenario U_1>>, <<Scenario U_3>>
+
 === RG U_2_1
 
 Personal data _editable_ by Employee on _his own profile_ are :
@@ -136,12 +138,16 @@ Personal data _editable_ by Employee on _his own profile_ are :
 * E-mail address
 * Photo
 
+Used in: <<Scenario U_2>>, <<Scenario U_4>>, <<Scenario U_5>>
+
 === RG U_2_2
 
 Mandatory fields in personal data ::
 * Last Name
 * First Name
 * E-mail address
+
+Used in: <<Scenario U_2>>, <<Scenario U_4>>, <<Scenario U_4>>
 
 === RG U_3_1
 
@@ -161,6 +167,8 @@ Personal data _readable_ by Human resource manager on _any profile_ are :
 * Function
 * Access rights (Employee/Human resource manager/Top management)
 
+<<Scenario U_3>>
+
 === RG U_4_1
 
 Personal data _editable_ by Human resource manager on _any profile_ are :
@@ -179,6 +187,8 @@ Personal data _editable_ by Human resource manager on _any profile_ are :
 * Function
 * Access rights (Employee/Human resource manager/Top management)
 
+Used in: <<Scenario U_4>>, <<Scenario U_5>>
+
 === RG U_6_1
 
 Personal data to anonymize are :
@@ -189,9 +199,11 @@ Personal data to anonymize are :
 * Photo URL
 * Day/Month of Date of Hire
 
+<<Scenario U_6>>
+
 == Annexes
 
-=== Rôles
+=== Roles
 
 * Employee
 * Human resource manager

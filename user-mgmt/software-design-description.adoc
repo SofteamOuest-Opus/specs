@@ -21,7 +21,7 @@ Then all employees are created or updated
 ....
 
 So that::
-database is seeded faster
+database can be seeded faster
 
 ==== Business Rules
 
@@ -59,7 +59,11 @@ The external application can perform any relevant operation of its own
 
 ==== List of Business Rules
 
-cf. <<Events>>
+<<RG S_4_1>>
+
+<<RG S_4_2>>
+
+See also: <<Published events>>
 
 == Business Rules
 
@@ -77,6 +81,8 @@ Bulk inserted personal data are  :
 * Function
 * Access rights (Employee/Human resource manager/Top management)
 
+Used in: <<Scenario S_2>>
+
 === RG S_3_1
 
 Personal data _readable_ by external application are :
@@ -93,6 +99,8 @@ Personal data _readable_ by external application are :
 * Function
 * Access rights (Employee/Human resource manager/Top management)
 
+Used in: <<Scenario S_3>>
+
 === RG S_3_2
 
 The external application can request information for an employee by searching with :
@@ -102,16 +110,22 @@ The external application can request information for an employee by searching wi
 * First Name
 * E-mail address
 
+Used in: <<Scenario S_3>>
+
 === RG S_4_1
 
-External application is notified when :
+External application is notified when:
+
 * Employee is created
 * Employee is deleted
 * Employee is modified
 
+Used in: <<Scenario S_4>>
+
 === RG S_4_2
 
-Notifications to External application should have :
+Notifications to External application should have:
+
 * Technical identifier
 * Last Name
 * First Name
@@ -124,17 +138,25 @@ Notifications to External application should have :
 * Function
 * Access rights (Employee/Human resource manager/Top management)
 
-cf <<Published events>>
+See also: <<Published events>>
+
+Used in: <<Scenario S_4>>
 
 == Source code
 
-* TODO link to GIT repo
+Source code of front and back-end applications are available in git.
+
+https://github.com/SofteamOuest-Opus/user-mgmt
 
 == Data Design
 
 === REST API
 
-* TODO link to Swagger Documentation
+A RESTful API is available to read informations about Employees.
+
+Documentation on methods/arguments of this API is available in OpenAPI format:
+
+https://github.com/SofteamOuest-Opus/user-mgmt/blob/master/api/public/doc/openapi.yaml
 
 == Architecture Design
 
@@ -142,9 +164,26 @@ cf <<Published events>>
 
 ==== Published events
 
-* TODO Name of Kafka topic
-* TODO Link to Avro schema
+Events are published into a message queue whenever an Employee is created, deleted or modified.
+
+Events are published in the _employee_ topic.
+
+Documentation on events and messages published in this topic is available in Avro format:
+
+https://github.com/SofteamOuest-Opus/user-mgmt/blob/master/api/public/doc/employees.avsc
 
 == Interface Design
 
-* TODO
+Employee mockups::
+link:./wireframes/employee/html/index.html[HTML]
+
+HR Manager mockups::
+link:./wireframes/hr-manager/html/index.html[HTML]
+
+== Annexes
+
+Open API Specification::
+https://swagger.io/docs/specification/about/
+
+Avro Schema Specification::
+http://avro.apache.org/docs/current/spec.html
