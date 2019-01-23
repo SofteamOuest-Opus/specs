@@ -8,7 +8,7 @@ And projects exist
 When User asks projects list
 Then entire projects list is displayed
 ....
-<<RG_PRJ_2>>,<<RG_PRJ_3>>,<<RG_PRJ_4>>
+<<RG_PRJ_2>>,<<RG_PRJ_3>>
 
 === Scenario PRJ_2 : Add Project
 
@@ -19,7 +19,7 @@ And User specifies a name and a Tenant
 And User asks projects list
 Then Project is visible in projects list
 ....
-<<RG_PRJ_1>>,<<RG_PRJ_2>>,<<RG_PRJ_4>>
+<<RG_PRJ_1>>,<<RG_PRJ_3>>
 
 === Scenario PRJ_3 : Modify Project
 
@@ -31,7 +31,7 @@ And User changes Project Tenant
 And User asks projects list
 Then Project name and Tenant are changed
 ....
-<<RG_PRJ_1>>,<<RG_PRJ_2>>,<<RG_PRJ_4>>
+<<RG_PRJ_1>>,<<RG_PRJ_3>>
 
 === Scenario PRJ_4 : Delete Project
 
@@ -41,11 +41,11 @@ When User delete one project
 And User asks projects list
 Then project no longer exists
 ....
-<<RG_PRJ_4>>,<<RG_PRJ_5>>
+<<RG_PRJ_3>>
 
 ==== Business Rules List
 
-<<RG_PRJ_1>>,<<RG_PRJ_2>>,<<RG_PRJ_3>>,<<RG_PRJ_4>>,<<RG_PRJ_5>>
+<<RG_PRJ_1>>,<<RG_PRJ_2>>,<<RG_PRJ_3>>
 
 ===== RG_PRJ_1
 
@@ -61,15 +61,11 @@ All fields are mandatory
 
 ===== RG_PRJ_2
 
-Tenant associated to a project comes from tenant repository
-
-===== RG_PRJ_3
-
 Data displayed in projects list are :
 
 * Name : unique, readable/writable
 * Tenant : readable/writable
 
-===== RG_PRJ_4
+===== RG_PRJ_3
 
 Role allowed to add/modify/delete/request project is Project manager
