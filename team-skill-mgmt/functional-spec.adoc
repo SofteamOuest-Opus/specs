@@ -4,7 +4,7 @@
 
 == Scenarios
 
-=== Scenario TEAMSKILL_001: Browse teams
+=== Scenario TEAMSKILL_1: Browse teams
 ....
 Given I am logged as a XXXX
 When I access to team selection screen
@@ -14,7 +14,7 @@ Then I can see the teams present in the system with the following information
 * the number of requirements set
 ....
 
-=== Scenario TEAMSKILL_002: Display skill requirements
+=== Scenario TEAMSKILL_2: Display skill requirements
 ....
 Given I am logged as a XXXX on the selection screen
 When I select a team
@@ -26,7 +26,7 @@ Then I can see team's composition and their skill level for each skill requireme
 * <<BR SKILL_3>>
 * <<BR SKILL_4>>
 
-=== Scenario TEAMSKILL_003: Edit Team
+=== Scenario TEAMSKILL_3: Edit Team
 ....
 Given I am logged as a XXXX on the team details screen
 When I pick a new skill
@@ -38,7 +38,7 @@ Then I can add that minimum skill requirement to the team
 * <<BR SKILL_2>>
 * <<BR SKILL_3>>
 
-=== Scenario TEAMSKILL_004: Display skill radar
+=== Scenario TEAMSKILL_4: Display skill radar
 ....
 Given I am logged as a XXXX on the selection screen
 When I select a team
@@ -50,7 +50,7 @@ Then I can see the minimum team skill requirements in a radar, filled with the m
 * <<BR SKILL_3>>
 * <<BR SKILL_4>>
 
-=== Scenario EVENT_LISTEN_001: Team creation
+=== Scenario EVENT_LISTEN_1: Team creation
 ....
 Given Team Skill management running
 When a team creation event is broadcasted
@@ -62,7 +62,7 @@ And the team must be accessible through the team selection screen
 * <<BR EVENT_TEAMSKILL_1>>
 * <<BR EVENT_TEAMSKILL_2>>
 
-=== Scenario EVENT_LISTEN_002: Team update
+=== Scenario EVENT_LISTEN_2: Team update
 ....
 Given Team Skill management running
 When a team update event is broadcasted
@@ -73,7 +73,7 @@ Then the team name and it's members must be updated
 * <<BR EVENT_TEAMSKILL_1>>
 * <<BR EVENT_TEAMSKILL_2>>
 
-=== Scenario EVENT_LISTEN_003: Team delete
+=== Scenario EVENT_LISTEN_3: Team delete
 ....
 Given Team Skill management running
 When a team delete event is broadcasted
@@ -84,7 +84,7 @@ Then the team must no longer be visible on the team selection screen
 * <<BR EVENT_TEAMSKILL_1>>
 * <<BR EVENT_TEAMSKILL_2>>
 
-=== Scenario EVENT_LISTEN_004: User creation
+=== Scenario EVENT_LISTEN_4: User creation
 ....
 Given Team Skill management running
 When a user-creation event is broadcasted
@@ -94,7 +94,7 @@ Then the user last name and first name must be visible on the team edition scree
 * <<BR USER_1>>
 * <<BR USER_2>>
 
-=== Scenario EVENT_LISTEN_005: User update
+=== Scenario EVENT_LISTEN_5: User update
 ....
 Given Team Skill management running
 When a user-update event is broadcasted
@@ -104,14 +104,14 @@ Then the user last name and first name must be updated on the team edition scree
 * <<BR USER_1>>
 * <<BR USER_2>>
 
-=== Scenario EVENT_LISTEN_006: User delete
+=== Scenario EVENT_LISTEN_6: User delete
 ....
 Given Team Skill management running
 When a user-delete event is broadcasted
 Then the user be deleted from the team to which it belongs
 ....
 
-=== Scenario EVENT_LISTEN_007: User skill update
+=== Scenario EVENT_LISTEN_7: User skill update
 ....
 Given Team Skill management running
 When a user-skill-update event is broadcasted
@@ -122,7 +122,7 @@ Then the user skill levels must be updated on the team edition screen
 * <<BR EVENT_USER_SKILL_2>>
 * <<BR SKILL_1>>
 
-=== Scenario EVENT_PUBLISH_001: Team requirement updated
+=== Scenario EVENT_PUBLISH_1: Team requirement updated
 ....
 Given I am logged as a XXXX on the selection screen
 When the minimum skill requirements of a team is edited
