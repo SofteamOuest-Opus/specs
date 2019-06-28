@@ -4,13 +4,13 @@
 
 == Scenarios
 
-=== Scenario FILE_001: Store a file without expiration date
+=== Scenario FILE_1: Store a file without expiration date
 ....
 When I send a file
 Then I get the file identifier
 ....
 
-=== Scenario FILE_002: Store a file with an expiration date
+=== Scenario FILE_2: Store a file with an expiration date
 ....
 When I send a file with the expiration date for 2 seconds
 Then I get the file identifier
@@ -19,21 +19,21 @@ Then I get the file identifier
 
 * <<BR_FILE_1>>
 
-=== Scenario FILE_003: Define an expiration date
+=== Scenario FILE_3: Define an expiration date
 ....
 Given the identifier of an existing file
 When I set the expiration date to 2 seconds
 Then the file does not exists after 5 seconds
 ....
 
-=== Scenario FILE_004: Retrieve a file
+=== Scenario FILE_4: Retrieve a file
 ....
 Given the identifier of an existing file
 When I access the file with his identifier
 Then the file content is accessible
 ....
 
-=== Scenario FILE_005: Delete a file
+=== Scenario FILE_5: Delete a file
 ....
 Given the identifier of an existing file
 When I delete the file
