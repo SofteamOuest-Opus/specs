@@ -4,7 +4,7 @@
 
 == Scenarios
 
-=== Scenario TEAM_001: Browse teams
+=== Scenario TEAMSKILL_001: Browse teams
 ....
 Given I am logged as a XXXX
 When I access to team selection screen
@@ -14,7 +14,7 @@ Then I can see the teams present in the system with the following information
 * the number of requirements set
 ....
 
-=== Scenario TEAM_002: Display skill requirements
+=== Scenario TEAMSKILL_002: Display skill requirements
 ....
 Given I am logged as a XXXX on the selection screen
 When I select a team
@@ -26,7 +26,7 @@ Then I can see team's composition and their skill level for each skill requireme
 * <<BR SKILL_3>>
 * <<BR SKILL_4>>
 
-=== Scenario TEAM_003: Edit Team
+=== Scenario TEAMSKILL_003: Edit Team
 ....
 Given I am logged as a XXXX on the team details screen
 When I pick a new skill
@@ -38,7 +38,7 @@ Then I can add that minimum skill requirement to the team
 * <<BR SKILL_2>>
 * <<BR SKILL_3>>
 
-=== Scenario TEAM_004: Display skill radar
+=== Scenario TEAMSKILL_004: Display skill radar
 ....
 Given I am logged as a XXXX on the selection screen
 When I select a team
@@ -58,9 +58,9 @@ Then the team must be saved in the system
 And the team must be accessible through the team selection screen
 ....
 ==== Business rules
-* <<BR TEAM_1>>
-* <<BR EVENT_TEAM_1>>
-* <<BR EVENT_TEAM_2>>
+* <<BR TEAMSKILL_1>>
+* <<BR EVENT_TEAMSKILL_1>>
+* <<BR EVENT_TEAMSKILL_2>>
 
 === Scenario EVENT_LISTEN_002: Team update
 ....
@@ -69,9 +69,9 @@ When a team update event is broadcasted
 Then the team name and it's members must be updated
 ....
 ==== Business rules
-* <<BR TEAM_1>>
-* <<BR EVENT_TEAM_1>>
-* <<BR EVENT_TEAM_2>>
+* <<BR TEAMSKILL_1>>
+* <<BR EVENT_TEAMSKILL_1>>
+* <<BR EVENT_TEAMSKILL_2>>
 
 === Scenario EVENT_LISTEN_003: Team delete
 ....
@@ -80,9 +80,9 @@ When a team delete event is broadcasted
 Then the team must no longer be visible on the team selection screen
 ....
 ==== Business rules
-* <<BR TEAM_1>>
-* <<BR EVENT_TEAM_1>>
-* <<BR EVENT_TEAM_2>>
+* <<BR TEAMSKILL_1>>
+* <<BR EVENT_TEAMSKILL_1>>
+* <<BR EVENT_TEAMSKILL_2>>
 
 === Scenario EVENT_LISTEN_004: User creation
 ....
@@ -147,15 +147,15 @@ A skill can only appear once in a team
 ....
 If a user skill is higher that the maximum defined in  <<BR SKILL_1>>, the value must be truncated to the maximum
 ....
-=== BR TEAM_1
+=== BR TEAMSKILL_1
 ....
 A team name size must be between 1 and 32 characters
 ....
-=== BR EVENT_TEAM_1
+=== BR EVENT_TEAMSKILL_1
 ....
 If a member of the group isn't known by the system yet, the member must be added with all the provided fields
 ....
-=== BR EVENT_TEAM_2
+=== BR EVENT_TEAMSKILL_2
 ....
 If a member of the group has been deleted, the member must be ignored from the team
 ....
