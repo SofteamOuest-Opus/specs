@@ -15,9 +15,7 @@ Then I can access the application according to my access rights
 === Scenario S_2
 
 ....
-Given an Employee list
-And an Administrator
-When I login as this Administrator
+Given an Administrator with an Employee list
 When I bulk insert this list
 Then all employees are created or updated
 ....
@@ -116,8 +114,7 @@ Used in: <<Scenario S_3>>
 
 === RG S_4_1
 
-External application is notified when:
-
+External application is notified when :
 * Employee is created
 * Employee is deleted
 * Employee is modified
@@ -126,8 +123,7 @@ Used in: <<Scenario S_4>>
 
 === RG S_4_2
 
-Notifications to External application should have:
-
+Notifications to External application should have :
 * Technical identifier
 * Last Name
 * First Name
