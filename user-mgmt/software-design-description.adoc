@@ -16,6 +16,8 @@ Then I can access the application according to my access rights
 
 ....
 Given an Employee list
+And an Administrator
+When I login as this Administrator
 When I bulk insert this list
 Then all employees are created or updated
 ....
