@@ -4,6 +4,7 @@
 |==============================================================================
 | Français                              | English
 | Spécifications fonctionnelles         | Software requirements document _or_ Software requirements specification 
+| Spécifications techniques             | Software design description 
 | Règle de gestion                      | Business rule 
 | Collaborateur                         | Employee 
 | Resources humaines                    | Human resource manager    

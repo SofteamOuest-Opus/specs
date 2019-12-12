@@ -124,7 +124,7 @@ Personal data _readable_ by Employee are :
 * Manager
 * Human resource manager
 * Status (Internship/Subcontractor/Freelancer)
-* Function
+* Occupation
 * Access rights (Employee/Human resource manager/Top management)
 
 Used in: <<Scenario U_1>>, <<Scenario U_3>>
@@ -164,7 +164,7 @@ Personal data _readable_ by Human resource manager on _any profile_ are :
 * Manager
 * Human resource manager
 * Status (Internship/Subcontractor/Freelancer)
-* Function
+* Occupation
 * Access rights (Employee/Human resource manager/Top management)
 
 <<Scenario U_3>>
@@ -184,7 +184,7 @@ Personal data _editable_ by Human resource manager on _any profile_ are :
 * Manager
 * Human resource manager
 * Status (Internship/Subcontractor/Freelancer)
-* Function
+* Occupation
 * Access rights (Employee/Human resource manager/Top management)
 
 Used in: <<Scenario U_4>>, <<Scenario U_5>>
@@ -204,6 +204,7 @@ Personal data to anonymize are :
 == Annexes
 
 === Roles
+Roles as used in _user stories_.
 
 * Employee
 * Human resource manager
@@ -211,7 +212,20 @@ Personal data to anonymize are :
 * System
 * External application
 
+=== Occupation 
+* Employee
+* Manager
+* Human resource manager
+* Top management
+
+Was previously labeled _Function_.
+
 === Status
 * Internship
 * Subcontractor
 * Freelancer
+
+=== Access rights
+* Employee
+* Human resource manager
+* Top management
